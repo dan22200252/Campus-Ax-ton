@@ -109,6 +109,12 @@ const universities = {
   }
 };
 
+const legacyStatusMap = {
+  middle: "middlePrep",
+  high: "highPrep",
+  passed: "highCollege"
+};
+
 const form = document.querySelector("#profileForm");
 const summaryTitle = document.querySelector("#summaryTitle");
 const summaryText = document.querySelector("#summaryText");
@@ -146,10 +152,11 @@ function renderUniversities(selectedSchools) {
 }
 
 function updateResult() {
-  const status = form.querySelector('input[name="status"]:checked').value;
+  const rawStatus = form.querySelector('input[name="status"]:checked').value;
+  const status = legacyStatusMap[rawStatus] || rawStatus;
   const goals = checkedValues("goal");
   const selectedSchools = checkedValues("school");
-  const statusData = statusCopy[status];
+  const statusData = statusCopy[status] || statusCopy.middlePrep;
   const schoolNames = selectedSchools.map((key) => universities[key].name);
 
   const infoItems = [...statusData.baseInfo, ...goals.map((goal) => goalCopy[goal].info)];
