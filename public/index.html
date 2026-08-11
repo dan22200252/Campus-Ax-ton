@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>검정고시-포항 대입 정보 길잡이</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <img class="hero__image" src="assets/hero-guidance.png" alt="" />
+      <div class="hero__shade"></div>
+      <nav class="topbar" aria-label="주요 메뉴">
+        <a class="brand" href="#top">길잡이</a>
+        <div class="topbar__links">
+          <a href="#finder">맞춤 정보</a>
+          <a href="#basics">검정고시</a>
+          <a href="#universities">포항 대학</a>
+        </div>
+      </nav>
+      <section class="hero__content" id="top">
+        <p class="eyebrow">검정고시부터 포항 소재 대학 입시까지</p>
+        <h1>내 상황에 맞는 정보를 먼저 보여주는 공익 안내 데모</h1>
+        <p class="hero__copy">
+          중졸, 고졸, 대입 준비 단계에 따라 필요한 검정고시 정보와 대학별 확인 항목을 좁혀서 안내합니다.
+        </p>
+        <a class="hero__button" href="#finder">내 정보 찾기</a>
+      </section>
+    </header>
+
+    <main>
+      <section class="finder" id="finder" aria-labelledby="finder-title">
+        <div class="section-heading">
+          <p class="eyebrow">맞춤 정보 찾기</p>
+          <h2 id="finder-title">체크하면 안내 카드가 바로 바뀝니다</h2>
+        </div>
+
+        <div class="finder__layout">
+          <form class="panel" id="profileForm">
+            <fieldset>
+              <legend>현재 상태</legend>
+              <label><input type="radio" name="status" value="middle" checked /> 중졸 검정고시 준비</label>
+              <label><input type="radio" name="status" value="high" /> 고졸 검정고시 준비</label>
+              <label><input type="radio" name="status" value="passed" /> 검정고시 합격 완료</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>목표</legend>
+              <label><input type="checkbox" name="goal" value="exam" checked /> 검정고시 기본 정보</label>
+              <label><input type="checkbox" name="goal" value="college" /> 대입 준비</label>
+              <label><input type="checkbox" name="goal" value="documents" /> 제출 서류 확인</label>
+              <label><input type="checkbox" name="goal" value="support" /> 장학금·지원제도</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>관심 대학</legend>
+              <label><input type="checkbox" name="school" value="postech" checked /> 포항공과대학교</label>
+              <label><input type="checkbox" name="school" value="handong" /> 한동대학교</label>
+              <label><input type="checkbox" name="school" value="sunlin" /> 선린대학교</label>
+              <label><input type="checkbox" name="school" value="pohang" /> 포항대학교</label>
+            </fieldset>
+          </form>
+
+          <aside class="result" aria-live="polite">
+            <p class="result__label">내 상황 요약</p>
+            <h3 id="summaryTitle"></h3>
+            <p id="summaryText"></p>
+            <div class="result__grid">
+              <article>
+                <h4>지금 필요한 정보</h4>
+                <ul id="infoList"></ul>
+              </article>
+              <article>
+                <h4>다음 행동</h4>
+                <ul id="actionList"></ul>
+              </article>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="content-band" id="basics" aria-labelledby="basics-title">
+        <div class="section-heading">
+          <p class="eyebrow">기본 정보</p>
+          <h2 id="basics-title">검정고시 안내는 단계별로 짧게</h2>
+        </div>
+        <div class="info-columns">
+          <article>
+            <span class="tag">중졸</span>
+            <h3>고등학교 진학 전 학력 인정</h3>
+            <p>응시 자격, 시험 과목, 합격 기준, 시험 일정, 원서 접수 방법을 한 화면에서 확인하게 합니다.</p>
+          </article>
+          <article>
+            <span class="tag">고졸</span>
+            <h3>대입으로 이어지는 핵심 단계</h3>
+            <p>합격 기준과 성적증명서 발급 방법, 대학 지원 시 필요한 서류를 함께 안내합니다.</p>
+          </article>
+          <article>
+            <span class="tag">주의</span>
+            <h3>해마다 바뀌는 정보 분리</h3>
+            <p>시험 일정과 대학 모집요강은 매년 갱신되므로 공식 기관과 입학처 링크를 함께 둡니다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="universities" id="universities" aria-labelledby="universities-title">
+        <div class="section-heading">
+          <p class="eyebrow">포항 소재 대학 우선</p>
+          <h2 id="universities-title">대학별 확인 포인트</h2>
+        </div>
+        <div class="university-list" id="universityList"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>데모 사이트입니다. 실제 지원 전에는 각 대학 입학처 모집요강과 교육청 공지를 반드시 확인해야 합니다.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
