@@ -19,10 +19,10 @@
         </div>
       </nav>
       <section class="hero__content" id="top">
-        <p class="eyebrow">학교밖청소년을 위한 검정고시·대입 안내</p>
+        <p class="eyebrow">학교밖청소년을 위한 검정고시·진로 안내</p>
         <h1>혼자 찾아도 막막하지 않게.</h1>
         <p class="hero__copy">
-          검정고시 신청 서류와 대학 지원 서류를 나눠서 보여줍니다. 포항 대학 정보도 함께 확인할 수 있어요.
+          검정고시 이후의 길을 고등학교 진학, 대학 진학, 일할 준비로 나눠서 보여줍니다.
         </p>
         <a class="hero__button" href="#finder">내 상황 고르기</a>
       </section>
@@ -39,10 +39,12 @@
           <form class="panel" id="profileForm">
             <fieldset>
               <legend>나는 지금</legend>
-              <label><input type="radio" name="status" value="middle" checked /> 중졸 검정고시를 준비해요</label>
-              <label><input type="radio" name="status" value="middlePassed" /> 중졸 검정고시에 합격했어요</label>
-              <label><input type="radio" name="status" value="high" /> 고졸 검정고시를 준비해요</label>
-              <label><input type="radio" name="status" value="passed" /> 고졸 검정고시에 합격했어요</label>
+              <label><input type="radio" name="status" value="middlePrep" checked /> 중졸 검정고시를 준비하고 있어요</label>
+              <label><input type="radio" name="status" value="middleHighSchool" /> 중졸 검정고시에 합격했고, 일반 고등학교에 가고 싶어요</label>
+              <label><input type="radio" name="status" value="middleWork" /> 중졸 검정고시에 합격했고, 일할 준비를 하고 싶어요</label>
+              <label><input type="radio" name="status" value="highPrep" /> 고졸 검정고시를 준비하고 있어요</label>
+              <label><input type="radio" name="status" value="highCollege" /> 고졸 검정고시에 합격했고, 대학에 가고 싶어요</label>
+              <label><input type="radio" name="status" value="highWork" /> 고졸 검정고시에 합격했고, 일할 준비를 하고 싶어요</label>
             </fieldset>
 
             <fieldset>
@@ -52,6 +54,7 @@
               <label><input type="checkbox" name="goal" value="highSchool" /> 고등학교 진학 방법</label>
               <label><input type="checkbox" name="goal" value="college" /> 대학 지원 방법</label>
               <label><input type="checkbox" name="goal" value="collegeDocs" /> 대학에 낼 서류</label>
+              <label><input type="checkbox" name="goal" value="work" /> 일할 준비 방법</label>
               <label><input type="checkbox" name="goal" value="support" /> 도움받을 곳</label>
             </fieldset>
 
@@ -90,23 +93,28 @@
       <section class="content-band" id="basics" aria-labelledby="basics-title">
         <div class="section-heading">
           <p class="eyebrow">쉬운 안내</p>
-          <h2 id="basics-title">서류는 두 종류로 나눠서 봐요</h2>
+          <h2 id="basics-title">검정고시 이후 길을 나눠서 봐요</h2>
         </div>
         <div class="info-columns">
           <article>
             <span class="tag">시험 전</span>
-            <h3>검정고시 신청 서류</h3>
-            <p>시험을 보려고 원서 접수할 때 내는 서류예요. 교육청 공고에서 확인해야 합니다.</p>
+            <h3>검정고시 신청</h3>
+            <p>시험 일정, 응시 자격, 신청 서류를 교육청 공고에서 확인해야 해요.</p>
           </article>
           <article>
             <span class="tag">중졸 합격 후</span>
             <h3>고등학교 진학</h3>
-            <p>중졸 검정고시에 합격하면 고등학교 진학을 준비하는 길도 있어요.</p>
+            <p>중졸 검정고시에 합격하면 일반 고등학교 진학을 준비하는 길도 있어요.</p>
           </article>
           <article>
             <span class="tag">고졸 합격 후</span>
-            <h3>대학 지원 서류</h3>
-            <p>대학에 지원할 때 내는 서류예요. 합격증명서와 성적증명서가 자주 필요합니다.</p>
+            <h3>대학 진학</h3>
+            <p>대학마다 검정고시 성적 반영 방식과 제출 서류가 다를 수 있어요.</p>
+          </article>
+          <article>
+            <span class="tag">일할 준비</span>
+            <h3>직업훈련·직장체험</h3>
+            <p>바로 취업보다 나이, 필요 서류, 직업훈련 지원을 먼저 확인하는 게 좋아요.</p>
           </article>
         </div>
       </section>
@@ -121,7 +129,7 @@
     </main>
 
     <footer>
-      <p>데모 사이트입니다. 실제 지원 전에는 교육청 공고와 각 대학 입학처 모집요강을 확인해야 합니다.</p>
+      <p>데모 사이트입니다. 실제 지원 전에는 교육청 공고와 각 기관의 공식 안내를 확인해야 합니다.</p>
     </footer>
 
     <script src="script.js"></script>
