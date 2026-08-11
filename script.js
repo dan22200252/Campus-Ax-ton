@@ -122,6 +122,7 @@ const infoList = document.querySelector("#infoList");
 const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
+const schoolFieldset = document.querySelector("#schoolFieldset");
 
 function checkedValues(name) {
   return [...form.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
@@ -154,8 +155,9 @@ function renderUniversities(selectedSchools) {
 function updateResult() {
   const rawStatus = form.querySelector('input[name="status"]:checked').value;
   const status = legacyStatusMap[rawStatus] || rawStatus;
+  const shouldShowSchools = status === "highCollege";
   const goals = checkedValues("goal");
-  const selectedSchools = checkedValues("school");
+  const selectedSchools = shouldShowSchools ? checkedValues("school") : [];
   const statusData = statusCopy[status] || statusCopy.middlePrep;
   const schoolNames = selectedSchools.map((key) => universities[key].name);
 
@@ -164,7 +166,8 @@ function updateResult() {
   const stepItems = [...statusData.steps, ...goals.map((goal) => goalCopy[goal].step)];
 
   summaryTitle.textContent = statusData.title;
-  summaryText.textContent = `${statusData.summary} ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`;
+  schoolFieldset.hidden = !shouldShowSchools;
+  summaryText.textContent = `${statusData.summary} ${shouldShowSchools && schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : ""}`.trim();
 
   renderList(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
