@@ -109,29 +109,86 @@ const universities = {
   }
 };
 
-const form = document.querySelector("#profileForm");
-const summaryTitle = document.querySelector("#summaryTitle");
-const summaryText = document.querySelector("#summaryText");
-const infoList = document.querySelector("#infoList");
-const actionList = document.querySelector("#actionList");
-const topSteps = document.querySelector("#topSteps");
-const universityList = document.querySelector("#universityList");
+/* =========================================================
+   검정고시 상세 데이터 (시험 종류·일정·서류·링크)
+   ========================================================= */
 
-const stepLevel = document.querySelector("#stepLevel");
-const stepStage = document.querySelector("#stepStage");
-const stepGoal = document.querySelector("#stepGoal");
-const stepGoalOptions = document.querySelector("#stepGoalOptions");
+const EXAM_TYPES = {
+  mid: {
+    name: "중학교 졸업학력 검정고시",
+    gives: "중학교 졸업 학력",
+    whoFor: "초등학교 졸업자, 초졸 검정고시 합격자, 중학교에서 학적이 정원외로 관리되는 사람",
+    subjects: "필수 5과목(국어·수학·영어·사회·과학) + 선택 1과목(도덕·기술가정·체육·음악·미술·정보 중)",
+    count: "총 6과목",
+    time: "09:00 ~ 15:00"
+  },
+  high: {
+    name: "고등학교 졸업학력 검정고시",
+    gives: "고등학교 졸업 학력 (대학 진학 가능)",
+    whoFor: "중학교 졸업자, 중졸 검정고시 합격자, 기능사 이상 자격 취득자 등",
+    subjects: "필수 6과목(국어·수학·영어·사회·과학·한국사) + 선택 1과목(도덕·기술가정·체육·음악·미술 중)",
+    count: "총 7과목",
+    time: "09:00 ~ 15:50"
+  }
+};
 
-const statusState = { level: null, stage: null, afterGoal: null };
+const EXAM_SCHEDULE = [
+  {
+    round: "2026년 제2회",
+    status: "past",
+    events: [
+      { date: "2026-06-22", end: "2026-06-26", label: "원서접수", certainty: "fixed" },
+      { date: "2026-08-11", label: "시험일", certainty: "fixed" },
+      { date: "2026-08-28", label: "합격자 발표", certainty: "fixed" }
+    ]
+  },
+  {
+    round: "2027년 제1회",
+    status: "upcoming",
+    events: [
+      { date: "2027-02-08", end: "2027-02-12", label: "원서접수 (예상)", certainty: "guess" },
+      { date: "2027-04-03", label: "시험일 (예상)", certainty: "guess" },
+      { date: "2027-05-06", label: "합격자 발표 (예상)", certainty: "guess" }
+    ]
+  }
+];
+
+const EXAM_DOCS_BY_LEVEL = {
+  mid: [
+    "응시원서 1부 (현장 또는 온라인 작성)",
+    "사진 2매 — 3.5cm × 4.5cm, 최근 3개월 이내 촬영",
+    "최종학력증명서 1부 — 초등학교 졸업증명서 또는 중학교 제적·정원외 관리증명서",
+    "신분증 (지참만, 제출 안 함)",
+    "과목 면제 대상이면 과목합격증명서·자격증 사본"
+  ],
+  high: [
+    "응시원서 1부 (현장 또는 온라인 작성)",
+    "사진 2매 — 3.5cm × 4.5cm, 최근 3개월 이내 촬영",
+    "최종학력증명서 1부 — 중학교 졸업증명서 또는 고등학교 제적증명서",
+    "신분증 (지참만, 제출 안 함)",
+    "과목 면제 대상이면 과목합격증명서·자격증 사본"
+  ]
+};
+
+const EXAM_LINKS = {
+  apply: { url: "https://kged.go.kr", title: "검정고시 온라인 원서접수 (나이스)", desc: "공동인증서 로그인 → 시·도교육청 선택 → 원서 작성" },
+  notice: { url: "https://www.sen.go.kr/user/bbs/BD_selectBbsList.do?q_bbsSn=1097", title: "서울시교육청 검정고시 공고", desc: "확정 일정·시험장 확인 (타 지역은 해당 교육청 누리집)" },
+  center: { url: "https://www.kdream.or.kr", title: "청소년지원센터 꿈드림", desc: "만 9~24세 학교 밖 청소년 · 검정고시 준비, 교재비·상담 지원" },
+  hischool: { url: "https://www.hischool.go.kr", title: "고입정보포털 하이스쿨", desc: "고등학교 종류·전형·모집 일정 확인" },
+  work: { url: "https://www.work24.go.kr", title: "고용24 (구 워크넷)", desc: "청소년 취업 지원, 직업훈련(내일배움카드) 신청" },
+  adiga: { url: "https://www.adiga.kr", title: "어디가 (대입정보포털)", desc: "대학별 전형·모집요강·입시 일정 확인" },
+  kosaf: { url: "https://www.kosaf.go.kr", title: "한국장학재단", desc: "국가장학금·학자금 대출 신청" },
+  qnet: { url: "https://www.q-net.or.kr", title: "큐넷 (Q-Net)", desc: "기능사 등 국가기술자격 시험 접수·일정" }
+};
 
 const afterGoalOptionsByLevel = {
   middle: [
-    { value: "highschool", label: "일반 고등학교에 가고 싶어요" },
-    { value: "work", label: "일할 준비를 하고 싶어요" }
+    { value: "highschool", icon: "🏫", title: "일반 고등학교", sub: "학교로 돌아가고 싶어요" },
+    { value: "work", icon: "💼", title: "일할 준비", sub: "취업을 준비하고 싶어요" }
   ],
   high: [
-    { value: "college", label: "대학에 가고 싶어요" },
-    { value: "work", label: "일할 준비를 하고 싶어요" }
+    { value: "college", icon: "🎓", title: "대학교 진학", sub: "더 공부하고 싶어요" },
+    { value: "work", icon: "💼", title: "일할 준비", sub: "취업을 준비하고 싶어요" }
   ]
 };
 
@@ -139,6 +196,124 @@ const statusKeyMap = {
   middle: { prep: "middlePrep", highschool: "middleHighSchool", work: "middleWork" },
   high: { prep: "highPrep", college: "highCollege", work: "highWork" }
 };
+
+/* =========================================================
+   유틸
+   ========================================================= */
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function fmtDate(iso) {
+  const [y, m, d] = iso.split("-").map(Number);
+  const wd = ["일", "월", "화", "수", "목", "금", "토"][new Date(y, m - 1, d).getDay()];
+  return `${m}월 ${d}일(${wd})`;
+}
+
+/* =========================================================
+   검정고시 상세 렌더링
+   ========================================================= */
+
+function scheduleHTML() {
+  return EXAM_SCHEDULE.map((rnd) => {
+    const tag = rnd.status === "past" ? '<span class="tag-mini tag-mini--past">시험 종료</span>' : '<span class="tag-mini">공고 전 · 예상</span>';
+    const items = rnd.events.map((ev) => {
+      const guess = ev.certainty === "guess";
+      const range = ev.end ? ` ~ ${fmtDate(ev.end)}` : "";
+      return `<li>${guess ? "예상 · " : "확정 · "}${esc(ev.label)}: ${fmtDate(ev.date)}${range}</li>`;
+    }).join("");
+    return `<div class="schedule-round"><strong>${esc(rnd.round)}</strong> ${tag}<ul class="plain">${items}</ul></div>`;
+  }).join("");
+}
+
+function linksHTML(keys) {
+  const cards = keys.map((k) => {
+    const l = EXAM_LINKS[k];
+    return `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer"><strong>${esc(l.title)}</strong><span>${esc(l.desc)}</span></a>`;
+  }).join("");
+  return `<h4>바로 가기</h4><div class="links-mini">${cards}</div>`;
+}
+
+function examDetailHTML(examKey) {
+  const e = EXAM_TYPES[examKey];
+  const docs = EXAM_DOCS_BY_LEVEL[examKey].map((d) => `<li>${esc(d)}</li>`).join("");
+  return `
+    <h4>내가 볼 시험</h4>
+    <p class="detail-lead"><strong>${esc(e.name)}</strong> — 합격하면 ${esc(e.gives)}을 인정받아요. 응시료는 무료입니다.</p>
+    <table class="info-mini">
+      <tr><th>응시자격</th><td>${esc(e.whoFor)}</td></tr>
+      <tr><th>과목</th><td>${esc(e.count)} · ${esc(e.subjects)}</td></tr>
+      <tr><th>시험시간</th><td>${esc(e.time)}</td></tr>
+    </table>
+    <p class="note-mini">전 과목 평균 60점 이상이면 합격(과락 없음). 결시 과목이 있으면 불합격이고, 60점 이상 받은 과목은 다음 회차에 다시 안 봐도 되는 '과목합격'으로 남아요.</p>
+    <h4>일정</h4>
+    ${scheduleHTML()}
+    <h4>접수할 때 필요한 것</h4>
+    <ul class="plain">${docs}</ul>
+    ${linksHTML(["apply", "notice", "center"])}
+  `;
+}
+
+function workDetailHTML() {
+  return `
+    <h4>이 순서로 준비해보세요</h4>
+    <ul class="plain">
+      <li>1. 직업 방향 정하기 — 고용24 직업심리검사(무료)로 관심 분야를 좁혀요</li>
+      <li>2. 자격증 따기 — 기능사 시험에 응시할 수 있어요 (큐넷)</li>
+      <li>3. 직업훈련 받기 — 국민내일배움카드로 훈련비 지원을 받아요</li>
+      <li>4. 지원하기 — 고용센터에서 이력서·면접 준비를 도와줘요</li>
+    </ul>
+    <p class="note-mini">만 18세 미만은 근로계약 시 친권자·후견인 동의서와 가족관계증명서가 필요하고, 하루 7시간·주 35시간을 넘겨 일할 수 없어요. 야간·휴일 근로는 원칙적으로 금지입니다.</p>
+    ${linksHTML(["work", "qnet", "center"])}
+  `;
+}
+
+const statusDetailHTML = {
+  middlePrep: () => examDetailHTML("mid"),
+  highPrep: () => examDetailHTML("high"),
+  middleHighSchool: () => `
+    <h4>어떻게 하면 되나요</h4>
+    <ul class="plain">
+      <li>거주지 교육지원청 또는 다니고 싶은 중학교에 문의하면 재입학 절차를 안내받아요</li>
+      <li>중학교는 의무교육이라 학력 조건 없이 초등학교 졸업만 있으면 들어갈 수 있어요</li>
+      <li>나이 차이가 걱정되면 방송통신중학교도 선택지예요 (주말 등교, 학력 인정)</li>
+    </ul>
+    <p class="note-mini">다니다 그만둔 학교가 있다면 학적 정리 상태(제적/정원외 관리)에 따라 절차가 달라지니 교육지원청에 먼저 확인하세요.</p>
+    ${linksHTML(["center", "notice"])}
+  `,
+  highCollege: () => `
+    <h4>두 가지 길</h4>
+    <table class="info-mini">
+      <tr><th>수시모집</th><td>내신·학생부·면접 중심, 보통 9월 원서접수. 검정고시 출신은 내신이 없어 지원 가능한 전형이 제한되니 대학별로 꼭 확인하세요.</td></tr>
+      <tr><th>정시모집</th><td>수능 성적 중심, 수능은 보통 11월 셋째 주 목요일. 검정고시 출신에게 가장 일반적인 경로예요.</td></tr>
+    </table>
+    <p class="note-mini">수능 응시원서는 8월 말~9월 초 접수, 학교 소속이 없으면 거주지 교육지원청에서 개인 접수합니다.</p>
+    ${linksHTML(["adiga", "kosaf", "center"])}
+  `,
+  middleWork: workDetailHTML,
+  highWork: workDetailHTML
+};
+
+/* =========================================================
+   DOM 참조
+   ========================================================= */
+
+const form = document.querySelector("#profileForm");
+const summaryTitle = document.querySelector("#summaryTitle");
+const summaryText = document.querySelector("#summaryText");
+const infoList = document.querySelector("#infoList");
+const actionList = document.querySelector("#actionList");
+const topSteps = document.querySelector("#topSteps");
+const universityList = document.querySelector("#universityList");
+const detailSections = document.querySelector("#detailSections");
+
+const stepLevel = document.querySelector("#stepLevel");
+const stepStage = document.querySelector("#stepStage");
+const stepGoal = document.querySelector("#stepGoal");
+const stepGoalOptions = document.querySelector("#stepGoalOptions");
+
+const statusState = { level: null, stage: null, afterGoal: null };
 
 function currentStatusKey() {
   if (!statusState.level || !statusState.stage) return null;
@@ -148,26 +323,26 @@ function currentStatusKey() {
 }
 
 function setActiveOption(group, value) {
-  document.querySelectorAll(`.step-option[data-group="${group}"]`).forEach((btn) => {
+  document.querySelectorAll(`.opt-card[data-group="${group}"]`).forEach((btn) => {
     btn.classList.toggle("is-active", btn.dataset.value === value);
   });
 }
 
 function renderAfterGoalOptions() {
   stepGoalOptions.innerHTML = "";
-  afterGoalOptionsByLevel[statusState.level].forEach(({ value, label }) => {
+  afterGoalOptionsByLevel[statusState.level].forEach(({ value, icon, title, sub }) => {
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "step-option";
+    btn.className = "opt-card";
     btn.dataset.group = "afterGoal";
     btn.dataset.value = value;
-    btn.textContent = label;
+    btn.innerHTML = `<span class="opt-card__ico" aria-hidden="true">${icon}</span><span class="opt-card__txt"><strong>${esc(title)}</strong><span>${esc(sub)}</span></span>`;
     stepGoalOptions.appendChild(btn);
   });
 }
 
 stepLevel.addEventListener("click", (event) => {
-  const btn = event.target.closest(".step-option");
+  const btn = event.target.closest(".opt-card");
   if (!btn) return;
   statusState.level = btn.dataset.value;
   statusState.stage = null;
@@ -180,7 +355,7 @@ stepLevel.addEventListener("click", (event) => {
 });
 
 stepStage.addEventListener("click", (event) => {
-  const btn = event.target.closest(".step-option");
+  const btn = event.target.closest(".opt-card");
   if (!btn) return;
   statusState.stage = btn.dataset.value;
   statusState.afterGoal = null;
@@ -195,7 +370,7 @@ stepStage.addEventListener("click", (event) => {
 });
 
 stepGoalOptions.addEventListener("click", (event) => {
-  const btn = event.target.closest(".step-option");
+  const btn = event.target.closest(".opt-card");
   if (!btn) return;
   statusState.afterGoal = btn.dataset.value;
   setActiveOption("afterGoal", statusState.afterGoal);
@@ -238,6 +413,7 @@ function updateResult() {
   if (!statusKey) {
     summaryTitle.textContent = "위 단계를 순서대로 선택해 주세요.";
     summaryText.textContent = "중졸/고졸, 준비/합격 여부를 고르면 맞춤 안내가 나와요.";
+    detailSections.innerHTML = "";
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
     renderList(actionList, [], 5);
@@ -254,6 +430,9 @@ function updateResult() {
 
   summaryTitle.textContent = statusData.title;
   summaryText.textContent = `${statusData.summary} ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`;
+
+  const detailRenderer = statusDetailHTML[statusKey];
+  detailSections.innerHTML = detailRenderer ? detailRenderer() : "";
 
   renderList(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
