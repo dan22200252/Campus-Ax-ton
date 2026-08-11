@@ -37,14 +37,29 @@
 
         <div class="finder__layout">
           <form class="panel" id="profileForm">
-            <fieldset>
+            <fieldset class="step-picker" id="statusPicker">
               <legend>나는 지금</legend>
-              <label><input type="radio" name="status" value="middlePrep" checked /> 중졸 검정고시를 준비하고 있어요</label>
-              <label><input type="radio" name="status" value="middleHighSchool" /> 중졸 검정고시에 합격했고, 일반 고등학교에 가고 싶어요</label>
-              <label><input type="radio" name="status" value="middleWork" /> 중졸 검정고시에 합격했고, 일할 준비를 하고 싶어요</label>
-              <label><input type="radio" name="status" value="highPrep" /> 고졸 검정고시를 준비하고 있어요</label>
-              <label><input type="radio" name="status" value="highCollege" /> 고졸 검정고시에 합격했고, 대학에 가고 싶어요</label>
-              <label><input type="radio" name="status" value="highWork" /> 고졸 검정고시에 합격했고, 일할 준비를 하고 싶어요</label>
+
+              <div class="step-picker__step" id="stepLevel">
+                <p class="step-picker__q">1. 중졸 검정고시예요, 고졸 검정고시예요?</p>
+                <div class="step-picker__options">
+                  <button type="button" class="step-option" data-group="level" data-value="middle">중졸 검정고시</button>
+                  <button type="button" class="step-option" data-group="level" data-value="high">고졸 검정고시</button>
+                </div>
+              </div>
+
+              <div class="step-picker__step" id="stepStage" hidden>
+                <p class="step-picker__q">2. 지금 준비 중이에요, 합격했어요?</p>
+                <div class="step-picker__options">
+                  <button type="button" class="step-option" data-group="stage" data-value="prep">준비하고 있어요</button>
+                  <button type="button" class="step-option" data-group="stage" data-value="passed">합격했어요</button>
+                </div>
+              </div>
+
+              <div class="step-picker__step" id="stepGoal" hidden>
+                <p class="step-picker__q">3. 합격 후엔 뭘 하고 싶어요?</p>
+                <div class="step-picker__options" id="stepGoalOptions"></div>
+              </div>
             </fieldset>
 
             <fieldset>

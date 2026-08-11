@@ -207,6 +207,44 @@ input {
   accent-color: var(--teal);
 }
 
+.step-picker__step + .step-picker__step {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+
+.step-picker__q {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.step-picker__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.step-option {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f9fbfa;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.step-option.is-active {
+  border-color: var(--teal);
+  background: rgba(23, 109, 106, 0.12);
+  color: var(--teal);
+}
+
 .result {
   padding: 28px;
   box-shadow: var(--shadow);

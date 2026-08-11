@@ -117,6 +117,91 @@ const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
 
+const stepLevel = document.querySelector("#stepLevel");
+const stepStage = document.querySelector("#stepStage");
+const stepGoal = document.querySelector("#stepGoal");
+const stepGoalOptions = document.querySelector("#stepGoalOptions");
+
+const statusState = { level: null, stage: null, afterGoal: null };
+
+const afterGoalOptionsByLevel = {
+  middle: [
+    { value: "highschool", label: "일반 고등학교에 가고 싶어요" },
+    { value: "work", label: "일할 준비를 하고 싶어요" }
+  ],
+  high: [
+    { value: "college", label: "대학에 가고 싶어요" },
+    { value: "work", label: "일할 준비를 하고 싶어요" }
+  ]
+};
+
+const statusKeyMap = {
+  middle: { prep: "middlePrep", highschool: "middleHighSchool", work: "middleWork" },
+  high: { prep: "highPrep", college: "highCollege", work: "highWork" }
+};
+
+function currentStatusKey() {
+  if (!statusState.level || !statusState.stage) return null;
+  if (statusState.stage === "prep") return statusKeyMap[statusState.level].prep;
+  if (!statusState.afterGoal) return null;
+  return statusKeyMap[statusState.level][statusState.afterGoal];
+}
+
+function setActiveOption(group, value) {
+  document.querySelectorAll(`.step-option[data-group="${group}"]`).forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.value === value);
+  });
+}
+
+function renderAfterGoalOptions() {
+  stepGoalOptions.innerHTML = "";
+  afterGoalOptionsByLevel[statusState.level].forEach(({ value, label }) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "step-option";
+    btn.dataset.group = "afterGoal";
+    btn.dataset.value = value;
+    btn.textContent = label;
+    stepGoalOptions.appendChild(btn);
+  });
+}
+
+stepLevel.addEventListener("click", (event) => {
+  const btn = event.target.closest(".step-option");
+  if (!btn) return;
+  statusState.level = btn.dataset.value;
+  statusState.stage = null;
+  statusState.afterGoal = null;
+  setActiveOption("level", statusState.level);
+  setActiveOption("stage", null);
+  stepStage.hidden = false;
+  stepGoal.hidden = true;
+  updateResult();
+});
+
+stepStage.addEventListener("click", (event) => {
+  const btn = event.target.closest(".step-option");
+  if (!btn) return;
+  statusState.stage = btn.dataset.value;
+  statusState.afterGoal = null;
+  setActiveOption("stage", statusState.stage);
+  if (statusState.stage === "passed") {
+    renderAfterGoalOptions();
+    stepGoal.hidden = false;
+  } else {
+    stepGoal.hidden = true;
+  }
+  updateResult();
+});
+
+stepGoalOptions.addEventListener("click", (event) => {
+  const btn = event.target.closest(".step-option");
+  if (!btn) return;
+  statusState.afterGoal = btn.dataset.value;
+  setActiveOption("afterGoal", statusState.afterGoal);
+  updateResult();
+});
+
 function checkedValues(name) {
   return [...form.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
 }
@@ -146,10 +231,21 @@ function renderUniversities(selectedSchools) {
 }
 
 function updateResult() {
-  const status = form.querySelector('input[name="status"]:checked').value;
+  const statusKey = currentStatusKey();
   const goals = checkedValues("goal");
   const selectedSchools = checkedValues("school");
-  const statusData = statusCopy[status];
+
+  if (!statusKey) {
+    summaryTitle.textContent = "위 단계를 순서대로 선택해 주세요.";
+    summaryText.textContent = "중졸/고졸, 준비/합격 여부를 고르면 맞춤 안내가 나와요.";
+    renderList(topSteps, [], 3);
+    renderList(infoList, [], 5);
+    renderList(actionList, [], 5);
+    renderUniversities(selectedSchools);
+    return;
+  }
+
+  const statusData = statusCopy[statusKey];
   const schoolNames = selectedSchools.map((key) => universities[key].name);
 
   const infoItems = [...statusData.baseInfo, ...goals.map((goal) => goalCopy[goal].info)];
