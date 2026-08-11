@@ -258,6 +258,29 @@ input {
   background: #f3f8f7;
 }
 
+.result__links {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 8px;
+  background: #eef4ff;
+  border: 1px solid rgba(66, 133, 244, 0.25);
+}
+
+.result__links ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.result__links li + li {
+  margin-top: 8px;
+}
+
+.result__links a {
+  color: #1a56db;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
 h4 {
   margin: 0 0 10px;
   font-size: 17px;
