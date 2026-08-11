@@ -1,44 +1,55 @@
 const statusCopy = {
   middle: {
     label: "중졸 검정고시 준비",
-    title: "중졸 검정고시부터 차근차근 준비하는 단계",
-    baseInfo: ["응시 자격과 접수 기간", "중졸 검정고시 과목 구성", "합격 기준과 과목 면제 가능 여부"],
-    baseActions: ["교육청 공고에서 올해 시험 일정을 확인하기", "원서 접수에 필요한 신분 확인 서류 준비하기"]
+    title: "시험 신청부터 확인하면 돼요.",
+    summary: "아직 대학 정보보다 검정고시 일정과 신청 서류가 먼저예요.",
+    baseInfo: ["시험 일정", "응시 자격", "시험 신청 서류"],
+    baseActions: ["교육청 공고가 기준이에요.", "접수 기간을 놓치면 시험을 못 볼 수 있어요."],
+    steps: ["올해 검정고시 일정을 확인해요.", "신청 서류를 따로 적어둬요.", "궁금한 대학은 나중에 한 곳씩 봐요."]
   },
   high: {
     label: "고졸 검정고시 준비",
-    title: "고졸 학력 취득과 대입 가능성을 함께 보는 단계",
-    baseInfo: ["고졸 검정고시 과목과 합격 기준", "검정고시 성적의 대입 활용 방식", "합격증명서와 성적증명서 발급 방법"],
-    baseActions: ["시험 일정과 합격자 발표일을 달력에 표시하기", "관심 대학 모집요강에서 검정고시 지원 기준 확인하기"]
+    title: "합격 후 대입까지 이어서 봐요.",
+    summary: "고졸 검정고시는 대학 지원과 바로 연결될 수 있어요.",
+    baseInfo: ["시험 과목", "합격 기준", "대학 지원 가능 여부"],
+    baseActions: ["검정고시 성적이 대학에서 어떻게 쓰이는지 확인해야 해요.", "합격증명서와 성적증명서는 합격 후 필요할 수 있어요."],
+    steps: ["시험 과목과 합격 기준을 봐요.", "관심 대학을 1~2곳 골라요.", "검정고시 출신 안내를 찾아요."]
   },
   passed: {
     label: "검정고시 합격 완료",
-    title: "대학 지원 조건과 서류를 구체적으로 확인할 단계",
-    baseInfo: ["대학별 검정고시 출신 지원 가능 여부", "수시·정시 전형별 반영 기준", "온라인 증명서 발급과 제출 방식"],
-    baseActions: ["관심 대학 입학처 모집요강 내려받기", "성적증명서와 합격증명서 발급 경로 확인하기"]
+    title: "이제 대학별 서류를 확인해요.",
+    summary: "대학마다 내야 하는 서류와 성적 반영 방식이 다를 수 있어요.",
+    baseInfo: ["대학 지원 서류", "성적 반영 방식", "입학처 모집요강"],
+    baseActions: ["모집요강이 가장 정확해요.", "잘 모르겠으면 입학처에 직접 물어보는 게 안전해요."],
+    steps: ["지원할 대학을 골라요.", "모집요강에서 검정고시를 검색해요.", "내야 할 서류를 체크해요."]
   }
 };
 
 const goalCopy = {
   exam: {
-    info: "검정고시 일정, 과목, 합격 기준",
-    action: "공식 교육청 공고를 기준으로 최신 시험 정보를 확인하기"
+    info: "검정고시 뜻과 시험 흐름",
+    action: "일정, 과목, 합격 기준을 먼저 봐요.",
+    step: "검정고시 기본 정보를 확인해요."
   },
   examDocs: {
-    info: "검정고시 원서 접수 때 필요한 신분 확인 서류, 사진, 학력 관련 서류",
-    action: "시험 신청 전에 교육청 공고에서 응시 서류 목록 확인하기"
+    info: "시험 신청할 때 내는 서류",
+    action: "이 서류는 대학 서류와 달라요.",
+    step: "교육청 공고에서 신청 서류를 확인해요."
   },
   college: {
-    info: "수시·정시 전형에서 검정고시 성적을 보는 방식",
-    action: "대학별 모집요강에서 검정고시 출신 지원 항목 찾기"
+    info: "대학 지원 방법",
+    action: "수시와 정시 중 어떤 전형인지 확인해요.",
+    step: "관심 대학 모집요강을 열어봐요."
   },
   collegeDocs: {
-    info: "대학 지원 때 내는 검정고시 합격증명서, 성적증명서, 대학별 추가 서류",
-    action: "관심 대학 모집요강에서 제출 서류와 발급 방법 확인하기"
+    info: "대학에 내는 서류",
+    action: "합격증명서, 성적증명서가 필요할 수 있어요.",
+    step: "대학별 제출 서류를 따로 체크해요."
   },
   support: {
-    info: "장학금, 입학 상담, 지역 청소년 지원기관",
-    action: "대학 장학 안내와 포항 지역 지원기관 정보를 함께 확인하기"
+    info: "도움받을 수 있는 곳",
+    action: "학교밖청소년지원센터나 입학처 상담을 활용해요.",
+    step: "혼자 막히는 부분은 상담처에 물어봐요."
   }
 };
 
@@ -46,27 +57,27 @@ const universities = {
   postech: {
     name: "포항공과대학교",
     type: "4년제",
-    focus: "모집단위별 지원 자격, 학생부 대체 서류, 면접·서류평가 기준을 확인합니다."
+    focus: "지원 자격, 제출 서류, 서류·면접 평가 기준"
   },
   handong: {
     name: "한동대학교",
     type: "4년제",
-    focus: "검정고시 성적 반영 방식, 자기소개·면접 요소, 전형별 제출 서류를 확인합니다."
+    focus: "검정고시 성적 반영, 전형별 서류, 면접 여부"
   },
   sunlin: {
     name: "선린대학교",
     type: "전문대",
-    focus: "전문대 수시 지원 가능 여부, 학과별 모집 인원, 성적 산출 기준을 확인합니다."
+    focus: "학과별 모집 인원, 성적 산출 기준, 제출 서류"
   },
   pohang: {
     name: "포항대학교",
     type: "전문대",
-    focus: "학과별 전형, 검정고시 성적 환산, 장학·입학 상담 창구를 확인합니다."
+    focus: "학과별 전형, 검정고시 성적 환산, 입학 상담"
   },
   polytech: {
     name: "한국폴리텍대학 포항캠퍼스",
     type: "기능대학",
-    focus: "과정별 모집 요건, 검정고시 학력 인정 여부, 면접·서류 제출 기준을 확인합니다."
+    focus: "과정별 모집 요건, 학력 인정, 면접·서류 기준"
   }
 };
 
@@ -75,15 +86,16 @@ const summaryTitle = document.querySelector("#summaryTitle");
 const summaryText = document.querySelector("#summaryText");
 const infoList = document.querySelector("#infoList");
 const actionList = document.querySelector("#actionList");
+const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
 
 function checkedValues(name) {
   return [...form.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
 }
 
-function renderList(target, items) {
+function renderList(target, items, limit = 5) {
   target.innerHTML = "";
-  items.forEach((item) => {
+  [...new Set(items)].slice(0, limit).forEach((item) => {
     const li = document.createElement("li");
     li.textContent = item;
     target.appendChild(li);
@@ -114,12 +126,14 @@ function updateResult() {
 
   const infoItems = [...statusData.baseInfo, ...goals.map((goal) => goalCopy[goal].info)];
   const actionItems = [...statusData.baseActions, ...goals.map((goal) => goalCopy[goal].action)];
+  const stepItems = [...statusData.steps, ...goals.map((goal) => goalCopy[goal].step)];
 
   summaryTitle.textContent = statusData.title;
-  summaryText.textContent = `${statusData.label} 상태이며, ${goals.length}개 목표와 ${schoolNames.length ? schoolNames.join(", ") : "관심 대학 미선택"} 정보를 함께 보고 있습니다.`;
+  summaryText.textContent = `${statusData.summary} ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`;
 
-  renderList(infoList, [...new Set(infoItems)]);
-  renderList(actionList, [...new Set(actionItems)]);
+  renderList(topSteps, stepItems, 3);
+  renderList(infoList, infoItems, 5);
+  renderList(actionList, actionItems, 5);
   renderUniversities(selectedSchools);
 }
 

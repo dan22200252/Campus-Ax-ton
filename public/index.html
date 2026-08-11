@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>검정고시-포항 대입 정보 길잡이</title>
+    <title>포항 검정고시 길잡이</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -11,50 +11,50 @@
       <img class="hero__image" src="assets/hero-guidance.png" alt="" />
       <div class="hero__shade"></div>
       <nav class="topbar" aria-label="주요 메뉴">
-        <a class="brand" href="#top">길잡이</a>
+        <a class="brand" href="#top">포항 길잡이</a>
         <div class="topbar__links">
-          <a href="#finder">맞춤 정보</a>
-          <a href="#basics">검정고시</a>
+          <a href="#finder">상황 선택</a>
+          <a href="#basics">쉬운 안내</a>
           <a href="#universities">포항 대학</a>
         </div>
       </nav>
       <section class="hero__content" id="top">
-        <p class="eyebrow">검정고시부터 포항 소재 대학 입시까지</p>
-        <h1>내 상황에 맞는 정보를 먼저 보여주는 공익 안내 데모</h1>
+        <p class="eyebrow">학교밖청소년을 위한 검정고시·대입 안내</p>
+        <h1>혼자 찾아도 막막하지 않게.</h1>
         <p class="hero__copy">
-          중졸, 고졸, 대입 준비 단계에 따라 필요한 검정고시 정보와 대학별 확인 항목을 좁혀서 안내합니다.
+          검정고시 신청 서류와 대학 지원 서류를 나눠서 보여줍니다. 포항 대학 정보도 함께 확인할 수 있어요.
         </p>
-        <a class="hero__button" href="#finder">내 정보 찾기</a>
+        <a class="hero__button" href="#finder">내 상황 고르기</a>
       </section>
     </header>
 
     <main>
       <section class="finder" id="finder" aria-labelledby="finder-title">
         <div class="section-heading">
-          <p class="eyebrow">맞춤 정보 찾기</p>
-          <h2 id="finder-title">체크하면 안내 카드가 바로 바뀝니다</h2>
+          <p class="eyebrow">내 상황 찾기</p>
+          <h2 id="finder-title">지금 나에게 가까운 것을 골라주세요</h2>
         </div>
 
         <div class="finder__layout">
           <form class="panel" id="profileForm">
             <fieldset>
-              <legend>현재 상태</legend>
-              <label><input type="radio" name="status" value="middle" checked /> 중졸 검정고시 준비</label>
-              <label><input type="radio" name="status" value="high" /> 고졸 검정고시 준비</label>
-              <label><input type="radio" name="status" value="passed" /> 검정고시 합격 완료</label>
+              <legend>나는 지금</legend>
+              <label><input type="radio" name="status" value="middle" checked /> 중졸 검정고시를 준비해요</label>
+              <label><input type="radio" name="status" value="high" /> 고졸 검정고시를 준비해요</label>
+              <label><input type="radio" name="status" value="passed" /> 검정고시에 합격했어요</label>
             </fieldset>
 
             <fieldset>
-              <legend>목표</legend>
-              <label><input type="checkbox" name="goal" value="exam" checked /> 검정고시가 뭔지 알고 싶어요</label>
-              <label><input type="checkbox" name="goal" value="examDocs" /> 검정고시 신청할 때 필요한 서류를 알고 싶어요</label>
-              <label><input type="checkbox" name="goal" value="college" /> 대학 지원 방법이 궁금해요</label>
-              <label><input type="checkbox" name="goal" value="collegeDocs" /> 대학에 내야 할 서류를 알고 싶어요</label>
-              <label><input type="checkbox" name="goal" value="support" /> 장학금·지원제도</label>
+              <legend>알고 싶은 것</legend>
+              <label><input type="checkbox" name="goal" value="exam" checked /> 검정고시가 뭔지</label>
+              <label><input type="checkbox" name="goal" value="examDocs" /> 시험 신청할 때 낼 서류</label>
+              <label><input type="checkbox" name="goal" value="college" /> 대학 지원 방법</label>
+              <label><input type="checkbox" name="goal" value="collegeDocs" /> 대학에 낼 서류</label>
+              <label><input type="checkbox" name="goal" value="support" /> 도움받을 곳</label>
             </fieldset>
 
             <fieldset>
-              <legend>관심 대학</legend>
+              <legend>궁금한 대학</legend>
               <label><input type="checkbox" name="school" value="postech" checked /> 포항공과대학교</label>
               <label><input type="checkbox" name="school" value="handong" /> 한동대학교</label>
               <label><input type="checkbox" name="school" value="sunlin" /> 선린대학교</label>
@@ -64,16 +64,20 @@
           </form>
 
           <aside class="result" aria-live="polite">
-            <p class="result__label">내 상황 요약</p>
+            <p class="result__label">내 안내 카드</p>
             <h3 id="summaryTitle"></h3>
             <p id="summaryText"></p>
+            <div class="next-steps">
+              <h4>먼저 할 일 3개</h4>
+              <ol id="topSteps"></ol>
+            </div>
             <div class="result__grid">
               <article>
-                <h4>지금 필요한 정보</h4>
+                <h4>확인할 정보</h4>
                 <ul id="infoList"></ul>
               </article>
               <article>
-                <h4>다음 행동</h4>
+                <h4>주의할 점</h4>
                 <ul id="actionList"></ul>
               </article>
             </div>
@@ -83,24 +87,24 @@
 
       <section class="content-band" id="basics" aria-labelledby="basics-title">
         <div class="section-heading">
-          <p class="eyebrow">기본 정보</p>
-          <h2 id="basics-title">검정고시 안내는 단계별로 짧게</h2>
+          <p class="eyebrow">쉬운 안내</p>
+          <h2 id="basics-title">서류는 두 종류로 나눠서 봐요</h2>
         </div>
         <div class="info-columns">
           <article>
-            <span class="tag">중졸</span>
-            <h3>고등학교 진학 전 학력 인정</h3>
-            <p>응시 자격, 시험 과목, 합격 기준, 시험 일정, 원서 접수 방법을 한 화면에서 확인하게 합니다.</p>
+            <span class="tag">시험 전</span>
+            <h3>검정고시 신청 서류</h3>
+            <p>시험을 보려고 원서 접수할 때 내는 서류예요. 교육청 공고에서 확인해야 합니다.</p>
           </article>
           <article>
-            <span class="tag">고졸</span>
-            <h3>대입으로 이어지는 핵심 단계</h3>
-            <p>합격 기준, 성적증명서 발급 방법, 대학 지원 시 내야 하는 서류를 따로 안내합니다.</p>
+            <span class="tag">합격 후</span>
+            <h3>대학 지원 서류</h3>
+            <p>대학에 지원할 때 내는 서류예요. 합격증명서와 성적증명서가 자주 필요합니다.</p>
           </article>
           <article>
-            <span class="tag">주의</span>
-            <h3>해마다 바뀌는 정보 분리</h3>
-            <p>시험 일정과 대학 모집요강은 매년 갱신되므로 공식 기관과 입학처 링크를 함께 둡니다.</p>
+            <span class="tag">중요</span>
+            <h3>대학마다 다를 수 있어요</h3>
+            <p>같은 검정고시 출신이어도 대학별 제출 서류와 성적 반영 방식이 다를 수 있습니다.</p>
           </article>
         </div>
       </section>
@@ -108,14 +112,14 @@
       <section class="universities" id="universities" aria-labelledby="universities-title">
         <div class="section-heading">
           <p class="eyebrow">포항 소재 대학 우선</p>
-          <h2 id="universities-title">대학별 확인 포인트</h2>
+          <h2 id="universities-title">대학별로 이것만 먼저 확인해요</h2>
         </div>
         <div class="university-list" id="universityList"></div>
       </section>
     </main>
 
     <footer>
-      <p>데모 사이트입니다. 실제 지원 전에는 각 대학 입학처 모집요강과 교육청 공지를 반드시 확인해야 합니다.</p>
+      <p>데모 사이트입니다. 실제 지원 전에는 교육청 공고와 각 대학 입학처 모집요강을 확인해야 합니다.</p>
     </footer>
 
     <script src="script.js"></script>
