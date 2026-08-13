@@ -273,6 +273,28 @@ const statusKeyMap = {
   high: { univ: "highUniv", job: "highJob", none: "goalless" }
 };
 
+const RECOMMENDED_GOALS_BY_Q2 = {
+  ged: ["exam", "examDocs", "support"],
+  school: ["highSchool", "support"],
+  univ: ["college", "collegeDocs", "support"],
+  job: ["work", "support"],
+  none: ["exam", "support"]
+};
+
+function updateGoalRecommendations() {
+  const recommended = RECOMMENDED_GOALS_BY_Q2[statusState.goal] || null;
+  document.querySelectorAll('input[name="goal"]').forEach((input) => {
+    const label = input.closest(".opt-card--check");
+    if (!recommended) {
+      label.hidden = false;
+      return;
+    }
+    const isRecommended = recommended.includes(input.value);
+    label.hidden = !isRecommended;
+    input.checked = isRecommended;
+  });
+}
+
 /* =========================================================
    유틸
    ========================================================= */
@@ -542,6 +564,7 @@ stepLevel.addEventListener("click", (event) => {
   setActiveOption("level", statusState.level);
   renderGoalOptions();
   stepGoal.hidden = false;
+  updateGoalRecommendations();
   saveStatusState();
   updateResult();
 });
@@ -551,6 +574,7 @@ stepGoalOptions.addEventListener("click", (event) => {
   if (!btn) return;
   statusState.goal = btn.dataset.value;
   setActiveOption("q2", statusState.goal);
+  updateGoalRecommendations();
   saveStatusState();
   updateResult();
 });
@@ -573,6 +597,7 @@ function restoreStatusState() {
     statusState.goal = saved.goal;
     setActiveOption("q2", statusState.goal);
   }
+  updateGoalRecommendations();
 }
 
 function checkedValues(name) {
