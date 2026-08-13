@@ -41,35 +41,26 @@
               <legend>나는 지금</legend>
 
               <div class="step-picker__step" id="stepLevel">
-                <p class="step-picker__q"><span class="step-picker__num">1</span>중졸 검정고시예요, 고졸 검정고시예요?</p>
+                <p class="step-picker__q"><span class="step-picker__num">1</span>당신의 최종 학력은 무엇인가요?</p>
+                <p class="step-picker__hint">마지막으로 졸업한 학교를 골라주세요. 다니다가 그만둔 학교는 최종 학력이 아니에요.</p>
                 <div class="opt-grid">
-                  <button type="button" class="opt-card" data-group="level" data-value="middle">
+                  <button type="button" class="opt-card" data-group="level" data-value="elem">
+                    <span class="opt-card__ico" aria-hidden="true">초</span>
+                    <span class="opt-card__txt"><strong>초등학교 졸업</strong><span>초등학교까지 마쳤어요</span></span>
+                  </button>
+                  <button type="button" class="opt-card" data-group="level" data-value="mid">
                     <span class="opt-card__ico" aria-hidden="true">중</span>
-                    <span class="opt-card__txt"><strong>중졸 검정고시</strong><span>중학교 학력을 준비해요</span></span>
+                    <span class="opt-card__txt"><strong>중학교 졸업</strong><span>중학교까지 마쳤어요</span></span>
                   </button>
                   <button type="button" class="opt-card" data-group="level" data-value="high">
                     <span class="opt-card__ico" aria-hidden="true">고</span>
-                    <span class="opt-card__txt"><strong>고졸 검정고시</strong><span>고등학교 학력을 준비해요</span></span>
-                  </button>
-                </div>
-              </div>
-
-              <div class="step-picker__step" id="stepStage" hidden>
-                <p class="step-picker__q"><span class="step-picker__num">2</span>지금 준비 중이에요, 합격했어요?</p>
-                <div class="opt-grid">
-                  <button type="button" class="opt-card" data-group="stage" data-value="prep">
-                    <span class="opt-card__ico" aria-hidden="true">📖</span>
-                    <span class="opt-card__txt"><strong>준비하고 있어요</strong><span>아직 시험 전이에요</span></span>
-                  </button>
-                  <button type="button" class="opt-card" data-group="stage" data-value="passed">
-                    <span class="opt-card__ico" aria-hidden="true">✅</span>
-                    <span class="opt-card__txt"><strong>합격했어요</strong><span>다음 단계를 정할 차례예요</span></span>
+                    <span class="opt-card__txt"><strong>고등학교 졸업</strong><span>고등학교까지 마쳤어요</span></span>
                   </button>
                 </div>
               </div>
 
               <div class="step-picker__step" id="stepGoal" hidden>
-                <p class="step-picker__q"><span class="step-picker__num">3</span>합격 후엔 뭘 하고 싶어요?</p>
+                <p class="step-picker__q"><span class="step-picker__num">2</span>앞으로 무엇을 하고 싶으세요?</p>
                 <div class="opt-grid" id="stepGoalOptions"></div>
               </div>
             </fieldset>

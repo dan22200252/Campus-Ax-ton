@@ -1,42 +1,42 @@
 const statusCopy = {
-  middlePrep: {
+  elemSchool: {
+    title: "중학교 진학을 준비해요.",
+    summary: "중학교는 의무교육이라 나이와 상관없이 다시 다닐 수 있고, 학비도 들지 않아요.",
+    baseInfo: ["중학교 재입학 절차", "학교 유형", "방송통신중학교", "필요 서류"],
+    baseActions: ["학적 정리 상태(제적/정원외 관리)에 따라 절차가 달라져요.", "거주지 교육지원청에 먼저 확인하는 게 안전해요."],
+    steps: ["거주지 교육지원청이나 다니고 싶은 학교에 재입학 절차를 물어봐요.", "나이 차이가 걱정되면 방송통신중학교도 알아봐요.", "학적 상태를 먼저 확인해요."]
+  },
+  elemGed: {
     title: "중졸 검정고시 준비 단계예요.",
     summary: "시험 일정과 신청 서류를 먼저 확인하면 돼요.",
     baseInfo: ["시험 일정", "응시 자격", "시험 신청 서류", "합격 후 선택할 수 있는 길"],
     baseActions: ["교육청 공고가 기준이에요.", "접수 기간을 놓치면 시험을 못 볼 수 있어요."],
     steps: ["올해 검정고시 일정을 확인해요.", "신청 서류를 따로 적어둬요.", "합격 후 갈 길을 미리 생각해봐요."]
   },
-  middleHighSchool: {
+  midSchool: {
     title: "고등학교 진학을 준비해요.",
-    summary: "중졸 검정고시 합격 후에는 일반 고등학교 진학을 알아볼 수 있어요.",
+    summary: "재입학·편입학, 방송통신고등학교, 학력인정 평생교육시설도 정식 고졸 학력이 나와요.",
     baseInfo: ["고등학교 진학 방법", "학교 유형", "입학 상담", "필요 서류"],
     baseActions: ["학교마다 입학 상담 방식이 다를 수 있어요.", "교육청이나 학교에 직접 확인하는 게 안전해요."],
     steps: ["가고 싶은 학교 유형을 골라요.", "입학 상담이 가능한지 확인해요.", "필요 서류를 학교에 물어봐요."]
   },
-  middleWork: {
-    title: "일할 준비를 먼저 확인해요.",
-    summary: "바로 취업보다 나이, 필요 서류, 직업훈련 지원을 먼저 보는 게 좋아요.",
-    baseInfo: ["일할 수 있는 나이", "보호자 동의서", "직업체험", "직업훈련 지원"],
-    baseActions: ["만 15세 미만은 취직인허증이 필요할 수 있어요.", "위험하거나 유해한 일은 청소년에게 금지돼요."],
-    steps: ["내 나이에서 일할 수 있는지 확인해요.", "꿈드림 직업체험을 알아봐요.", "필요 서류를 먼저 체크해요."]
-  },
-  highPrep: {
+  midGed: {
     title: "고졸 검정고시 준비 단계예요.",
     summary: "고졸 검정고시는 대학 진학이나 일할 준비와 이어질 수 있어요.",
     baseInfo: ["시험 과목", "합격 기준", "시험 신청 서류", "합격 후 선택지"],
     baseActions: ["합격 후 합격증명서와 성적증명서가 필요할 수 있어요.", "대학이나 직업훈련 중 어떤 길을 볼지 정해두면 좋아요."],
     steps: ["시험 과목과 합격 기준을 봐요.", "신청 서류를 확인해요.", "합격 후 대학·일 준비 중 관심 길을 골라요."]
   },
-  highCollege: {
+  highUniv: {
     title: "대학 진학 정보를 확인해요.",
     summary: "대학마다 검정고시 성적 반영 방식과 제출 서류가 다를 수 있어요.",
     baseInfo: ["대학 지원 방법", "검정고시 성적 반영", "대학 제출 서류", "입학처 모집요강"],
     baseActions: ["모집요강이 가장 정확해요.", "잘 모르겠으면 입학처에 직접 물어보는 게 안전해요."],
     steps: ["지원할 대학을 골라요.", "모집요강에서 검정고시를 검색해요.", "내야 할 서류를 체크해요."]
   },
-  highWork: {
+  highJob: {
     title: "직업훈련과 일할 준비를 확인해요.",
-    summary: "고졸 검정고시 합격 후에는 직업훈련, 자격증, 직장체험을 알아볼 수 있어요.",
+    summary: "고등학교 졸업 학력이 있으면 직업훈련, 자격증, 직장체험을 알아볼 수 있어요.",
     baseInfo: ["직업훈련 프로그램", "자격증 준비", "직장체험", "청소년 근로 서류"],
     baseActions: ["채용보다 준비 프로그램을 먼저 확인하면 덜 막막해요.", "만 18세 미만은 보호자 동의서가 필요할 수 있어요."],
     steps: ["관심 있는 직업 분야를 적어봐요.", "꿈드림이나 직업훈련 프로그램을 찾아봐요.", "근로에 필요한 서류를 확인해요."]
@@ -191,20 +191,25 @@ const EXAM_LINKS = {
   qnet: { url: "https://www.q-net.or.kr", title: "큐넷 (Q-Net)", desc: "기능사 등 국가기술자격 시험 접수·일정" }
 };
 
-const afterGoalOptionsByLevel = {
-  middle: [
-    { value: "highschool", icon: "🏫", title: "일반 고등학교", sub: "학교로 돌아가고 싶어요" },
-    { value: "work", icon: "💼", title: "일할 준비", sub: "취업을 준비하고 싶어요" }
+const goalOptionsByLevel = {
+  elem: [
+    { value: "school", icon: "🏫", title: "중학교 진학", sub: "학교로 돌아가고 싶어요" },
+    { value: "ged", icon: "📝", title: "검정고시", sub: "시험으로 학력을 인정받고 싶어요" }
+  ],
+  mid: [
+    { value: "school", icon: "🏫", title: "고등학교 진학", sub: "학교로 돌아가고 싶어요" },
+    { value: "ged", icon: "📝", title: "검정고시", sub: "시험으로 학력을 인정받고 싶어요" }
   ],
   high: [
-    { value: "college", icon: "🎓", title: "대학교 진학", sub: "더 공부하고 싶어요" },
-    { value: "work", icon: "💼", title: "일할 준비", sub: "취업을 준비하고 싶어요" }
+    { value: "univ", icon: "🎓", title: "대학교 진학", sub: "더 공부하고 싶어요" },
+    { value: "job", icon: "💼", title: "취업", sub: "일을 시작하고 싶어요" }
   ]
 };
 
 const statusKeyMap = {
-  middle: { prep: "middlePrep", highschool: "middleHighSchool", work: "middleWork" },
-  high: { prep: "highPrep", college: "highCollege", work: "highWork" }
+  elem: { school: "elemSchool", ged: "elemGed" },
+  mid: { school: "midSchool", ged: "midGed" },
+  high: { univ: "highUniv", job: "highJob" }
 };
 
 /* =========================================================
@@ -280,9 +285,9 @@ function workDetailHTML() {
 }
 
 const statusDetailHTML = {
-  middlePrep: () => examDetailHTML("mid"),
-  highPrep: () => examDetailHTML("high"),
-  middleHighSchool: () => `
+  elemGed: () => examDetailHTML("mid"),
+  midGed: () => examDetailHTML("high"),
+  elemSchool: () => `
     <h4>어떻게 하면 되나요</h4>
     <ul class="plain">
       <li>거주지 교육지원청 또는 다니고 싶은 중학교에 문의하면 재입학 절차를 안내받아요</li>
@@ -290,9 +295,19 @@ const statusDetailHTML = {
       <li>나이 차이가 걱정되면 방송통신중학교도 선택지예요 (주말 등교, 학력 인정)</li>
     </ul>
     <p class="note-mini">다니다 그만둔 학교가 있다면 학적 정리 상태(제적/정원외 관리)에 따라 절차가 달라지니 교육지원청에 먼저 확인하세요.</p>
-    ${linksHTML(["center", "notice"])}
+    ${linksHTML(["center"])}
   `,
-  highCollege: () => `
+  midSchool: () => `
+    <h4>어떻게 하면 되나요</h4>
+    <ul class="plain">
+      <li>다니고 싶은 학교에 결원이 있는지 먼저 확인해요 — 보통 학기 시작 전(2월, 8월)에 재입학·편입학을 받아요</li>
+      <li>거주지 교육지원청 중등교육과에 연락하면 결원 있는 학교를 안내받을 수 있어요</li>
+      <li>매일 등교가 어려우면 방송통신고등학교(주말 등교)나 학력인정 평생교육시설도 정식 고졸 학력이 나와요</li>
+    </ul>
+    <p class="note-mini">다니다 그만둔 학교가 있다면 학적 정리 상태(제적/정원외 관리)에 따라 절차가 달라지니 교육지원청에 먼저 확인하세요.</p>
+    ${linksHTML(["hischool", "center"])}
+  `,
+  highUniv: () => `
     <h4>두 가지 길</h4>
     <table class="info-mini">
       <tr><th>수시모집</th><td>내신·학생부·면접 중심, 보통 9월 원서접수. 검정고시 출신은 내신이 없어 지원 가능한 전형이 제한되니 대학별로 꼭 확인하세요.</td></tr>
@@ -301,8 +316,7 @@ const statusDetailHTML = {
     <p class="note-mini">수능 응시원서는 8월 말~9월 초 접수, 학교 소속이 없으면 거주지 교육지원청에서 개인 접수합니다.</p>
     ${linksHTML(["adiga", "kosaf", "center"])}
   `,
-  middleWork: workDetailHTML,
-  highWork: workDetailHTML
+  highJob: workDetailHTML
 };
 
 /* =========================================================
@@ -319,17 +333,14 @@ const universityList = document.querySelector("#universityList");
 const detailSections = document.querySelector("#detailSections");
 
 const stepLevel = document.querySelector("#stepLevel");
-const stepStage = document.querySelector("#stepStage");
 const stepGoal = document.querySelector("#stepGoal");
 const stepGoalOptions = document.querySelector("#stepGoalOptions");
 
-const statusState = { level: null, stage: null, afterGoal: null };
+const statusState = { level: null, goal: null };
 
 function currentStatusKey() {
-  if (!statusState.level || !statusState.stage) return null;
-  if (statusState.stage === "prep") return statusKeyMap[statusState.level].prep;
-  if (!statusState.afterGoal) return null;
-  return statusKeyMap[statusState.level][statusState.afterGoal];
+  if (!statusState.level || !statusState.goal) return null;
+  return statusKeyMap[statusState.level][statusState.goal];
 }
 
 function setActiveOption(group, value) {
@@ -338,13 +349,13 @@ function setActiveOption(group, value) {
   });
 }
 
-function renderAfterGoalOptions() {
+function renderGoalOptions() {
   stepGoalOptions.innerHTML = "";
-  afterGoalOptionsByLevel[statusState.level].forEach(({ value, icon, title, sub }) => {
+  goalOptionsByLevel[statusState.level].forEach(({ value, icon, title, sub }) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "opt-card";
-    btn.dataset.group = "afterGoal";
+    btn.dataset.group = "q2";
     btn.dataset.value = value;
     btn.innerHTML = `<span class="opt-card__ico" aria-hidden="true">${icon}</span><span class="opt-card__txt"><strong>${esc(title)}</strong><span>${esc(sub)}</span></span>`;
     stepGoalOptions.appendChild(btn);
@@ -355,35 +366,18 @@ stepLevel.addEventListener("click", (event) => {
   const btn = event.target.closest(".opt-card");
   if (!btn) return;
   statusState.level = btn.dataset.value;
-  statusState.stage = null;
-  statusState.afterGoal = null;
+  statusState.goal = null;
   setActiveOption("level", statusState.level);
-  setActiveOption("stage", null);
-  stepStage.hidden = false;
-  stepGoal.hidden = true;
-  updateResult();
-});
-
-stepStage.addEventListener("click", (event) => {
-  const btn = event.target.closest(".opt-card");
-  if (!btn) return;
-  statusState.stage = btn.dataset.value;
-  statusState.afterGoal = null;
-  setActiveOption("stage", statusState.stage);
-  if (statusState.stage === "passed") {
-    renderAfterGoalOptions();
-    stepGoal.hidden = false;
-  } else {
-    stepGoal.hidden = true;
-  }
+  renderGoalOptions();
+  stepGoal.hidden = false;
   updateResult();
 });
 
 stepGoalOptions.addEventListener("click", (event) => {
   const btn = event.target.closest(".opt-card");
   if (!btn) return;
-  statusState.afterGoal = btn.dataset.value;
-  setActiveOption("afterGoal", statusState.afterGoal);
+  statusState.goal = btn.dataset.value;
+  setActiveOption("q2", statusState.goal);
   updateResult();
 });
 
@@ -424,7 +418,7 @@ function updateResult() {
 
   if (!statusKey) {
     summaryTitle.textContent = "위 단계를 순서대로 선택해 주세요.";
-    summaryText.textContent = "중졸/고졸, 준비/합격 여부를 고르면 맞춤 안내가 나와요.";
+    summaryText.textContent = "최종 학력과 앞으로의 목표를 고르면 맞춤 안내가 나와요.";
     detailSections.innerHTML = "";
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
