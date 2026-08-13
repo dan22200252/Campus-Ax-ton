@@ -84,28 +84,38 @@ const goalCopy = {
 const universities = {
   postech: {
     name: "포항공과대학교",
-    type: "4년제",
-    focus: "지원 자격, 제출 서류, 서류·면접 평가 기준"
+    type: "4년제 · 학종만 운영",
+    focus: "수시 학생부종합전형만 선발(정시·논술 없음). 검정고시 합격자도 일반전형으로 지원할 수 있어요.",
+    note: "농어촌 특별전형 등 고른기회전형은 검정고시·특목고 출신자 지원이 제한돼요.",
+    url: "https://adm-u.postech.ac.kr/entrance-exam/guide/"
   },
   handong: {
     name: "한동대학교",
-    type: "4년제",
-    focus: "검정고시 성적 반영, 전형별 서류, 면접 여부"
+    type: "4년제 · 수시·정시 모두",
+    focus: "검정고시 합격증명서·성적증명서(대입전형용) 제출이 필요해요.",
+    note: "지원 전 나이스 검정고시 서비스(kged.go.kr)에서 학교에 성적 제공 동의를 하고 확인번호를 미리 받아둬야 해요.",
+    url: "https://admissions.handong.edu/early/notice/"
   },
   sunlin: {
     name: "선린대학교",
     type: "전문대",
-    focus: "학과별 모집 인원, 성적 산출 기준, 제출 서류"
+    focus: "전문대학 공통 지원자격상 검정고시 합격자도 지원할 수 있어요.",
+    note: "학교 고유의 세부 조건은 확인되지 않았어요. 최신 모집요강에서 직접 확인하세요.",
+    url: "https://admission.sunlin.ac.kr/"
   },
   pohang: {
     name: "포항대학교",
     type: "전문대",
-    focus: "학과별 전형, 검정고시 성적 환산, 입학 상담"
+    focus: "전문대학 공통 지원자격상 검정고시 합격자도 지원할 수 있어요.",
+    note: "학교 고유의 세부 조건은 확인되지 않았어요. 최신 모집요강에서 직접 확인하세요.",
+    url: "https://ipsi.pohang.ac.kr/"
   },
   polytech: {
     name: "한국폴리텍대학 포항캠퍼스",
-    type: "기능대학",
-    focus: "과정별 모집 요건, 학력 인정, 면접·서류 기준"
+    type: "국비 직업훈련 · 비학위",
+    focus: "2년제 학위과정이 아닌 국비 무료 직업훈련과정(전문기술과정 등) 중심이에요.",
+    note: "학위가 필요하면 다른 학교와 함께 고려하세요. 검정고시 성적을 환산 입력하는 도구는 별도로 있어요.",
+    url: "https://www.kopo.ac.kr/pohang/content.do?menu=5970"
   }
 };
 
@@ -397,9 +407,11 @@ function renderUniversities(selectedSchools) {
     const card = document.createElement("article");
     card.className = `university-card${selectedSchools.includes(key) ? " is-active" : ""}`;
     card.innerHTML = `
-      <small>${school.type}</small>
-      <h3>${school.name}</h3>
-      <p>${school.focus}</p>
+      <small>${esc(school.type)}</small>
+      <h3>${esc(school.name)}</h3>
+      <p>${esc(school.focus)}</p>
+      ${school.note ? `<p class="university-card__note">${esc(school.note)}</p>` : ""}
+      <a class="university-card__link" href="${esc(school.url)}" target="_blank" rel="noopener noreferrer">공식 입학처 바로가기 →</a>
     `;
     universityList.appendChild(card);
   });
