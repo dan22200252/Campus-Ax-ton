@@ -4,42 +4,56 @@ const statusCopy = {
     summary: "중학교는 의무교육이라 나이와 상관없이 다시 다닐 수 있고, 학비도 들지 않아요.",
     baseInfo: ["중학교 재입학 절차", "학교 유형", "방송통신중학교", "필요 서류"],
     baseActions: ["학적 정리 상태(제적/정원외 관리)에 따라 절차가 달라져요.", "거주지 교육지원청에 먼저 확인하는 게 안전해요."],
-    steps: ["거주지 교육지원청이나 다니고 싶은 학교에 재입학 절차를 물어봐요.", "나이 차이가 걱정되면 방송통신중학교도 알아봐요.", "학적 상태를 먼저 확인해요."]
+    steps: ["거주지 교육지원청이나 다니고 싶은 학교에 재입학 절차를 물어봐요.", "나이 차이가 걱정되면 방송통신중학교도 알아봐요.", "학적 상태를 먼저 확인해요."],
+    keywords: ["중학교 재입학 신청", "방송통신중학교"]
   },
   elemGed: {
     title: "중졸 검정고시 준비 단계예요.",
     summary: "시험 일정과 신청 서류를 먼저 확인하면 돼요.",
     baseInfo: ["시험 일정", "응시 자격", "시험 신청 서류", "합격 후 선택할 수 있는 길"],
     baseActions: ["교육청 공고가 기준이에요.", "접수 기간을 놓치면 시험을 못 볼 수 있어요."],
-    steps: ["올해 검정고시 일정을 확인해요.", "신청 서류를 따로 적어둬요.", "합격 후 갈 길을 미리 생각해봐요."]
+    steps: ["올해 검정고시 일정을 확인해요.", "신청 서류를 따로 적어둬요.", "합격 후 갈 길을 미리 생각해봐요."],
+    keywords: ["중졸 검정고시 원서접수", "검정고시 준비 방법"]
   },
   midSchool: {
     title: "고등학교 진학을 준비해요.",
     summary: "재입학·편입학, 방송통신고등학교, 학력인정 평생교육시설도 정식 고졸 학력이 나와요.",
     baseInfo: ["고등학교 진학 방법", "학교 유형", "입학 상담", "필요 서류"],
     baseActions: ["학교마다 입학 상담 방식이 다를 수 있어요.", "교육청이나 학교에 직접 확인하는 게 안전해요."],
-    steps: ["가고 싶은 학교 유형을 골라요.", "입학 상담이 가능한지 확인해요.", "필요 서류를 학교에 물어봐요."]
+    steps: ["가고 싶은 학교 유형을 골라요.", "입학 상담이 가능한지 확인해요.", "필요 서류를 학교에 물어봐요."],
+    keywords: ["고등학교 편입학 결원", "방송통신고등학교"]
   },
   midGed: {
     title: "고졸 검정고시 준비 단계예요.",
     summary: "고졸 검정고시는 대학 진학이나 일할 준비와 이어질 수 있어요.",
     baseInfo: ["시험 과목", "합격 기준", "시험 신청 서류", "합격 후 선택지"],
     baseActions: ["합격 후 합격증명서와 성적증명서가 필요할 수 있어요.", "대학이나 직업훈련 중 어떤 길을 볼지 정해두면 좋아요."],
-    steps: ["시험 과목과 합격 기준을 봐요.", "신청 서류를 확인해요.", "합격 후 대학·일 준비 중 관심 길을 골라요."]
+    steps: ["시험 과목과 합격 기준을 봐요.", "신청 서류를 확인해요.", "합격 후 대학·일 준비 중 관심 길을 골라요."],
+    keywords: ["고졸 검정고시 과목", "검정고시 합격 기준"]
   },
   highUniv: {
     title: "대학 진학 정보를 확인해요.",
     summary: "대학마다 검정고시 성적 반영 방식과 제출 서류가 다를 수 있어요.",
     baseInfo: ["대학 지원 방법", "검정고시 성적 반영", "대학 제출 서류", "입학처 모집요강"],
     baseActions: ["모집요강이 가장 정확해요.", "잘 모르겠으면 입학처에 직접 물어보는 게 안전해요."],
-    steps: ["지원할 대학을 골라요.", "모집요강에서 검정고시를 검색해요.", "내야 할 서류를 체크해요."]
+    steps: ["지원할 대학을 골라요.", "모집요강에서 검정고시를 검색해요.", "내야 할 서류를 체크해요."],
+    keywords: ["검정고시 출신 대학 지원", "정시 수능 원서접수"]
   },
   highJob: {
     title: "직업훈련과 일할 준비를 확인해요.",
     summary: "고등학교 졸업 학력이 있으면 직업훈련, 자격증, 직장체험을 알아볼 수 있어요.",
     baseInfo: ["직업훈련 프로그램", "자격증 준비", "직장체험", "청소년 근로 서류"],
     baseActions: ["채용보다 준비 프로그램을 먼저 확인하면 덜 막막해요.", "만 18세 미만은 보호자 동의서가 필요할 수 있어요."],
-    steps: ["관심 있는 직업 분야를 적어봐요.", "꿈드림이나 직업훈련 프로그램을 찾아봐요.", "근로에 필요한 서류를 확인해요."]
+    steps: ["관심 있는 직업 분야를 적어봐요.", "꿈드림이나 직업훈련 프로그램을 찾아봐요.", "근로에 필요한 서류를 확인해요."],
+    keywords: ["청소년 국비 직업훈련", "고용24 청소년 인턴"]
+  },
+  goalless: {
+    title: "아직 목표를 정하지 않아도 괜찮아요.",
+    summary: "천천히 정보들을 살펴보고, 혼자 정하기 어려우면 상담 센터에 먼저 물어보세요.",
+    baseInfo: ["검정고시가 뭔지", "학교 밖 청소년 지원 제도", "상담받을 수 있는 곳"],
+    baseActions: ["지금 결정하지 않아도 늦지 않아요.", "궁금한 것부터 하나씩 살펴봐요."],
+    steps: ["궁금한 것부터 하나씩 체크해봐요.", "꿈드림 센터에 상담을 신청해요.", "준비가 되면 다시 돌아와 목표를 선택해요."],
+    keywords: ["꿈드림 센터 상담", "학교밖청소년지원센터"]
   }
 };
 
@@ -194,22 +208,25 @@ const EXAM_LINKS = {
 const goalOptionsByLevel = {
   elem: [
     { value: "school", icon: "🏫", title: "중학교 진학", sub: "학교로 돌아가고 싶어요" },
-    { value: "ged", icon: "📝", title: "검정고시", sub: "시험으로 학력을 인정받고 싶어요" }
+    { value: "ged", icon: "📝", title: "검정고시", sub: "시험으로 학력을 인정받고 싶어요" },
+    { value: "none", icon: "🤔", title: "아직 목표 없음", sub: "천천히 정해도 괜찮아요" }
   ],
   mid: [
     { value: "school", icon: "🏫", title: "고등학교 진학", sub: "학교로 돌아가고 싶어요" },
-    { value: "ged", icon: "📝", title: "검정고시", sub: "시험으로 학력을 인정받고 싶어요" }
+    { value: "ged", icon: "📝", title: "검정고시", sub: "시험으로 학력을 인정받고 싶어요" },
+    { value: "none", icon: "🤔", title: "아직 목표 없음", sub: "천천히 정해도 괜찮아요" }
   ],
   high: [
     { value: "univ", icon: "🎓", title: "대학교 진학", sub: "더 공부하고 싶어요" },
-    { value: "job", icon: "💼", title: "취업", sub: "일을 시작하고 싶어요" }
+    { value: "job", icon: "💼", title: "취업", sub: "일을 시작하고 싶어요" },
+    { value: "none", icon: "🤔", title: "아직 목표 없음", sub: "천천히 정해도 괜찮아요" }
   ]
 };
 
 const statusKeyMap = {
-  elem: { school: "elemSchool", ged: "elemGed" },
-  mid: { school: "midSchool", ged: "midGed" },
-  high: { univ: "highUniv", job: "highJob" }
+  elem: { school: "elemSchool", ged: "elemGed", none: "goalless" },
+  mid: { school: "midSchool", ged: "midGed", none: "goalless" },
+  high: { univ: "highUniv", job: "highJob", none: "goalless" }
 };
 
 /* =========================================================
@@ -250,6 +267,65 @@ function linksHTML(keys) {
   return `<h4>바로 가기</h4><div class="links-mini">${cards}</div>`;
 }
 
+function searchLinksHTML(keywords) {
+  if (!keywords || !keywords.length) return "";
+  const chips = keywords.map((kw) =>
+    `<a href="https://search.naver.com/search.naver?query=${encodeURIComponent(kw)}" target="_blank" rel="noopener noreferrer">${esc(kw)} 검색</a>`
+  ).join("");
+  return `<h4>이런 키워드로 검색해보세요</h4><div class="search-chips">${chips}</div>`;
+}
+
+const UNIV_TYPICAL_TIMELINE = [
+  { label: "수시모집 원서접수", timing: "9월 초" },
+  { label: "대학수학능력시험(수능)", timing: "11월 셋째 주 목요일" },
+  { label: "정시모집 원서접수", timing: "12월 말~1월 초" }
+];
+
+function typicalTimelineHTML(items) {
+  const rows = items.map((it) => `<li>${esc(it.label)}: <strong>${esc(it.timing)}</strong></li>`).join("");
+  return `<div class="schedule-round"><strong>일반적인 시기</strong> <span class="tag-mini">매년 조금씩 달라짐</span><ul class="plain">${rows}</ul></div>`;
+}
+
+function flattenExamEvents() {
+  const events = [];
+  EXAM_SCHEDULE.forEach((rnd) => {
+    rnd.events.forEach((ev) => {
+      events.push({ date: ev.date, label: `${rnd.round} ${ev.label}` });
+    });
+  });
+  return events;
+}
+
+function buildICS(events, calName) {
+  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", `PRODID:-//AxTon//${calName}//KO`];
+  events.forEach((ev, idx) => {
+    const dt = ev.date.replace(/-/g, "");
+    lines.push(
+      "BEGIN:VEVENT",
+      `UID:axton-${dt}-${idx}@campus-axton`,
+      `DTSTAMP:${dt}T000000Z`,
+      `DTSTART;VALUE=DATE:${dt}`,
+      `SUMMARY:${ev.label}`,
+      "END:VEVENT"
+    );
+  });
+  lines.push("END:VCALENDAR");
+  return lines.join("\r\n");
+}
+
+function downloadICS(events, filename, calName) {
+  const ics = buildICS(events, calName);
+  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 function examDetailHTML(examKey) {
   const e = EXAM_TYPES[examKey];
   const docs = EXAM_DOCS_BY_LEVEL[examKey].map((d) => `<li>${esc(d)}</li>`).join("");
@@ -262,8 +338,9 @@ function examDetailHTML(examKey) {
       <tr><th>시험시간</th><td>${esc(e.time)}</td></tr>
     </table>
     <p class="note-mini">전 과목 평균 60점 이상이면 합격(과락 없음). 결시 과목이 있으면 불합격이고, 60점 이상 받은 과목은 다음 회차에 다시 안 봐도 되는 '과목합격'으로 남아요.</p>
-    <h4>일정</h4>
+    <h4>일정 로드맵</h4>
     ${scheduleHTML()}
+    <button type="button" id="icsDownloadBtn" class="btn-ics">📅 이 일정 캘린더에 저장(.ics)</button>
     <h4>접수할 때 필요한 것</h4>
     <ul class="plain">${docs}</ul>
     ${linksHTML(["apply", "notice", "center"])}
@@ -314,9 +391,22 @@ const statusDetailHTML = {
       <tr><th>정시모집</th><td>수능 성적 중심, 수능은 보통 11월 셋째 주 목요일. 검정고시 출신에게 가장 일반적인 경로예요.</td></tr>
     </table>
     <p class="note-mini">수능 응시원서는 8월 말~9월 초 접수, 학교 소속이 없으면 거주지 교육지원청에서 개인 접수합니다.</p>
+    <h4>일정 로드맵</h4>
+    ${typicalTimelineHTML(UNIV_TYPICAL_TIMELINE)}
+    <p class="note-mini">정확한 날짜는 매년 한국대학교육협의회(대교협) 공고로 달라져요. 위 시기는 일반적인 패턴이라 캘린더 저장은 지원하지 않아요 — 확정되면 직접 등록해주세요.</p>
     ${linksHTML(["adiga", "kosaf", "center"])}
   `,
-  highJob: workDetailHTML
+  highJob: workDetailHTML,
+  goalless: () => `
+    <h4>이렇게 시작해보세요</h4>
+    <ul class="plain">
+      <li>검정고시가 뭔지부터 가볍게 살펴봐요 — 위 "알고 싶은 것"에서 체크해보세요</li>
+      <li>혼자 정하기 막막하면 꿈드림 센터 상담을 먼저 받아보는 것도 좋아요</li>
+      <li>목표가 생기면 위에서 다시 선택해서 맞춤 안내를 받아보세요</li>
+    </ul>
+    <p class="note-mini">지금 당장 정하지 않아도 괜찮아요. 준비가 됐을 때 다시 돌아와도 늦지 않아요.</p>
+    ${linksHTML(["center"])}
+  `
 };
 
 /* =========================================================
@@ -337,6 +427,18 @@ const stepGoal = document.querySelector("#stepGoal");
 const stepGoalOptions = document.querySelector("#stepGoalOptions");
 
 const statusState = { level: null, goal: null };
+let activeICSPayload = null;
+
+const STATUS_STORAGE_KEY = "axton_status_v1";
+const NOTES_STORAGE_KEY = "axton_notes_v1";
+
+function saveStatusState() {
+  try {
+    localStorage.setItem(STATUS_STORAGE_KEY, JSON.stringify(statusState));
+  } catch (e) {
+    /* localStorage unavailable (private mode etc.) — safe to ignore */
+  }
+}
 
 function currentStatusKey() {
   if (!statusState.level || !statusState.goal) return null;
@@ -370,6 +472,7 @@ stepLevel.addEventListener("click", (event) => {
   setActiveOption("level", statusState.level);
   renderGoalOptions();
   stepGoal.hidden = false;
+  saveStatusState();
   updateResult();
 });
 
@@ -378,8 +481,29 @@ stepGoalOptions.addEventListener("click", (event) => {
   if (!btn) return;
   statusState.goal = btn.dataset.value;
   setActiveOption("q2", statusState.goal);
+  saveStatusState();
   updateResult();
 });
+
+function restoreStatusState() {
+  let saved;
+  try {
+    saved = JSON.parse(localStorage.getItem(STATUS_STORAGE_KEY) || "null");
+  } catch (e) {
+    return;
+  }
+  if (!saved || !saved.level || !goalOptionsByLevel[saved.level]) return;
+
+  statusState.level = saved.level;
+  setActiveOption("level", statusState.level);
+  renderGoalOptions();
+  stepGoal.hidden = false;
+
+  if (saved.goal && statusKeyMap[saved.level][saved.goal]) {
+    statusState.goal = saved.goal;
+    setActiveOption("q2", statusState.goal);
+  }
+}
 
 function checkedValues(name) {
   return [...form.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
@@ -390,6 +514,21 @@ function renderList(target, items, limit = 5) {
   [...new Set(items)].slice(0, limit).forEach((item) => {
     const li = document.createElement("li");
     li.textContent = item;
+    target.appendChild(li);
+  });
+}
+
+const PRIORITY_LABELS = ["지금 바로", "이어서", "그 다음"];
+
+function renderPrioritySteps(target, items, limit = 3) {
+  target.innerHTML = "";
+  [...new Set(items)].slice(0, limit).forEach((item, idx) => {
+    const li = document.createElement("li");
+    const tag = document.createElement("span");
+    tag.className = "priority-tag";
+    tag.textContent = PRIORITY_LABELS[idx] || `${idx + 1}순위`;
+    li.appendChild(tag);
+    li.appendChild(document.createTextNode(item));
     target.appendChild(li);
   });
 }
@@ -420,6 +559,7 @@ function updateResult() {
     summaryTitle.textContent = "위 단계를 순서대로 선택해 주세요.";
     summaryText.textContent = "최종 학력과 앞으로의 목표를 고르면 맞춤 안내가 나와요.";
     detailSections.innerHTML = "";
+    activeICSPayload = null;
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
     renderList(actionList, [], 5);
@@ -437,14 +577,41 @@ function updateResult() {
   summaryTitle.textContent = statusData.title;
   summaryText.textContent = `${statusData.summary} ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`;
 
-  const detailRenderer = statusDetailHTML[statusKey];
-  detailSections.innerHTML = detailRenderer ? detailRenderer() : "";
+  activeICSPayload = (statusKey === "elemGed" || statusKey === "midGed")
+    ? { events: flattenExamEvents(), filename: "검정고시_일정.ics", calName: "검정고시 일정" }
+    : null;
 
-  renderList(topSteps, stepItems, 3);
+  const detailRenderer = statusDetailHTML[statusKey];
+  detailSections.innerHTML = (detailRenderer ? detailRenderer() : "") + searchLinksHTML(statusData.keywords);
+
+  renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
   renderList(actionList, actionItems, 5);
   renderUniversities(selectedSchools);
 }
 
+detailSections.addEventListener("click", (event) => {
+  const btn = event.target.closest("#icsDownloadBtn");
+  if (!btn || !activeICSPayload) return;
+  downloadICS(activeICSPayload.events, activeICSPayload.filename, activeICSPayload.calName);
+});
+
+const extraNotes = document.querySelector("#extraNotes");
+if (extraNotes) {
+  try {
+    extraNotes.value = localStorage.getItem(NOTES_STORAGE_KEY) || "";
+  } catch (e) {
+    /* ignore */
+  }
+  extraNotes.addEventListener("input", () => {
+    try {
+      localStorage.setItem(NOTES_STORAGE_KEY, extraNotes.value);
+    } catch (e) {
+      /* ignore */
+    }
+  });
+}
+
 form.addEventListener("change", updateResult);
+restoreStatusState();
 updateResult();
