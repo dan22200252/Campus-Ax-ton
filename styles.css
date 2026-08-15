@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "YeogiOttaeJalnan";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff") format("woff");
+  font-weight: normal;
+  font-display: swap;
+}
+
 :root {
   --ink: #162022;
   --muted: #5e6a6d;
@@ -28,6 +35,21 @@ body {
   color: var(--ink);
   font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
   line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+legend,
+.brand,
+.eyebrow,
+.opt-card__txt strong,
+.result__label {
+  font-family: "YeogiOttaeJalnan", "Pretendard", "Noto Sans KR", Arial, sans-serif;
+  font-weight: normal;
+  letter-spacing: 0;
 }
 
 a {
