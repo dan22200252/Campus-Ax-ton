@@ -526,6 +526,24 @@ table.info-mini th {
   background: var(--teal-soft);
 }
 
+.consult-callout {
+  margin: 4px 0 14px;
+  padding: 14px 16px;
+  border-radius: var(--card-radius);
+  background: #fff6e1;
+  border: 1px solid rgba(242, 181, 68, 0.45);
+}
+
+.consult-callout h4 {
+  margin: 0 0 6px;
+}
+
+.consult-callout p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #7a4a08;
+}
+
 .links-mini strong {
   display: block;
   font-size: 13.5px;

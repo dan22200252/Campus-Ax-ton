@@ -423,19 +423,26 @@ function examDetailHTML(examKey) {
   const docs = EXAM_DOCS_BY_LEVEL[examKey].map((d) => `<li>${esc(d)}</li>`).join("");
   return `
     <h4>내가 볼 시험</h4>
-    <p class="detail-lead"><strong>${esc(e.name)}</strong> — 합격하면 ${esc(e.gives)}을 인정받아요. 응시료는 무료입니다.</p>
+    <p class="detail-lead"><strong>${esc(e.name)}</strong> — 합격하면 ${esc(e.gives)}을 인정받아요. <strong>응시료는 무료</strong>입니다.</p>
     <table class="info-mini">
       <tr><th>응시자격</th><td>${esc(e.whoFor)}</td></tr>
       <tr><th>과목</th><td>${esc(e.count)} · ${esc(e.subjects)}</td></tr>
       <tr><th>시험시간</th><td>${esc(e.time)}</td></tr>
     </table>
     <p class="note-mini">전 과목 평균 60점 이상이면 합격(과락 없음). 결시 과목이 있으면 불합격이고, 60점 이상 받은 과목은 다음 회차에 다시 안 봐도 되는 '과목합격'으로 남아요.</p>
-    <h4>일정 로드맵</h4>
+    <h4>일정 로드맵 (마감 놓치지 마세요)</h4>
     ${scheduleHTML()}
     <button type="button" id="icsDownloadBtn" class="btn-ics">📅 이 일정 캘린더에 저장(.ics)</button>
     <h4>접수할 때 필요한 것</h4>
     <ul class="plain">${docs}</ul>
-    ${linksHTML(["apply", "notice", "center"])}
+    <h4>지금 할 일 — 여기서 접수하세요</h4>
+    ${linksHTML(["apply"])}
+    <p class="note-mini">정확한 최신 일정은 거주지 시·도교육청 홈페이지에서 "검정고시 공고"를 검색해 다시 확인하세요.</p>
+    <div class="consult-callout">
+      <h4>전화 상담이 어려우면</h4>
+      <p>일하느라 유선 상담 시간을 맞추기 어렵다면, 청소년지원센터 꿈드림을 이용해보세요. 센터에 따라 방문·온라인 게시판 상담도 운영해요.</p>
+      ${linksHTML(["center"])}
+    </div>
   `;
 }
 
@@ -453,9 +460,22 @@ function workDetailHTML() {
   `;
 }
 
+function admissionTypesHTML() {
+  return `
+    <h4>합격 후 대학에 가고 싶다면</h4>
+    <table class="info-mini">
+      <tr><th>학생부교과전형</th><td>내신 등급 기준으로 선발해서, 검정고시 출신은 대부분 지원이 제한돼요.</td></tr>
+      <tr><th>학생부종합전형</th><td>지원 가능해요. 학교생활기록부 대신 대학이 정한 대체서식(활동 5개 내외 + 증빙자료)을 내요.</td></tr>
+      <tr><th>논술전형</th><td>지원 가능해요. 대학마다 논술 성적 100% 또는 논술+비교내신(검정고시 평균 점수 환산)을 함께 반영해요.</td></tr>
+      <tr><th>정시전형</th><td>수능 성적 중심이라 차별 없이 지원 가능해요.</td></tr>
+    </table>
+    <p class="note-mini">전형 이름과 반영 방법은 대학마다 달라요. 목표 대학이 생기면 이 네 가지 중 어디에 해당하는지 그 대학 모집요강에서 확인하세요.</p>
+  `;
+}
+
 const statusDetailHTML = {
   elemGed: () => examDetailHTML("mid"),
-  midGed: () => examDetailHTML("high"),
+  midGed: () => examDetailHTML("high") + admissionTypesHTML(),
   elemSchool: () => `
     <h4>어떻게 하면 되나요</h4>
     <ul class="plain">
