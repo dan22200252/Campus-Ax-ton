@@ -767,18 +767,44 @@ function renderRoadmap(statusKey, items) {
   }
 
   const completed = getCompletedRoadmap(statusKey);
+  const completedCount = items.filter((_, index) => completed.has(String(index))).length;
+  const currentIndex = items.findIndex((_, index) => !completed.has(String(index)));
+  const progress = Math.round((completedCount / items.length) * 100);
+  roadmapList.innerHTML = `
+    <div class="roadmap-progress" aria-label="로드맵 진행률">
+      <div>
+        <strong>${completedCount}/${items.length}</strong>
+        <span>${currentIndex === -1 ? "모든 단계를 체크했어요" : `지금은 ${currentIndex + 1}단계 근처예요`}</span>
+      </div>
+      <div class="roadmap-meter" aria-hidden="true">
+        <span style="width: ${progress}%"></span>
+      </div>
+    </div>
+  `;
+  const list = document.createElement("ol");
+  list.className = "visual-roadmap";
+
   items.forEach((item, index) => {
     const id = `roadmap-${statusKey}-${index}`;
     const isComplete = completed.has(String(index));
+    const isCurrent = index === currentIndex;
+    const li = document.createElement("li");
+    li.className = `roadmap-node${isComplete ? " is-complete" : ""}${isCurrent ? " is-current" : ""}`;
     const label = document.createElement("label");
     label.className = `roadmap-item${isComplete ? " is-complete" : ""}`;
     label.htmlFor = id;
     label.innerHTML = `
       <input id="${id}" type="checkbox" data-roadmap-index="${index}" ${isComplete ? "checked" : ""} />
-      <span><strong>${index + 1}</strong>${esc(item)}</span>
+      <span class="roadmap-item__marker">${isComplete ? "✓" : index + 1}</span>
+      <span class="roadmap-item__body">
+        <small>${isComplete ? "완료" : isCurrent ? "지금 할 차례" : "다음 단계"}</small>
+        <strong>${esc(item)}</strong>
+      </span>
     `;
-    roadmapList.appendChild(label);
+    li.appendChild(label);
+    list.appendChild(li);
   });
+  roadmapList.appendChild(list);
 }
 
 function renderUniversities(selectedSchools) {
