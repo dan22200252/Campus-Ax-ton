@@ -349,6 +349,21 @@ legend {
   font-size: 13.5px;
 }
 
+.roadmap-panel {
+  margin-bottom: 24px;
+}
+
+.roadmap-panel .section-heading {
+  margin-bottom: 16px;
+}
+
+.roadmap-slot {
+  min-height: 160px;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--card-radius);
+  background: #fbfbfd;
+}
+
 .next-steps {
   margin: 0 0 18px;
   padding: 18px;

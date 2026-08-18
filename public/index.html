@@ -12,7 +12,7 @@
         <a class="brand" href="#top">포항 길잡이</a>
         <div class="topbar__links">
           <a href="#finder">상황 선택</a>
-          <a href="#basics">쉬운 안내</a>
+          <a href="#finder">로드맵</a>
           <a href="#universities">포항 대학</a>
         </div>
       </nav>
@@ -71,6 +71,14 @@
           </div>
 
           <div id="detailsView" hidden>
+            <div class="panel roadmap-panel">
+              <div class="section-heading">
+                <p class="eyebrow">쉬운 안내</p>
+                <h2>로드맵</h2>
+              </div>
+              <div class="roadmap-slot" id="roadmapSlot"></div>
+            </div>
+
             <div class="details-layout">
               <div class="panel details-inputs">
                 <fieldset>
@@ -173,35 +181,6 @@
             </div>
           </div>
         </form>
-      </section>
-
-      <section class="content-band" id="basics" aria-labelledby="basics-title">
-        <div class="section-heading">
-          <p class="eyebrow">쉬운 안내</p>
-          <h2 id="basics-title">검정고시 이후 길을 나눠서 봐요</h2>
-        </div>
-        <div class="info-columns">
-          <article>
-            <span class="tag">시험 전</span>
-            <h3>검정고시 신청</h3>
-            <p>시험 일정, 응시 자격, 신청 서류를 교육청 공고에서 확인해야 해요.</p>
-          </article>
-          <article>
-            <span class="tag">중졸 합격 후</span>
-            <h3>고등학교 진학</h3>
-            <p>중졸 검정고시에 합격하면 일반 고등학교 진학을 준비하는 길도 있어요.</p>
-          </article>
-          <article>
-            <span class="tag">고졸 합격 후</span>
-            <h3>대학 진학</h3>
-            <p>대학마다 검정고시 성적 반영 방식과 제출 서류가 다를 수 있어요.</p>
-          </article>
-          <article>
-            <span class="tag">일할 준비</span>
-            <h3>직업훈련·직장체험</h3>
-            <p>바로 취업보다 나이, 필요 서류, 직업훈련 지원을 먼저 확인하는 게 좋아요.</p>
-          </article>
-        </div>
       </section>
 
       <section class="universities" id="universities" aria-labelledby="universities-title">
