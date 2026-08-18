@@ -185,7 +185,6 @@ section {
   order: 2;
 }
 
-.panel,
 .result,
 .info-columns article,
 .university-card {
@@ -195,23 +194,24 @@ section {
 }
 
 .panel {
-  padding: 24px;
-  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 22px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 fieldset {
   display: grid;
   gap: 8px;
-  margin: 0 0 24px;
-  padding: 0 0 24px;
+  margin: 0;
+  padding: 0;
   border: 0;
-  border-bottom: 1px solid var(--line);
 }
 
 fieldset:last-child {
   margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: 0;
 }
 
 legend {
@@ -220,12 +220,69 @@ legend {
   font-weight: 800;
 }
 
+.step-picker,
+#schoolFieldset,
+.interest-fieldset {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.step-picker {
+  border-color: rgba(242, 181, 68, 0.38);
+  background: #fffaf0;
+}
+
+.interest-fieldset {
+  border-color: rgba(23, 109, 106, 0.2);
+  background: #f7fbfa;
+}
+
+#schoolFieldset {
+  background: #ffffff;
+  border-color: rgba(23, 109, 106, 0.18);
+}
+
 /* ---------- step picker (progressive question flow) ---------- */
 
 .step-picker__step + .step-picker__step {
   margin-top: 18px;
   padding-top: 18px;
   border-top: 1px dashed var(--line);
+}
+
+.step-picker__notes {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(122, 74, 8, 0.2);
+}
+
+.step-picker__notes label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.show-roadmap-btn {
+  justify-self: start;
+  margin-top: 12px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--teal);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(23, 109, 106, 0.18);
+}
+
+.show-roadmap-btn:hover {
+  background: #125955;
 }
 
 .step-picker__q {

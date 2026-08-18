@@ -597,10 +597,13 @@ const universitiesSection = document.querySelector("#universities");
 
 const stepLevel = document.querySelector("#stepLevel");
 const stepGoal = document.querySelector("#stepGoal");
+const stepNotes = document.querySelector("#stepNotes");
 const stepGoalOptions = document.querySelector("#stepGoalOptions");
+const showRoadmapBtn = document.querySelector("#showRoadmapBtn");
 
 const statusState = { level: null, goal: null };
 let activeICSPayload = null;
+let roadmapRequested = false;
 
 const STATUS_STORAGE_KEY = "axton_status_v1";
 const NOTES_STORAGE_KEY = "axton_notes_v1";
@@ -653,9 +656,11 @@ stepLevel.addEventListener("click", (event) => {
   if (!btn) return;
   statusState.level = btn.dataset.value;
   statusState.goal = null;
+  roadmapRequested = false;
   setActiveOption("level", statusState.level);
   renderGoalOptions();
   stepGoal.hidden = false;
+  stepNotes.hidden = true;
   updateGoalRecommendations();
   updateUniversityVisibility();
   saveStatusState();
@@ -666,7 +671,9 @@ stepGoalOptions.addEventListener("click", (event) => {
   const btn = event.target.closest(".opt-card");
   if (!btn) return;
   statusState.goal = btn.dataset.value;
+  roadmapRequested = false;
   setActiveOption("q2", statusState.goal);
+  stepNotes.hidden = false;
   updateGoalRecommendations();
   updateUniversityVisibility();
   saveStatusState();
@@ -691,6 +698,7 @@ function restoreStatusState() {
     statusState.goal = saved.goal;
     setActiveOption("q2", statusState.goal);
   }
+  stepNotes.hidden = !statusState.goal;
   updateGoalRecommendations();
   updateUniversityVisibility();
 }
@@ -826,16 +834,18 @@ function renderUniversities(selectedSchools) {
 
 function updateResult() {
   const statusKey = currentStatusKey();
+  const canShowResult = Boolean(statusKey && roadmapRequested);
   const goals = checkedValues("goal");
   const selectedSchools = shouldShowUniversityChoices() ? checkedValues("school") : [];
   updateUniversityVisibility();
-  roadmapPanel.hidden = !statusKey;
-  resultPanel.hidden = !statusKey;
-  finderLayout.classList.toggle("is-selecting", !statusKey);
+  stepNotes.hidden = !statusState.goal;
+  roadmapPanel.hidden = !canShowResult;
+  resultPanel.hidden = !canShowResult;
+  finderLayout.classList.toggle("is-selecting", !canShowResult);
 
-  if (!statusKey) {
+  if (!canShowResult) {
     summaryTitle.textContent = "위 단계를 순서대로 선택해 주세요.";
-    summaryText.textContent = "최종 학력과 앞으로의 목표를 고르면 맞춤 안내가 나와요.";
+    summaryText.textContent = "3번까지 확인한 뒤 내 로드맵 보기 버튼을 누르면 맞춤 안내가 나와요.";
     detailSections.innerHTML = "";
     activeICSPayload = null;
     renderList(topSteps, [], 3);
@@ -883,6 +893,12 @@ function updateResult() {
   renderList(actionList, actionItems, 5);
   renderUniversities(selectedSchools);
 }
+
+showRoadmapBtn.addEventListener("click", () => {
+  roadmapRequested = true;
+  updateResult();
+  roadmapPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 
 roadmapList.addEventListener("change", (event) => {
   const input = event.target.closest("input[data-roadmap-index]");
