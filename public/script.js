@@ -730,6 +730,27 @@ if (extraNotes) {
   });
 }
 
+const resultView = document.querySelector("#resultView");
+const inputError = document.querySelector("#inputError");
+
+document.querySelector("#btnShowResult").addEventListener("click", () => {
+  if (!currentStatusKey()) {
+    inputError.classList.add("show");
+    return;
+  }
+  inputError.classList.remove("show");
+  updateResult();
+  form.hidden = true;
+  resultView.hidden = false;
+  resultView.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+document.querySelector("#btnBackToInput").addEventListener("click", () => {
+  resultView.hidden = true;
+  form.hidden = false;
+  form.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
 form.addEventListener("change", updateResult);
 restoreStatusState();
 updateResult();

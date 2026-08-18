@@ -128,9 +128,15 @@
               <textarea id="extraNotes" rows="3" placeholder="예: 이번 겨울에 이사할 수도 있어요, 아르바이트 경험이 있어요 등 자유롭게 적어주세요"></textarea>
               <p class="field-hint">이 내용은 이 브라우저에만 저장돼요. AI가 읽고 안내를 맞춰주는 기능은 아직 준비 중이에요.</p>
             </fieldset>
+
+            <p class="wizard__error" id="inputError">위에서 최종 학력과 목표를 먼저 골라주세요.</p>
+
+            <div class="wizard__nav">
+              <button type="button" class="btn-next" id="btnShowResult">내 안내 카드 보기</button>
+            </div>
           </form>
 
-          <aside class="result" aria-live="polite">
+          <aside class="result" id="resultView" aria-live="polite" hidden>
             <p class="result__label">내 안내 카드</p>
 
             <div class="verdict">
@@ -154,6 +160,10 @@
                 <h4>주의할 점</h4>
                 <ul id="actionList"></ul>
               </article>
+            </div>
+
+            <div class="wizard__nav">
+              <button type="button" class="btn-prev" id="btnBackToInput">다시 입력하기</button>
             </div>
           </aside>
         </div>
