@@ -7,27 +7,30 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="hero">
+    <header class="site-header">
       <nav class="topbar" aria-label="주요 메뉴">
-        <a class="brand" href="#top">포항 길잡이</a>
+        <a class="brand" href="#" id="navBrand">포항 길잡이</a>
         <div class="topbar__links">
-          <a href="#finder">상황 선택</a>
-          <a href="#finder">로드맵</a>
+          <a href="#" id="navToFinder">상황 선택</a>
+          <a href="#" id="navToRoadmap">로드맵</a>
           <a href="#universities">포항 대학</a>
         </div>
       </nav>
-      <section class="hero__content" id="top">
-        <p class="eyebrow">학교밖청소년을 위한 검정고시·진로 안내</p>
-        <h1>혼자 찾아도 막막하지 않게.</h1>
+    </header>
+
+    <section class="hero" id="heroView">
+      <div class="hero__content" id="top">
+        <p class="eyebrow">혼자 찾아도 막막하지 않게.</p>
+        <h1>RE:Path</h1>
         <p class="hero__copy">
           검정고시 이후의 길을 고등학교 진학, 대학 진학, 일할 준비로 나눠서 보여줍니다.
         </p>
-        <a class="hero__button" href="#finder">내 상황 고르기</a>
-      </section>
-    </header>
+        <button type="button" class="hero__button" id="btnStartFinder">내 상황 고르기</button>
+      </div>
+    </section>
 
     <main>
-      <section class="finder" id="finder" aria-labelledby="finder-title">
+      <section class="finder" id="finder" aria-labelledby="finder-title" hidden>
         <form id="profileForm">
           <div id="situationView" class="panel situation-panel">
             <div class="section-heading">

@@ -820,6 +820,35 @@ document.querySelector("#btnBackToSituation").addEventListener("click", () => {
   situationView.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
+const heroView = document.querySelector("#heroView");
+const finderPage = document.querySelector("#finder");
+
+function goToFinderPage() {
+  heroView.hidden = true;
+  finderPage.hidden = false;
+  window.scrollTo(0, 0);
+}
+
+function goToHeroPage() {
+  finderPage.hidden = true;
+  heroView.hidden = false;
+  window.scrollTo(0, 0);
+}
+
+document.querySelector("#btnStartFinder").addEventListener("click", goToFinderPage);
+document.querySelector("#navBrand").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToHeroPage();
+});
+document.querySelector("#navToFinder").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+});
+document.querySelector("#navToRoadmap").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+});
+
 form.addEventListener("change", updateResult);
 restoreStatusState();
 updateResult();
