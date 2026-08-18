@@ -33,7 +33,7 @@
           <h2 id="finder-title">지금 나에게 가까운 것을 골라주세요</h2>
         </div>
 
-        <div class="finder__layout">
+        <div class="finder__layout is-selecting">
           <form class="panel" id="profileForm">
             <fieldset class="step-picker" id="statusPicker">
               <legend>나는 지금</legend>
@@ -61,13 +61,21 @@
                 <p class="step-picker__q"><span class="step-picker__num">2</span>앞으로 무엇을 하고 싶으세요?</p>
                 <div class="opt-grid" id="stepGoalOptions"></div>
               </div>
+
+              <div class="step-picker__step step-picker__notes" id="stepNotes" hidden>
+                <p class="step-picker__q"><span class="step-picker__num">3</span>추가로 알려주고 싶은 내용이 있나요?</p>
+                <label for="extraNotes">내 상황을 조금 더 적어주세요</label>
+                <textarea id="extraNotes" rows="3" placeholder="예: 이번 겨울에 이사할 수도 있어요, 아르바이트 경험이 있어요 등 자유롭게 적어주세요"></textarea>
+                <p class="field-hint">이 내용은 이 브라우저에만 저장돼요. AI가 읽고 안내를 맞춰주는 기능은 아직 준비 중이에요.</p>
+                <button class="show-roadmap-btn" id="showRoadmapBtn" type="button">내 로드맵 보기</button>
+              </div>
             </fieldset>
 
-            <fieldset>
+            <fieldset class="interest-fieldset">
               <legend>알고 싶은 것</legend>
               <div class="opt-grid opt-grid--check">
                 <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="goal" value="exam" checked />
+                  <input type="checkbox" name="goal" value="exam" />
                   <span class="opt-card__txt"><strong>검정고시가 뭔지</strong><span>일정, 과목, 합격 기준을 먼저 봐요</span></span>
                 </label>
                 <label class="opt-card opt-card--check">
@@ -97,11 +105,11 @@
               </div>
             </fieldset>
 
-            <fieldset>
+            <fieldset id="schoolFieldset" hidden>
               <legend>궁금한 대학</legend>
               <div class="opt-grid opt-grid--check">
                 <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="school" value="postech" checked />
+                  <input type="checkbox" name="school" value="postech" />
                   <span class="opt-card__txt"><strong>포항공과대학교</strong><span>4년제 · 학종만 운영, 검정고시 지원 가능</span></span>
                 </label>
                 <label class="opt-card opt-card--check">
@@ -123,14 +131,14 @@
               </div>
             </fieldset>
 
-            <fieldset>
-              <legend>추가로 알려주고 싶은 내용</legend>
-              <textarea id="extraNotes" rows="3" placeholder="예: 이번 겨울에 이사할 수도 있어요, 아르바이트 경험이 있어요 등 자유롭게 적어주세요"></textarea>
-              <p class="field-hint">이 내용은 이 브라우저에만 저장돼요. AI가 읽고 안내를 맞춰주는 기능은 아직 준비 중이에요.</p>
-            </fieldset>
           </form>
 
-          <aside class="result" aria-live="polite">
+          <section class="roadmap-box roadmap-box--primary" id="roadmapPanel" hidden>
+            <h4>전체 로드맵</h4>
+            <div id="roadmapList"></div>
+          </section>
+
+          <aside class="result" aria-live="polite" hidden>
             <p class="result__label">내 안내 카드</p>
 
             <div class="verdict">
@@ -141,6 +149,11 @@
             <div class="next-steps">
               <h4>먼저 할 일 3개</h4>
               <ol id="topSteps"></ol>
+            </div>
+
+            <div class="remaining-steps">
+              <h4>아직 남은 일</h4>
+              <ul id="remainingSteps"></ul>
             </div>
 
             <div class="detail-sections" id="detailSections"></div>
@@ -188,7 +201,7 @@
         </div>
       </section>
 
-      <section class="universities" id="universities" aria-labelledby="universities-title">
+      <section class="universities" id="universities" aria-labelledby="universities-title" hidden>
         <div class="section-heading">
           <p class="eyebrow">포항 소재 대학 우선</p>
           <h2 id="universities-title">대학별로 이것만 먼저 확인해요</h2>
