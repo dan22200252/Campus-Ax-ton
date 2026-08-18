@@ -6,19 +6,19 @@
 }
 
 :root {
-  --ink: #162022;
-  --muted: #5e6a6d;
-  --paper: #fbfcfa;
-  --line: #d9e1df;
-  --teal: #176d6a;
-  --teal-soft: rgba(23, 109, 106, 0.1);
-  --coral: #d95f4f;
-  --gold: #f2b544;
-  --leaf: #497a48;
+  --ink: #2a2420;
+  --muted: #6e6255;
+  --paper: #f6f1e7;
+  --line: #e4d9c7;
+  --teal: #5c6b45;
+  --teal-soft: rgba(92, 107, 69, 0.12);
+  --coral: #b5573c;
+  --gold: #d9a94a;
+  --leaf: #6f7b52;
   --white: #ffffff;
   --card-radius: 14px;
-  --shadow: 0 18px 45px rgba(22, 32, 34, 0.14);
-  --shadow-soft: 0 8px 22px rgba(22, 32, 34, 0.08);
+  --shadow: 0 18px 45px rgba(42, 36, 32, 0.16);
+  --shadow-soft: 0 8px 22px rgba(42, 36, 32, 0.09);
 }
 
 * {
@@ -61,8 +61,8 @@ a {
   position: relative;
   min-height: 62vh;
   overflow: hidden;
-  color: var(--white);
-  background: linear-gradient(135deg, #0f3a37 0%, var(--teal) 55%, #1f8f79 100%);
+  color: var(--ink);
+  background: #f0e6d2;
 }
 
 .topbar {
@@ -103,6 +103,10 @@ a {
   font-weight: 800;
 }
 
+.hero .eyebrow {
+  color: var(--coral);
+}
+
 .hero h1 {
   max-width: 660px;
   margin: 0;
@@ -114,7 +118,7 @@ a {
 .hero__copy {
   max-width: 520px;
   margin: 24px 0 32px;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--muted);
   font-size: 18px;
 }
 
@@ -256,7 +260,7 @@ legend {
   font: inherit;
   color: inherit;
   cursor: pointer;
-  background: #fbfbfd;
+  background: #fbf8f2;
   border: 1.5px solid var(--line);
   border-radius: 12px;
   padding: 12px 14px;
@@ -331,7 +335,7 @@ legend {
 
 .verdict {
   background: var(--teal-soft);
-  border: 1.5px solid rgba(23, 109, 106, 0.28);
+  border: 1.5px solid rgba(92, 107, 69, 0.28);
   border-radius: var(--card-radius);
   padding: 18px 20px;
   margin-bottom: 18px;
@@ -345,7 +349,7 @@ legend {
 
 .verdict p {
   margin: 0;
-  color: #3c4a4a;
+  color: #4a3f35;
   font-size: 13.5px;
 }
 
@@ -361,7 +365,7 @@ legend {
   min-height: 160px;
   border: 1.5px dashed var(--line);
   border-radius: var(--card-radius);
-  background: #fbfbfd;
+  background: #fbf8f2;
 }
 
 .next-steps {
@@ -410,7 +414,7 @@ legend {
 }
 
 .search-chips a:hover {
-  background: rgba(23, 109, 106, 0.2);
+  background: rgba(92, 107, 69, 0.2);
 }
 
 .btn-ics {
@@ -483,7 +487,7 @@ textarea#extraNotes {
 }
 
 .btn-next:hover {
-  background: #125553;
+  background: #47522f;
 }
 
 .btn-prev {
@@ -534,7 +538,7 @@ table.info-mini td {
 }
 
 table.info-mini th {
-  background: #f3f8f7;
+  background: #f3eee3;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -542,7 +546,7 @@ table.info-mini th {
 .note-mini {
   font-size: 12.5px;
   color: var(--muted);
-  background: #f3f8f7;
+  background: #f3eee3;
   border-left: 3px solid var(--teal);
   padding: 9px 12px;
   border-radius: 0 8px 8px 0;
@@ -570,8 +574,8 @@ table.info-mini th {
 }
 
 .tag-mini--past {
-  background: #eef0f3;
-  color: #7b828f;
+  background: #efe9dc;
+  color: #83786a;
 }
 
 .links-mini {
@@ -581,7 +585,7 @@ table.info-mini th {
 
 .links-mini a {
   display: block;
-  background: #fbfbfd;
+  background: #fbf8f2;
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 10px 12px;
@@ -633,7 +637,7 @@ table.info-mini th {
   min-width: 0;
   padding: 18px;
   border-radius: var(--card-radius);
-  background: #f3f8f7;
+  background: #f3eee3;
 }
 
 h4 {
@@ -646,7 +650,7 @@ h4 {
   padding: 14px 16px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: #fbfbfd;
+  background: #fbf8f2;
 }
 
 .compiled-block h5 {
@@ -674,7 +678,7 @@ ol li + li {
 }
 
 .content-band {
-  background: #edf5f3;
+  background: #f3eee3;
 }
 
 .info-columns {
@@ -743,7 +747,7 @@ footer p {
   margin-top: 8px;
   font-size: 12px;
   color: var(--muted);
-  background: #f3f8f7;
+  background: #f3eee3;
   border-left: 3px solid var(--teal);
   padding: 6px 10px;
   border-radius: 0 6px 6px 0;
