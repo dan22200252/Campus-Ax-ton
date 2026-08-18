@@ -747,5 +747,4 @@ if (extraNotes) {
 }
 
 form.addEventListener("change", updateResult);
-restoreStatusState();
 updateResult();
