@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "YeogiOttaeJalnan";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff") format("woff");
+  font-weight: normal;
+  font-display: swap;
+}
+
 :root {
   --ink: #162022;
   --muted: #5e6a6d;
@@ -28,6 +35,21 @@ body {
   color: var(--ink);
   font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
   line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+legend,
+.brand,
+.eyebrow,
+.opt-card__txt strong,
+.result__label {
+  font-family: "YeogiOttaeJalnan", "Pretendard", "Noto Sans KR", Arial, sans-serif;
+  font-weight: normal;
+  letter-spacing: 0;
 }
 
 a {
@@ -504,6 +526,24 @@ table.info-mini th {
   background: var(--teal-soft);
 }
 
+.consult-callout {
+  margin: 4px 0 14px;
+  padding: 14px 16px;
+  border-radius: var(--card-radius);
+  background: #fff6e1;
+  border: 1px solid rgba(242, 181, 68, 0.45);
+}
+
+.consult-callout h4 {
+  margin: 0 0 6px;
+}
+
+.consult-callout p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #7a4a08;
+}
+
 .links-mini strong {
   display: block;
   font-size: 13.5px;
@@ -532,6 +572,27 @@ table.info-mini th {
 h4 {
   margin: 0 0 10px;
   font-size: 16px;
+}
+
+.compiled-block {
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fbfbfd;
+}
+
+.compiled-block h5 {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.compiled-block .plain {
+  margin: 0 0 8px;
+}
+
+.compiled-block:last-child .plain:last-child {
+  margin-bottom: 0;
 }
 
 ul {

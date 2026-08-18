@@ -59,39 +59,83 @@ const statusCopy = {
 
 const goalCopy = {
   exam: {
+    label: "검정고시가 뭔지",
     info: "검정고시 뜻과 시험 흐름",
     action: "일정, 과목, 합격 기준을 먼저 봐요.",
-    step: "검정고시 기본 정보를 확인해요."
+    step: "검정고시 기본 정보를 확인해요.",
+    detail: [
+      "초졸·중졸·고졸 3종류가 있고, 합격하면 해당 학교급 졸업 학력을 인정받아요.",
+      "전 과목 평균 60점 이상이면 합격이고 과락 제도는 없어요. 단, 결시 과목이 있으면 불합격이에요.",
+      "떨어져도 60점 이상 받은 과목은 '과목합격'으로 남아서 다음 회차엔 그 과목을 다시 안 봐도 돼요.",
+      "응시료는 무료예요."
+    ]
   },
   examDocs: {
+    label: "시험 신청할 때 낼 서류",
     info: "시험 신청할 때 내는 서류",
     action: "이 서류는 대학 서류와 달라요.",
-    step: "교육청 공고에서 신청 서류를 확인해요."
+    step: "교육청 공고에서 신청 서류를 확인해요.",
+    detail: [
+      "응시원서 1부 (현장 또는 온라인 작성)",
+      "사진 2매 — 3.5cm × 4.5cm, 최근 3개월 이내 촬영",
+      "최종학력증명서 1부 — 이전 학교급 졸업증명서 또는 제적·정원외 관리증명서",
+      "신분증(지참만, 제출은 안 함), 과목 면제 대상이면 과목합격증명서·자격증 사본"
+    ]
   },
   highSchool: {
+    label: "고등학교 진학 방법",
     info: "중졸 검정고시 합격 후 고등학교 진학",
     action: "학교마다 입학 상담 방식이 다를 수 있어요.",
-    step: "고등학교 진학 가능 경로를 확인해요."
+    step: "고등학교 진학 가능 경로를 확인해요.",
+    detail: [
+      "다니고 싶은 학교에 결원이 있으면 재입학·편입학이 가능해요 — 보통 학기 시작 전(2월, 8월)에 받아요.",
+      "거주지 교육지원청 중등교육과에 연락하면 결원 있는 학교를 안내받을 수 있어요.",
+      "매일 등교가 어려우면 방송통신고등학교(주말 등교)나 학력인정 평생교육시설도 정식 고졸 학력이 나와요."
+    ]
   },
   college: {
+    label: "대학 지원 방법",
     info: "대학 지원 방법",
     action: "수시와 정시 중 어떤 전형인지 확인해요.",
-    step: "관심 대학 모집요강을 열어봐요."
+    step: "관심 대학 모집요강을 열어봐요.",
+    detail: [
+      "수시모집: 내신·학생부·면접 중심, 보통 9월 원서접수. 검정고시 출신은 내신이 없어 지원 가능한 전형이 제한돼요.",
+      "정시모집: 수능 성적 중심, 수능은 보통 11월 셋째 주 목요일, 원서접수는 12월 말~1월 초. 검정고시 출신에게 가장 일반적인 경로예요.",
+      "정확한 날짜는 매년 한국대학교육협의회(대교협) 공고로 확인하세요."
+    ]
   },
   collegeDocs: {
+    label: "대학에 낼 서류",
     info: "대학에 내는 서류",
     action: "합격증명서, 성적증명서가 필요할 수 있어요.",
-    step: "대학별 제출 서류를 따로 체크해요."
+    step: "대학별 제출 서류를 따로 체크해요.",
+    detail: [
+      "검정고시 합격증명서·성적증명서(대입전형용) — 일반 발급용과 다르니 용도를 꼭 확인하세요.",
+      "학생부종합전형은 학교생활기록부 대신 학교가 정한 대체서식과 증빙자료를 요구할 수 있어요.",
+      "정확한 제출 서류와 형식은 대학마다 달라 모집요강에서 최종 확인이 필요해요."
+    ]
   },
   work: {
+    label: "일할 준비 방법",
     info: "일할 준비와 직업훈련",
     action: "바로 취업보다 나이, 서류, 훈련 지원을 먼저 확인해요.",
-    step: "직업체험이나 직업훈련 지원을 알아봐요."
+    step: "직업체험이나 직업훈련 지원을 알아봐요.",
+    detail: [
+      "순서: 1) 고용24 직업심리검사로 방향 정하기 → 2) 큐넷에서 기능사 자격증 준비 → 3) 국민내일배움카드로 직업훈련 → 4) 고용센터에서 이력서·면접 준비.",
+      "만 18세 미만은 근로계약 시 친권자·후견인 동의서와 가족관계증명서가 필요해요.",
+      "하루 7시간·주 35시간을 넘겨 일할 수 없고, 야간·휴일 근로는 원칙적으로 금지예요."
+    ]
   },
   support: {
+    label: "도움받을 곳",
     info: "도움받을 수 있는 곳",
     action: "학교밖청소년지원센터나 입학처 상담을 활용해요.",
-    step: "혼자 막히는 부분은 상담처에 물어봐요."
+    step: "혼자 막히는 부분은 상담처에 물어봐요.",
+    detail: [
+      "청소년지원센터 꿈드림 — 만 9~24세 학교 밖 청소년 대상, 검정고시 준비와 교재비·상담을 지원해요.",
+      "혼자 정하기 어려우면 진학·검정고시·취업 경로를 상담사와 같이 비교해볼 수 있어요.",
+      "대학 진학을 구체적으로 고민 중이면 해당 대학 입학처 상담도 함께 활용하세요."
+    ]
   }
 };
 
@@ -229,6 +273,28 @@ const statusKeyMap = {
   high: { univ: "highUniv", job: "highJob", none: "goalless" }
 };
 
+const RECOMMENDED_GOALS_BY_Q2 = {
+  ged: ["exam", "examDocs", "support"],
+  school: ["highSchool", "support"],
+  univ: ["college", "collegeDocs", "support"],
+  job: ["work", "support"],
+  none: ["exam", "support"]
+};
+
+function updateGoalRecommendations() {
+  const recommended = RECOMMENDED_GOALS_BY_Q2[statusState.goal] || null;
+  document.querySelectorAll('input[name="goal"]').forEach((input) => {
+    const label = input.closest(".opt-card--check");
+    if (!recommended) {
+      label.hidden = false;
+      return;
+    }
+    const isRecommended = recommended.includes(input.value);
+    label.hidden = !isRecommended;
+    input.checked = isRecommended;
+  });
+}
+
 /* =========================================================
    유틸
    ========================================================= */
@@ -273,6 +339,32 @@ function searchLinksHTML(keywords) {
     `<a href="https://search.naver.com/search.naver?query=${encodeURIComponent(kw)}" target="_blank" rel="noopener noreferrer">${esc(kw)} 검색</a>`
   ).join("");
   return `<h4>이런 키워드로 검색해보세요</h4><div class="search-chips">${chips}</div>`;
+}
+
+function compiledGoalsHTML(selectedGoals) {
+  if (!selectedGoals.length) return "";
+  const blocks = selectedGoals.map((key) => {
+    const item = goalCopy[key];
+    const detailItems = (item.detail || []).map((d) => `<li>${esc(d)}</li>`).join("");
+    return `<div class="compiled-block"><h5>${esc(item.label)}</h5><ul class="plain">${detailItems}</ul></div>`;
+  }).join("");
+  return `<h4>선택한 "알고 싶은 것" 자세히 보기</h4>${blocks}`;
+}
+
+function compiledUniversitiesHTML(selectedSchools) {
+  if (!selectedSchools.length) return "";
+  const cards = selectedSchools.map((key) => {
+    const s = universities[key];
+    return `
+      <div class="compiled-block">
+        <h5>${esc(s.name)} <span class="tag-mini">${esc(s.type)}</span></h5>
+        <p class="detail-lead">${esc(s.focus)}</p>
+        ${s.note ? `<p class="note-mini">${esc(s.note)}</p>` : ""}
+        <a class="university-card__link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">공식 입학처 바로가기 →</a>
+      </div>
+    `;
+  }).join("");
+  return `<h4>선택한 "궁금한 대학" 자세히 보기</h4>${cards}`;
 }
 
 const UNIV_TYPICAL_TIMELINE = [
@@ -331,19 +423,26 @@ function examDetailHTML(examKey) {
   const docs = EXAM_DOCS_BY_LEVEL[examKey].map((d) => `<li>${esc(d)}</li>`).join("");
   return `
     <h4>내가 볼 시험</h4>
-    <p class="detail-lead"><strong>${esc(e.name)}</strong> — 합격하면 ${esc(e.gives)}을 인정받아요. 응시료는 무료입니다.</p>
+    <p class="detail-lead"><strong>${esc(e.name)}</strong> — 합격하면 ${esc(e.gives)}을 인정받아요. <strong>응시료는 무료</strong>입니다.</p>
     <table class="info-mini">
       <tr><th>응시자격</th><td>${esc(e.whoFor)}</td></tr>
       <tr><th>과목</th><td>${esc(e.count)} · ${esc(e.subjects)}</td></tr>
       <tr><th>시험시간</th><td>${esc(e.time)}</td></tr>
     </table>
     <p class="note-mini">전 과목 평균 60점 이상이면 합격(과락 없음). 결시 과목이 있으면 불합격이고, 60점 이상 받은 과목은 다음 회차에 다시 안 봐도 되는 '과목합격'으로 남아요.</p>
-    <h4>일정 로드맵</h4>
+    <h4>일정 로드맵 (마감 놓치지 마세요)</h4>
     ${scheduleHTML()}
     <button type="button" id="icsDownloadBtn" class="btn-ics">📅 이 일정 캘린더에 저장(.ics)</button>
     <h4>접수할 때 필요한 것</h4>
     <ul class="plain">${docs}</ul>
-    ${linksHTML(["apply", "notice", "center"])}
+    <h4>지금 할 일 — 여기서 접수하세요</h4>
+    ${linksHTML(["apply"])}
+    <p class="note-mini">정확한 최신 일정은 거주지 시·도교육청 홈페이지에서 "검정고시 공고"를 검색해 다시 확인하세요.</p>
+    <div class="consult-callout">
+      <h4>전화 상담이 어려우면</h4>
+      <p>일하느라 유선 상담 시간을 맞추기 어렵다면, 청소년지원센터 꿈드림을 이용해보세요. 센터에 따라 방문·온라인 게시판 상담도 운영해요.</p>
+      ${linksHTML(["center"])}
+    </div>
   `;
 }
 
@@ -361,9 +460,22 @@ function workDetailHTML() {
   `;
 }
 
+function admissionTypesHTML() {
+  return `
+    <h4>합격 후 대학에 가고 싶다면</h4>
+    <table class="info-mini">
+      <tr><th>학생부교과전형</th><td>내신 등급 기준으로 선발해서, 검정고시 출신은 대부분 지원이 제한돼요.</td></tr>
+      <tr><th>학생부종합전형</th><td>지원 가능해요. 학교생활기록부 대신 대학이 정한 대체서식(활동 5개 내외 + 증빙자료)을 내요.</td></tr>
+      <tr><th>논술전형</th><td>지원 가능해요. 대학마다 논술 성적 100% 또는 논술+비교내신(검정고시 평균 점수 환산)을 함께 반영해요.</td></tr>
+      <tr><th>정시전형</th><td>수능 성적 중심이라 차별 없이 지원 가능해요.</td></tr>
+    </table>
+    <p class="note-mini">전형 이름과 반영 방법은 대학마다 달라요. 목표 대학이 생기면 이 네 가지 중 어디에 해당하는지 그 대학 모집요강에서 확인하세요.</p>
+  `;
+}
+
 const statusDetailHTML = {
   elemGed: () => examDetailHTML("mid"),
-  midGed: () => examDetailHTML("high"),
+  midGed: () => examDetailHTML("high") + admissionTypesHTML(),
   elemSchool: () => `
     <h4>어떻게 하면 되나요</h4>
     <ul class="plain">
@@ -472,6 +584,7 @@ stepLevel.addEventListener("click", (event) => {
   setActiveOption("level", statusState.level);
   renderGoalOptions();
   stepGoal.hidden = false;
+  updateGoalRecommendations();
   saveStatusState();
   updateResult();
 });
@@ -481,6 +594,7 @@ stepGoalOptions.addEventListener("click", (event) => {
   if (!btn) return;
   statusState.goal = btn.dataset.value;
   setActiveOption("q2", statusState.goal);
+  updateGoalRecommendations();
   saveStatusState();
   updateResult();
 });
@@ -503,6 +617,7 @@ function restoreStatusState() {
     statusState.goal = saved.goal;
     setActiveOption("q2", statusState.goal);
   }
+  updateGoalRecommendations();
 }
 
 function checkedValues(name) {
@@ -582,7 +697,10 @@ function updateResult() {
     : null;
 
   const detailRenderer = statusDetailHTML[statusKey];
-  detailSections.innerHTML = (detailRenderer ? detailRenderer() : "") + searchLinksHTML(statusData.keywords);
+  detailSections.innerHTML = (detailRenderer ? detailRenderer() : "")
+    + searchLinksHTML(statusData.keywords)
+    + compiledGoalsHTML(goals)
+    + compiledUniversitiesHTML(selectedSchools);
 
   renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
