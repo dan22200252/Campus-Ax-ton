@@ -362,6 +362,88 @@ legend {
   gap: 10px;
 }
 
+.remaining-steps,
+.roadmap-box {
+  margin: 0 0 18px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: #fbfbfd;
+}
+
+.roadmap-box {
+  background: #fff;
+}
+
+.remaining-steps h4,
+.roadmap-box h4 {
+  margin: 0 0 12px;
+}
+
+.remaining-steps ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--ink);
+  display: grid;
+  gap: 8px;
+}
+
+#roadmapList {
+  display: grid;
+  gap: 8px;
+}
+
+.roadmap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f9fbfa;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.roadmap-item input {
+  flex: 0 0 auto;
+  margin-top: 4px;
+}
+
+.roadmap-item span {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.45;
+}
+
+.roadmap-item strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(23, 109, 106, 0.12);
+  color: var(--teal);
+  font-size: 12px;
+}
+
+.roadmap-item.is-complete {
+  color: var(--muted);
+  background: #eef4f2;
+}
+
+.roadmap-item.is-complete span {
+  text-decoration: line-through;
+}
+
+.empty-roadmap {
+  margin: 0;
+  color: var(--muted);
+}
+
 .priority-tag {
   display: inline-block;
   font-size: 11px;
