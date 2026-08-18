@@ -388,6 +388,60 @@ function flattenExamEvents() {
   return events;
 }
 
+/* =========================================================
+   로드맵 (상황·목표별 맞춤 타임라인)
+   ========================================================= */
+
+function roadmapStepsHTML(items) {
+  return items.map((it, idx) => {
+    const isLast = idx === items.length - 1;
+    return `
+      <div class="roadmap__item">
+        <div class="roadmap__rail">
+          <div class="roadmap__dot">${idx + 1}</div>
+          ${isLast ? "" : '<div class="roadmap__line"></div>'}
+        </div>
+        <div class="roadmap__body">
+          ${it.when ? `<div class="roadmap__when">${esc(it.when)}</div>` : ""}
+          <p class="roadmap__title">${esc(it.title)}</p>
+          ${it.desc ? `<p class="roadmap__desc">${esc(it.desc)}</p>` : ""}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function roadmapForStatus(statusKey) {
+  if (statusKey === "elemGed" || statusKey === "midGed") {
+    const items = EXAM_SCHEDULE.flatMap((rnd) =>
+      rnd.events.map((ev) => {
+        const guess = ev.certainty === "guess";
+        const range = ev.end ? ` ~ ${fmtDate(ev.end)}` : "";
+        return {
+          when: `${fmtDate(ev.date)}${range}`,
+          title: `${rnd.round} ${ev.label}`,
+          desc: guess ? "예상 일정이에요" : "확정된 일정이에요"
+        };
+      })
+    );
+    items.push({
+      title: "합격하면 다음 단계로",
+      desc: statusKey === "elemGed"
+        ? "고등학교 진학이나 고졸 검정고시 중 하나를 다시 선택해보세요"
+        : "대학 진학이나 취업 준비 중 하나를 다시 선택해보세요"
+    });
+    return roadmapStepsHTML(items);
+  }
+
+  if (statusKey === "highUniv") {
+    const items = [{ title: "목표 대학·전형 정하기", desc: "학생부종합 / 논술 / 정시 중 어디에 해당하는지 확인해요" }]
+      .concat(UNIV_TYPICAL_TIMELINE.map((it) => ({ when: it.timing, title: it.label, desc: "정확한 날짜는 매년 대교협 공고로 확인하세요" })));
+    return roadmapStepsHTML(items);
+  }
+
+  return roadmapStepsHTML(statusCopy[statusKey].steps.map((s) => ({ title: s })));
+}
+
 function buildICS(events, calName) {
   const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", `PRODID:-//AxTon//${calName}//KO`];
   events.forEach((ev, idx) => {
@@ -534,6 +588,7 @@ const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
+const roadmapSlot = document.querySelector("#roadmapSlot");
 
 document.querySelectorAll(".accordion__trigger").forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -685,6 +740,7 @@ function updateResult() {
     summaryText.textContent = "최종 학력과 앞으로의 목표를 고르면 맞춤 안내가 나와요.";
     detailSections.innerHTML = "";
     selectedDetails.innerHTML = "";
+    roadmapSlot.innerHTML = "";
     activeICSPayload = null;
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
@@ -712,6 +768,7 @@ function updateResult() {
   selectedDetails.innerHTML = searchLinksHTML(statusData.keywords)
     + compiledGoalsHTML(goals)
     + compiledUniversitiesHTML(selectedSchools);
+  roadmapSlot.innerHTML = roadmapForStatus(statusKey);
 
   renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
