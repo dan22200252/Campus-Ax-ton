@@ -627,9 +627,8 @@ function shouldShowUniversityChoices() {
 }
 
 function updateUniversityVisibility() {
-  const showUniversities = shouldShowUniversityChoices();
-  schoolFieldset.hidden = !showUniversities;
-  universitiesSection.hidden = !showUniversities;
+  schoolFieldset.hidden = true;
+  universitiesSection.hidden = false;
 }
 
 function setActiveOption(group, value) {
@@ -836,7 +835,7 @@ function updateResult() {
   const statusKey = currentStatusKey();
   const canShowResult = Boolean(statusKey && roadmapRequested);
   const goals = checkedValues("goal");
-  const selectedSchools = shouldShowUniversityChoices() ? checkedValues("school") : [];
+  const selectedSchools = [];
   updateUniversityVisibility();
   stepNotes.hidden = !statusState.goal;
   roadmapPanel.hidden = !canShowResult;
@@ -858,7 +857,6 @@ function updateResult() {
   }
 
   const statusData = statusCopy[statusKey];
-  const schoolNames = selectedSchools.map((key) => universities[key].name);
 
   const infoItems = [...statusData.baseInfo, ...goals.map((goal) => goalCopy[goal].info)];
   const actionItems = [...statusData.baseActions, ...goals.map((goal) => goalCopy[goal].action)];
@@ -868,7 +866,7 @@ function updateResult() {
   const remainingRoadmapItems = roadmapItems.filter((_, index) => !completedRoadmap.has(String(index)));
 
   summaryTitle.textContent = statusData.title;
-  summaryText.textContent = `${statusData.summary} ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`;
+  summaryText.textContent = statusData.summary;
 
   activeICSPayload = (statusKey === "elemGed" || statusKey === "midGed")
     ? { events: flattenExamEvents(), filename: "검정고시_일정.ics", calName: "검정고시 일정" }
@@ -877,8 +875,7 @@ function updateResult() {
   const detailRenderer = statusDetailHTML[statusKey];
   detailSections.innerHTML = (detailRenderer ? detailRenderer() : "")
     + searchLinksHTML(statusData.keywords)
-    + compiledGoalsHTML(goals)
-    + compiledUniversitiesHTML(selectedSchools);
+    + compiledGoalsHTML(goals);
 
   renderPrioritySteps(
     topSteps,
