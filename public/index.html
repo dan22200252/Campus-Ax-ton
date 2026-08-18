@@ -33,8 +33,8 @@
           <h2 id="finder-title">지금 나에게 가까운 것을 골라주세요</h2>
         </div>
 
-        <div class="finder__layout">
-          <form class="panel" id="profileForm">
+        <form id="profileForm">
+          <div id="situationView" class="panel situation-panel">
             <fieldset class="step-picker" id="statusPicker">
               <legend>나는 지금</legend>
 
@@ -63,110 +63,116 @@
               </div>
             </fieldset>
 
-            <fieldset>
-              <legend>알고 싶은 것</legend>
-              <div class="opt-grid opt-grid--check">
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="goal" value="exam" checked />
-                  <span class="opt-card__txt"><strong>검정고시가 뭔지</strong><span>일정, 과목, 합격 기준을 먼저 봐요</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="goal" value="examDocs" />
-                  <span class="opt-card__txt"><strong>시험 신청할 때 낼 서류</strong><span>이 서류는 대학 서류와 달라요</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="goal" value="highSchool" />
-                  <span class="opt-card__txt"><strong>고등학교 진학 방법</strong><span>학교마다 입학 상담 방식이 다를 수 있어요</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="goal" value="college" />
-                  <span class="opt-card__txt"><strong>대학 지원 방법</strong><span>수시와 정시 중 어떤 전형인지 확인해요</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="goal" value="collegeDocs" />
-                  <span class="opt-card__txt"><strong>대학에 낼 서류</strong><span>합격증명서, 성적증명서가 필요할 수 있어요</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="goal" value="work" />
-                  <span class="opt-card__txt"><strong>일할 준비 방법</strong><span>바로 취업보다 나이, 서류, 훈련 지원을 먼저 확인해요</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="goal" value="support" />
-                  <span class="opt-card__txt"><strong>도움받을 곳</strong><span>학교밖청소년지원센터나 입학처 상담을 활용해요</span></span>
-                </label>
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>궁금한 대학</legend>
-              <div class="opt-grid opt-grid--check">
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="school" value="postech" checked />
-                  <span class="opt-card__txt"><strong>포항공과대학교</strong><span>4년제 · 학종만 운영, 검정고시 지원 가능</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="school" value="handong" />
-                  <span class="opt-card__txt"><strong>한동대학교</strong><span>4년제 · 수시·정시 모두, 합격증명서 제출 필요</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="school" value="sunlin" />
-                  <span class="opt-card__txt"><strong>선린대학교</strong><span>전문대 · 검정고시 합격자 지원 가능(세부조건 확인 필요)</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="school" value="pohang" />
-                  <span class="opt-card__txt"><strong>포항대학교</strong><span>전문대 · 검정고시 합격자 지원 가능(세부조건 확인 필요)</span></span>
-                </label>
-                <label class="opt-card opt-card--check">
-                  <input type="checkbox" name="school" value="polytech" />
-                  <span class="opt-card__txt"><strong>한국폴리텍대학 포항캠퍼스</strong><span>국비 직업훈련(비학위) · 학위과정 아님</span></span>
-                </label>
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>추가로 알려주고 싶은 내용</legend>
-              <textarea id="extraNotes" rows="3" placeholder="예: 이번 겨울에 이사할 수도 있어요, 아르바이트 경험이 있어요 등 자유롭게 적어주세요"></textarea>
-              <p class="field-hint">이 내용은 이 브라우저에만 저장돼요. AI가 읽고 안내를 맞춰주는 기능은 아직 준비 중이에요.</p>
-            </fieldset>
-
             <p class="wizard__error" id="inputError">위에서 최종 학력과 목표를 먼저 골라주세요.</p>
 
             <div class="wizard__nav">
-              <button type="button" class="btn-next" id="btnShowResult">내 안내 카드 보기</button>
+              <button type="button" class="btn-next" id="btnShowDetails">내 상황 보기</button>
             </div>
-          </form>
+          </div>
 
-          <aside class="result" id="resultView" aria-live="polite" hidden>
-            <p class="result__label">내 안내 카드</p>
+          <div id="detailsView" hidden>
+            <div class="details-layout">
+              <div class="panel details-inputs">
+                <fieldset>
+                  <legend>더 알고 싶은 것</legend>
+                  <div class="opt-grid opt-grid--check">
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="goal" value="exam" checked />
+                      <span class="opt-card__txt"><strong>검정고시가 뭔지</strong><span>일정, 과목, 합격 기준을 먼저 봐요</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="goal" value="examDocs" />
+                      <span class="opt-card__txt"><strong>시험 신청할 때 낼 서류</strong><span>이 서류는 대학 서류와 달라요</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="goal" value="highSchool" />
+                      <span class="opt-card__txt"><strong>고등학교 진학 방법</strong><span>학교마다 입학 상담 방식이 다를 수 있어요</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="goal" value="college" />
+                      <span class="opt-card__txt"><strong>대학 지원 방법</strong><span>수시와 정시 중 어떤 전형인지 확인해요</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="goal" value="collegeDocs" />
+                      <span class="opt-card__txt"><strong>대학에 낼 서류</strong><span>합격증명서, 성적증명서가 필요할 수 있어요</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="goal" value="work" />
+                      <span class="opt-card__txt"><strong>일할 준비 방법</strong><span>바로 취업보다 나이, 서류, 훈련 지원을 먼저 확인해요</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="goal" value="support" />
+                      <span class="opt-card__txt"><strong>도움받을 곳</strong><span>학교밖청소년지원센터나 입학처 상담을 활용해요</span></span>
+                    </label>
+                  </div>
+                </fieldset>
 
-            <div class="verdict">
-              <h3 id="summaryTitle"></h3>
-              <p id="summaryText"></p>
+                <fieldset>
+                  <legend>궁금한 대학</legend>
+                  <div class="opt-grid opt-grid--check">
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="school" value="postech" checked />
+                      <span class="opt-card__txt"><strong>포항공과대학교</strong><span>4년제 · 학종만 운영, 검정고시 지원 가능</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="school" value="handong" />
+                      <span class="opt-card__txt"><strong>한동대학교</strong><span>4년제 · 수시·정시 모두, 합격증명서 제출 필요</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="school" value="sunlin" />
+                      <span class="opt-card__txt"><strong>선린대학교</strong><span>전문대 · 검정고시 합격자 지원 가능(세부조건 확인 필요)</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="school" value="pohang" />
+                      <span class="opt-card__txt"><strong>포항대학교</strong><span>전문대 · 검정고시 합격자 지원 가능(세부조건 확인 필요)</span></span>
+                    </label>
+                    <label class="opt-card opt-card--check">
+                      <input type="checkbox" name="school" value="polytech" />
+                      <span class="opt-card__txt"><strong>한국폴리텍대학 포항캠퍼스</strong><span>국비 직업훈련(비학위) · 학위과정 아님</span></span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>추가로 알려주고 싶은 내용</legend>
+                  <textarea id="extraNotes" rows="3" placeholder="예: 이번 겨울에 이사할 수도 있어요, 아르바이트 경험이 있어요 등 자유롭게 적어주세요"></textarea>
+                  <p class="field-hint">이 내용은 이 브라우저에만 저장돼요. AI가 읽고 안내를 맞춰주는 기능은 아직 준비 중이에요.</p>
+                </fieldset>
+
+                <div class="wizard__nav">
+                  <button type="button" class="btn-prev" id="btnBackToSituation">다시 상황 고르기</button>
+                </div>
+              </div>
+
+              <aside class="result" id="resultView" aria-live="polite">
+                <p class="result__label">내 안내 카드</p>
+
+                <div class="verdict">
+                  <h3 id="summaryTitle"></h3>
+                  <p id="summaryText"></p>
+                </div>
+
+                <div class="next-steps">
+                  <h4>먼저 할 일 3개</h4>
+                  <ol id="topSteps"></ol>
+                </div>
+
+                <div class="detail-sections" id="detailSections"></div>
+
+                <div class="result__grid">
+                  <article>
+                    <h4>확인할 정보</h4>
+                    <ul id="infoList"></ul>
+                  </article>
+                  <article>
+                    <h4>주의할 점</h4>
+                    <ul id="actionList"></ul>
+                  </article>
+                </div>
+              </aside>
             </div>
-
-            <div class="next-steps">
-              <h4>먼저 할 일 3개</h4>
-              <ol id="topSteps"></ol>
-            </div>
-
-            <div class="detail-sections" id="detailSections"></div>
-
-            <div class="result__grid">
-              <article>
-                <h4>확인할 정보</h4>
-                <ul id="infoList"></ul>
-              </article>
-              <article>
-                <h4>주의할 점</h4>
-                <ul id="actionList"></ul>
-              </article>
-            </div>
-
-            <div class="wizard__nav">
-              <button type="button" class="btn-prev" id="btnBackToInput">다시 입력하기</button>
-            </div>
-          </aside>
-        </div>
+          </div>
+        </form>
       </section>
 
       <section class="content-band" id="basics" aria-labelledby="basics-title">

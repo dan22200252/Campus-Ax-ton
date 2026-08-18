@@ -155,13 +155,16 @@ section {
   background: var(--white);
 }
 
-.finder__layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-  align-items: start;
+.situation-panel {
   max-width: 700px;
   margin: 0 auto;
+}
+
+.details-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 2fr) minmax(0, 5fr);
+  gap: 24px;
+  align-items: start;
 }
 
 .panel,
@@ -770,6 +773,7 @@ footer {
     padding: 8vh 0 8vh;
   }
 
+  .details-layout,
   .result__grid,
   .info-columns,
   .university-list {
