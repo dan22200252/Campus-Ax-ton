@@ -241,7 +241,7 @@ const EXAM_DOCS_BY_LEVEL = {
 const EXAM_LINKS = {
   apply: { url: "https://kged.go.kr", title: "검정고시 온라인 원서접수 (나이스)", desc: "공동인증서 로그인 → 시·도교육청 선택 → 원서 작성" },
   notice: { url: "https://www.sen.go.kr/user/bbs/BD_selectBbsList.do?q_bbsSn=1097", title: "서울시교육청 검정고시 공고", desc: "확정 일정·시험장 확인 (타 지역은 해당 교육청 누리집)" },
-  center: { url: "https://www.kdream.or.kr", title: "청소년지원센터 꿈드림", desc: "만 9~24세 학교 밖 청소년 · 검정고시 준비, 교재비·상담 지원" },
+  center: { url: "https://www.youth.go.kr/youth/youth/contents/schulExtrlSportForm.yt?curMenuSn=348", title: "학교 밖 청소년 지원(꿈드림)", desc: "만 9~24세 학교 밖 청소년 · 검정고시 준비, 교재비·상담 지원" },
   hischool: { url: "https://www.hischool.go.kr", title: "고입정보포털 하이스쿨", desc: "고등학교 종류·전형·모집 일정 확인" },
   work: { url: "https://www.work24.go.kr", title: "고용24 (구 워크넷)", desc: "청소년 취업 지원, 직업훈련(내일배움카드) 신청" },
   adiga: { url: "https://www.adiga.kr", title: "어디가 (대입정보포털)", desc: "대학별 전형·모집요강·입시 일정 확인" },
