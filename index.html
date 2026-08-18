@@ -165,17 +165,36 @@
                   <ol id="topSteps"></ol>
                 </div>
 
-                <div class="detail-sections" id="detailSections"></div>
+                <div class="accordion">
+                  <div class="accordion__item">
+                    <button type="button" class="accordion__trigger" data-panel="panelDetail">자세한 정보 보기</button>
+                    <div class="accordion__panel" id="panelDetail" hidden>
+                      <div class="detail-sections" id="detailSections"></div>
+                    </div>
+                  </div>
 
-                <div class="result__grid">
-                  <article>
-                    <h4>확인할 정보</h4>
-                    <ul id="infoList"></ul>
-                  </article>
-                  <article>
-                    <h4>주의할 점</h4>
-                    <ul id="actionList"></ul>
-                  </article>
+                  <div class="accordion__item">
+                    <button type="button" class="accordion__trigger" data-panel="panelChecklist">확인할 정보 · 주의할 점</button>
+                    <div class="accordion__panel" id="panelChecklist" hidden>
+                      <div class="result__grid">
+                        <article>
+                          <h4>확인할 정보</h4>
+                          <ul id="infoList"></ul>
+                        </article>
+                        <article>
+                          <h4>주의할 점</h4>
+                          <ul id="actionList"></ul>
+                        </article>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion__item">
+                    <button type="button" class="accordion__trigger" data-panel="panelSelected">선택한 항목 자세히 보기</button>
+                    <div class="accordion__panel" id="panelSelected" hidden>
+                      <div class="detail-sections" id="selectedDetails"></div>
+                    </div>
+                  </div>
                 </div>
               </aside>
             </div>

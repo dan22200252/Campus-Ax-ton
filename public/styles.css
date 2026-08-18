@@ -386,6 +386,60 @@ legend {
   gap: 10px;
 }
 
+.accordion {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.accordion__item {
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+
+.accordion__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #fbf8f2;
+  border: none;
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.accordion__trigger:hover {
+  background: var(--teal-soft);
+}
+
+.accordion__trigger::after {
+  content: "+";
+  font-size: 18px;
+  line-height: 1;
+  color: var(--teal);
+  flex-shrink: 0;
+}
+
+.accordion__trigger.is-open::after {
+  content: "\2212";
+}
+
+.accordion__panel {
+  padding: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.accordion__panel .detail-sections {
+  margin: 0;
+}
+
 .priority-tag {
   display: inline-block;
   font-size: 11px;

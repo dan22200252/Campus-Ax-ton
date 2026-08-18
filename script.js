@@ -533,6 +533,16 @@ const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
 const detailSections = document.querySelector("#detailSections");
+const selectedDetails = document.querySelector("#selectedDetails");
+
+document.querySelectorAll(".accordion__trigger").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const panel = document.getElementById(btn.dataset.panel);
+    const willOpen = panel.hidden;
+    panel.hidden = !willOpen;
+    btn.classList.toggle("is-open", willOpen);
+  });
+});
 
 const stepLevel = document.querySelector("#stepLevel");
 const stepGoal = document.querySelector("#stepGoal");
@@ -674,6 +684,7 @@ function updateResult() {
     summaryTitle.textContent = "위 단계를 순서대로 선택해 주세요.";
     summaryText.textContent = "최종 학력과 앞으로의 목표를 고르면 맞춤 안내가 나와요.";
     detailSections.innerHTML = "";
+    selectedDetails.innerHTML = "";
     activeICSPayload = null;
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
@@ -697,8 +708,8 @@ function updateResult() {
     : null;
 
   const detailRenderer = statusDetailHTML[statusKey];
-  detailSections.innerHTML = (detailRenderer ? detailRenderer() : "")
-    + searchLinksHTML(statusData.keywords)
+  detailSections.innerHTML = detailRenderer ? detailRenderer() : "";
+  selectedDetails.innerHTML = searchLinksHTML(statusData.keywords)
     + compiledGoalsHTML(goals)
     + compiledUniversitiesHTML(selectedSchools);
 
