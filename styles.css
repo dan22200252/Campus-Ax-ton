@@ -157,7 +157,7 @@ section {
 
 .finder__layout {
   display: grid;
-  grid-template-columns: minmax(300px, 400px) 1fr;
+  grid-template-columns: minmax(300px, 1.08fr) minmax(280px, 0.92fr);
   gap: 24px;
   align-items: start;
 }
@@ -166,8 +166,23 @@ section {
   grid-template-columns: minmax(300px, 720px);
 }
 
+.finder__layout .panel {
+  order: 3;
+  grid-column: 1 / -1;
+}
+
 .finder__layout.is-selecting .panel {
+  order: 0;
   max-width: 720px;
+}
+
+.roadmap-box--primary {
+  order: 1;
+  min-height: 100%;
+}
+
+.result {
+  order: 2;
 }
 
 .panel,
@@ -381,6 +396,10 @@ legend {
 
 .roadmap-box {
   background: #fff;
+}
+
+.roadmap-box--primary {
+  box-shadow: var(--shadow);
 }
 
 .remaining-steps h4,

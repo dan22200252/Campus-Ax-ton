@@ -581,6 +581,7 @@ const statusDetailHTML = {
 
 const form = document.querySelector("#profileForm");
 const finderLayout = document.querySelector(".finder__layout");
+const roadmapPanel = document.querySelector("#roadmapPanel");
 const resultPanel = document.querySelector(".result");
 const summaryTitle = document.querySelector("#summaryTitle");
 const summaryText = document.querySelector("#summaryText");
@@ -802,6 +803,7 @@ function updateResult() {
   const goals = checkedValues("goal");
   const selectedSchools = shouldShowUniversityChoices() ? checkedValues("school") : [];
   updateUniversityVisibility();
+  roadmapPanel.hidden = !statusKey;
   resultPanel.hidden = !statusKey;
   finderLayout.classList.toggle("is-selecting", !statusKey);
 
