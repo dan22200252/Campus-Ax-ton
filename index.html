@@ -20,12 +20,39 @@
 
     <section class="hero" id="heroView">
       <div class="hero__content" id="top">
-        <p class="eyebrow">혼자 찾아도 막막하지 않게.</p>
-        <h1>RE:Path</h1>
-        <p class="hero__copy">
-          검정고시 이후의 길을 고등학교 진학, 대학 진학, 일할 준비로 나눠서 보여줍니다.
-        </p>
-        <button type="button" class="hero__button" id="btnStartFinder">내 상황 고르기</button>
+        <div class="hero__text">
+          <p class="eyebrow">혼자 찾아도 막막하지 않게.</p>
+          <h1>RE:Path</h1>
+          <p class="hero__copy">
+            검정고시 이후의 길을 고등학교 진학, 대학 진학, 일할 준비로 나눠서 보여줍니다.
+          </p>
+          <button type="button" class="hero__button" id="btnStartFinder">내 상황 고르기</button>
+          <div class="hero__badges">
+            <span class="hero__badge">로그인 없이 바로 시작</span>
+            <span class="hero__badge">완전 무료</span>
+            <span class="hero__badge">학교 밖 청소년 특화</span>
+          </div>
+        </div>
+
+        <div class="hero__art" aria-hidden="true">
+          <svg viewBox="0 0 340 460" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="30" r="5" fill="var(--gold)" opacity="0.6" />
+            <circle cx="300" cy="90" r="4" fill="var(--coral)" opacity="0.5" />
+            <circle cx="30" cy="300" r="4" fill="var(--teal)" opacity="0.5" />
+            <circle cx="310" cy="420" r="6" fill="var(--gold)" opacity="0.5" />
+            <path d="M76 96 C 130 130, 150 150, 214 190 C 260 218, 150 300, 108 344"
+              stroke="var(--teal)" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" fill="none" />
+            <circle class="hero__node" cx="76" cy="70" r="46" fill="var(--white)" stroke="var(--teal)" stroke-width="2" />
+            <text x="76" y="82" text-anchor="middle" font-size="34">🏫</text>
+            <text x="76" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">고등학교 진학</text>
+            <circle class="hero__node" cx="230" cy="210" r="46" fill="var(--white)" stroke="var(--coral)" stroke-width="2" />
+            <text x="230" y="222" text-anchor="middle" font-size="34">🎓</text>
+            <text x="230" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">대학 진학</text>
+            <circle class="hero__node" cx="90" cy="368" r="46" fill="var(--white)" stroke="var(--gold)" stroke-width="2" />
+            <text x="90" y="380" text-anchor="middle" font-size="34">💼</text>
+            <text x="90" y="430" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">일할 준비</text>
+          </svg>
+        </div>
       </div>
     </section>
 
