@@ -434,16 +434,17 @@ function roadmapStepsHTML(items, statusKey) {
   const stepsHTML = items.map((it, idx) => {
     const isComplete = completed.has(String(idx));
     const isCurrent = idx === currentIndex;
+    const isLocked = !isComplete && !isCurrent;
     const linkHtml = it.link
       ? `<a class="roadmap__link" href="${esc(EXAM_LINKS[it.link].url)}" target="_blank" rel="noopener noreferrer">${esc(EXAM_LINKS[it.link].title)} 바로가기 →</a>`
       : "";
     return `
-      <li class="roadmap-node${isComplete ? " is-complete" : ""}${isCurrent ? " is-current" : ""}">
+      <li class="roadmap-node${isComplete ? " is-complete" : ""}${isCurrent ? " is-current" : ""}${isLocked ? " is-locked" : ""}">
         <label class="roadmap-item">
-          <input type="checkbox" data-roadmap-index="${idx}" ${isComplete ? "checked" : ""} />
-          <span class="roadmap-item__marker">${isComplete ? "✓" : idx + 1}</span>
+          <input type="checkbox" data-roadmap-index="${idx}" ${isComplete ? "checked" : ""} ${isLocked ? "disabled" : ""} />
+          <span class="roadmap-item__marker">${isComplete ? "✓" : isLocked ? "잠금" : idx + 1}</span>
           <span class="roadmap-item__body">
-            <small>${isComplete ? "완료" : isCurrent ? "지금 할 차례" : "다음 단계"}</small>
+            <small>${isComplete ? "완료" : isCurrent ? "지금 할 차례" : "앞 단계를 먼저 완료해요"}</small>
             ${it.when ? `<em>${esc(it.when)}</em>` : ""}
             <strong>${esc(it.title)}</strong>
             ${it.desc ? `<span>${esc(it.desc)}</span>` : ""}
@@ -845,10 +846,19 @@ roadmapSlot.addEventListener("change", (event) => {
   if (!input || !statusKey) return;
 
   const completed = completedRoadmapIndexes(statusKey);
+  const index = Number(input.dataset.roadmapIndex);
+  const canCheck = index === 0 || completed.has(String(index - 1));
+  if (input.checked && !canCheck) {
+    input.checked = false;
+    return;
+  }
+
   if (input.checked) {
-    completed.add(input.dataset.roadmapIndex);
+    completed.add(String(index));
   } else {
-    completed.delete(input.dataset.roadmapIndex);
+    [...completed].forEach((item) => {
+      if (Number(item) >= index) completed.delete(item);
+    });
   }
   saveCompletedRoadmapIndexes(statusKey, completed);
   updateResult();
