@@ -533,6 +533,8 @@ const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
 const detailSections = document.querySelector("#detailSections");
+const schoolFieldset = document.querySelector("#schoolFieldset");
+const universitiesSection = document.querySelector("#universities");
 
 const stepLevel = document.querySelector("#stepLevel");
 const stepGoal = document.querySelector("#stepGoal");
@@ -555,6 +557,16 @@ function saveStatusState() {
 function currentStatusKey() {
   if (!statusState.level || !statusState.goal) return null;
   return statusKeyMap[statusState.level][statusState.goal];
+}
+
+function shouldShowUniversityChoices() {
+  return statusState.goal === "univ";
+}
+
+function updateUniversityVisibility() {
+  const showUniversities = shouldShowUniversityChoices();
+  schoolFieldset.hidden = !showUniversities;
+  universitiesSection.hidden = !showUniversities;
 }
 
 function setActiveOption(group, value) {
@@ -585,6 +597,7 @@ stepLevel.addEventListener("click", (event) => {
   renderGoalOptions();
   stepGoal.hidden = false;
   updateGoalRecommendations();
+  updateUniversityVisibility();
   saveStatusState();
   updateResult();
 });
@@ -595,6 +608,7 @@ stepGoalOptions.addEventListener("click", (event) => {
   statusState.goal = btn.dataset.value;
   setActiveOption("q2", statusState.goal);
   updateGoalRecommendations();
+  updateUniversityVisibility();
   saveStatusState();
   updateResult();
 });
@@ -618,6 +632,7 @@ function restoreStatusState() {
     setActiveOption("q2", statusState.goal);
   }
   updateGoalRecommendations();
+  updateUniversityVisibility();
 }
 
 function checkedValues(name) {
@@ -668,7 +683,8 @@ function renderUniversities(selectedSchools) {
 function updateResult() {
   const statusKey = currentStatusKey();
   const goals = checkedValues("goal");
-  const selectedSchools = checkedValues("school");
+  const selectedSchools = shouldShowUniversityChoices() ? checkedValues("school") : [];
+  updateUniversityVisibility();
 
   if (!statusKey) {
     summaryTitle.textContent = "위 단계를 순서대로 선택해 주세요.";
