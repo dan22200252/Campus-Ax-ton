@@ -31,6 +31,11 @@ html {
 
 body {
   margin: 0;
+  /* 한글은 기본값에서 글자 단위로 줄이 바뀌어 '막막하 / 지 않게'처럼 낱말이 쪼개진다.
+     keep-all 로 띄어쓰기에서만 줄을 바꾸고, 끊을 수 없는 긴 문자열(URL 등)만
+     overflow-wrap 으로 예외 처리한다. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
   background: var(--paper);
   color: var(--ink);
   font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
@@ -108,6 +113,7 @@ a {
 }
 
 .hero h1 {
+  text-wrap: balance;
   max-width: 660px;
   margin: 0;
   font-size: clamp(40px, 6vw, 70px);
