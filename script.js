@@ -246,7 +246,8 @@ const EXAM_LINKS = {
   work: { url: "https://www.work24.go.kr", title: "고용24 (구 워크넷)", desc: "청소년 취업 지원, 직업훈련(내일배움카드) 신청" },
   adiga: { url: "https://www.adiga.kr", title: "어디가 (대입정보포털)", desc: "대학별 전형·모집요강·입시 일정 확인" },
   kosaf: { url: "https://www.kosaf.go.kr", title: "한국장학재단", desc: "국가장학금·학자금 대출 신청" },
-  qnet: { url: "https://www.q-net.or.kr", title: "큐넷 (Q-Net)", desc: "기능사 등 국가기술자격 시험 접수·일정" }
+  qnet: { url: "https://www.q-net.or.kr", title: "큐넷 (Q-Net)", desc: "기능사 등 국가기술자격 시험 접수·일정" },
+  youthCard: { url: "https://www.gov.kr/portal/service/serviceInfo/357000000016", title: "정부24 청소년증 발급", desc: "만 9~18세, 거주지 행정복지센터에서 신청" }
 };
 
 const goalOptionsByLevel = {
@@ -395,6 +396,9 @@ function flattenExamEvents() {
 function roadmapStepsHTML(items) {
   return items.map((it, idx) => {
     const isLast = idx === items.length - 1;
+    const linkHtml = it.link
+      ? `<a class="roadmap__link" href="${esc(EXAM_LINKS[it.link].url)}" target="_blank" rel="noopener noreferrer">${esc(EXAM_LINKS[it.link].title)} 바로가기 →</a>`
+      : "";
     return `
       <div class="roadmap__item">
         <div class="roadmap__rail">
@@ -405,6 +409,7 @@ function roadmapStepsHTML(items) {
           ${it.when ? `<div class="roadmap__when">${esc(it.when)}</div>` : ""}
           <p class="roadmap__title">${esc(it.title)}</p>
           ${it.desc ? `<p class="roadmap__desc">${esc(it.desc)}</p>` : ""}
+          ${linkHtml}
         </div>
       </div>
     `;
@@ -413,17 +418,32 @@ function roadmapStepsHTML(items) {
 
 function roadmapForStatus(statusKey) {
   if (statusKey === "elemGed" || statusKey === "midGed") {
-    const items = EXAM_SCHEDULE.flatMap((rnd) =>
-      rnd.events.map((ev) => {
+    const items = [
+      { title: "최종학력증명서 준비하기", desc: "이전 학교나 교육지원청에서 발급받아요" },
+      { title: "증명사진 촬영하기", desc: "3.5cm × 4.5cm, 최근 3개월 이내 촬영한 사진 2매" },
+      { title: "신분증 준비하기", desc: "신분증이 없다면 거주지 행정복지센터에서 청소년증을 만들 수 있어요", link: "youthCard" }
+    ];
+
+    const upcomingRound = EXAM_SCHEDULE.find((rnd) => rnd.status !== "past");
+    if (upcomingRound) {
+      upcomingRound.events.forEach((ev) => {
         const guess = ev.certainty === "guess";
         const range = ev.end ? ` ~ ${fmtDate(ev.end)}` : "";
-        return {
+        const item = {
           when: `${fmtDate(ev.date)}${range}`,
-          title: `${rnd.round} ${ev.label}`,
+          title: `${upcomingRound.round} ${ev.label}`,
           desc: guess ? "예상 일정이에요" : "확정된 일정이에요"
         };
-      })
-    );
+        if (ev.label.includes("원서접수")) item.link = "apply";
+        items.push(item);
+      });
+    }
+
+    items.push({
+      title: "전화 상담이 어려우면 꿈드림에 연락하기",
+      desc: "방문·온라인 게시판 상담도 운영해요",
+      link: "center"
+    });
     items.push({
       title: "합격하면 다음 단계로",
       desc: statusKey === "elemGed"
