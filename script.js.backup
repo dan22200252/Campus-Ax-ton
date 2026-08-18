@@ -393,70 +393,27 @@ function flattenExamEvents() {
    로드맵 (상황·목표별 맞춤 타임라인)
    ========================================================= */
 
-function roadmapStorageKey(statusKey) {
-  return `axton_roadmap_done_v2:${statusKey}`;
-}
-
-function completedRoadmapIndexes(statusKey) {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(roadmapStorageKey(statusKey)) || "[]"));
-  } catch (e) {
-    return new Set();
-  }
-}
-
-function saveCompletedRoadmapIndexes(statusKey, completed) {
-  try {
-    localStorage.setItem(roadmapStorageKey(statusKey), JSON.stringify([...completed]));
-  } catch (e) {
-    /* ignore */
-  }
-}
-
-function roadmapStepsHTML(items, statusKey) {
-  const completed = completedRoadmapIndexes(statusKey);
-  const completedCount = items.filter((_, idx) => completed.has(String(idx))).length;
-  const currentIndex = items.findIndex((_, idx) => !completed.has(String(idx)));
-  const progress = Math.round((completedCount / items.length) * 100);
-
-  const progressHTML = `
-    <div class="roadmap-progress" aria-label="로드맵 진행률">
-      <div>
-        <strong>${completedCount}/${items.length}</strong>
-        <span>${currentIndex === -1 ? "모든 단계를 체크했어요" : `지금은 ${currentIndex + 1}단계 근처예요`}</span>
-      </div>
-      <div class="roadmap-meter" aria-hidden="true">
-        <span style="width: ${progress}%"></span>
-      </div>
-    </div>
-  `;
-
-  const stepsHTML = items.map((it, idx) => {
-    const isComplete = completed.has(String(idx));
-    const isCurrent = idx === currentIndex;
+function roadmapStepsHTML(items) {
+  return items.map((it, idx) => {
+    const isLast = idx === items.length - 1;
     const linkHtml = it.link
       ? `<a class="roadmap__link" href="${esc(EXAM_LINKS[it.link].url)}" target="_blank" rel="noopener noreferrer">${esc(EXAM_LINKS[it.link].title)} 바로가기 →</a>`
       : "";
     return `
-      <li class="roadmap-node${isComplete ? " is-complete" : ""}${isCurrent ? " is-current" : ""}">
-        <label class="roadmap-item">
-          <input type="checkbox" data-roadmap-index="${idx}" ${isComplete ? "checked" : ""} />
-          <span class="roadmap-item__marker">${isComplete ? "✓" : idx + 1}</span>
-          <span class="roadmap-item__body">
-            <small>${isComplete ? "완료" : isCurrent ? "지금 할 차례" : "다음 단계"}</small>
-            ${it.when ? `<em>${esc(it.when)}</em>` : ""}
-            <strong>${esc(it.title)}</strong>
-            ${it.desc ? `<span>${esc(it.desc)}</span>` : ""}
-          </span>
-        </label>
-        <div class="roadmap-node__link">
+      <div class="roadmap__item">
+        <div class="roadmap__rail">
+          <div class="roadmap__dot">${idx + 1}</div>
+          ${isLast ? "" : '<div class="roadmap__line"></div>'}
+        </div>
+        <div class="roadmap__body">
+          ${it.when ? `<div class="roadmap__when">${esc(it.when)}</div>` : ""}
+          <p class="roadmap__title">${esc(it.title)}</p>
+          ${it.desc ? `<p class="roadmap__desc">${esc(it.desc)}</p>` : ""}
           ${linkHtml}
         </div>
-      </li>
+      </div>
     `;
   }).join("");
-
-  return `${progressHTML}<ol class="visual-roadmap">${stepsHTML}</ol>`;
 }
 
 function roadmapForStatus(statusKey) {
@@ -493,16 +450,16 @@ function roadmapForStatus(statusKey) {
         ? "고등학교 진학이나 고졸 검정고시 중 하나를 다시 선택해보세요"
         : "대학 진학이나 취업 준비 중 하나를 다시 선택해보세요"
     });
-    return roadmapStepsHTML(items, statusKey);
+    return roadmapStepsHTML(items);
   }
 
   if (statusKey === "highUniv") {
     const items = [{ title: "목표 대학·전형 정하기", desc: "학생부종합 / 논술 / 정시 중 어디에 해당하는지 확인해요" }]
       .concat(UNIV_TYPICAL_TIMELINE.map((it) => ({ when: it.timing, title: it.label, desc: "정확한 날짜는 매년 대교협 공고로 확인하세요" })));
-    return roadmapStepsHTML(items, statusKey);
+    return roadmapStepsHTML(items);
   }
 
-  return roadmapStepsHTML(statusCopy[statusKey].steps.map((s) => ({ title: s })), statusKey);
+  return roadmapStepsHTML(statusCopy[statusKey].steps.map((s) => ({ title: s })));
 }
 
 function buildICS(events, calName) {
@@ -838,21 +795,6 @@ function updateResult() {
   renderList(actionList, actionItems, 5);
   renderUniversities(selectedSchools);
 }
-
-roadmapSlot.addEventListener("change", (event) => {
-  const input = event.target.closest("input[data-roadmap-index]");
-  const statusKey = currentStatusKey();
-  if (!input || !statusKey) return;
-
-  const completed = completedRoadmapIndexes(statusKey);
-  if (input.checked) {
-    completed.add(input.dataset.roadmapIndex);
-  } else {
-    completed.delete(input.dataset.roadmapIndex);
-  }
-  saveCompletedRoadmapIndexes(statusKey, completed);
-  updateResult();
-});
 
 detailSections.addEventListener("click", (event) => {
   const btn = event.target.closest("#icsDownloadBtn");

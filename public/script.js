@@ -246,7 +246,8 @@ const EXAM_LINKS = {
   work: { url: "https://www.work24.go.kr", title: "고용24 (구 워크넷)", desc: "청소년 취업 지원, 직업훈련(내일배움카드) 신청" },
   adiga: { url: "https://www.adiga.kr", title: "어디가 (대입정보포털)", desc: "대학별 전형·모집요강·입시 일정 확인" },
   kosaf: { url: "https://www.kosaf.go.kr", title: "한국장학재단", desc: "국가장학금·학자금 대출 신청" },
-  qnet: { url: "https://www.q-net.or.kr", title: "큐넷 (Q-Net)", desc: "기능사 등 국가기술자격 시험 접수·일정" }
+  qnet: { url: "https://www.q-net.or.kr", title: "큐넷 (Q-Net)", desc: "기능사 등 국가기술자격 시험 접수·일정" },
+  youthCard: { url: "https://www.gov.kr/portal/service/serviceInfo/357000000016", title: "정부24 청소년증 발급", desc: "만 9~18세, 거주지 행정복지센터에서 신청" }
 };
 
 const goalOptionsByLevel = {
@@ -271,60 +272,6 @@ const statusKeyMap = {
   elem: { school: "elemSchool", ged: "elemGed", none: "goalless" },
   mid: { school: "midSchool", ged: "midGed", none: "goalless" },
   high: { univ: "highUniv", job: "highJob", none: "goalless" }
-};
-
-const ROADMAPS = {
-  elemSchool: [
-    "학적 상태 확인하기",
-    "거주지 교육지원청에 재입학 문의하기",
-    "방송통신중학교도 비교해보기",
-    "필요 서류 적어두기"
-  ],
-  elemGed: [
-    "청소년증 또는 신분증 준비하기",
-    "중졸 검정고시 일정 확인하기",
-    "원서 접수 서류 준비하기",
-    "원서 접수하기",
-    "시험 보기",
-    "합격 발표 확인하기",
-    "합격 후 다음 길 생각하기"
-  ],
-  midSchool: [
-    "학적 상태 확인하기",
-    "가고 싶은 고등학교 유형 정하기",
-    "교육지원청 또는 학교에 편입학 문의하기",
-    "필요 서류 적어두기",
-    "입학 상담 일정 잡기"
-  ],
-  midGed: [
-    "청소년증 또는 신분증 준비하기",
-    "고졸 검정고시 일정 확인하기",
-    "원서 접수 서류 준비하기",
-    "원서 접수하기",
-    "시험 보기",
-    "합격 발표 확인하기",
-    "합격증명서와 성적증명서 발급 방법 확인하기"
-  ],
-  highUniv: [
-    "관심 대학 고르기",
-    "모집요강에서 검정고시 항목 찾기",
-    "수시와 정시 중 가능한 전형 확인하기",
-    "대학 제출 서류 체크하기",
-    "입학처에 궁금한 점 문의하기",
-    "원서 접수 일정 저장하기"
-  ],
-  highJob: [
-    "관심 있는 직업 분야 적어보기",
-    "고용24 직업심리검사 해보기",
-    "꿈드림 직업체험 알아보기",
-    "직업훈련 또는 자격증 과정 찾기",
-    "근로 가능 나이와 필요 서류 확인하기"
-  ],
-  goalless: [
-    "궁금한 주제 하나 고르기",
-    "꿈드림 상담 가능 시간 확인하기",
-    "검정고시·진학·일할 준비 중 끌리는 길 적어보기"
-  ]
 };
 
 const RECOMMENDED_GOALS_BY_Q2 = {
@@ -440,6 +387,122 @@ function flattenExamEvents() {
     });
   });
   return events;
+}
+
+/* =========================================================
+   로드맵 (상황·목표별 맞춤 타임라인)
+   ========================================================= */
+
+function roadmapStorageKey(statusKey) {
+  return `axton_roadmap_done_v2:${statusKey}`;
+}
+
+function completedRoadmapIndexes(statusKey) {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(roadmapStorageKey(statusKey)) || "[]"));
+  } catch (e) {
+    return new Set();
+  }
+}
+
+function saveCompletedRoadmapIndexes(statusKey, completed) {
+  try {
+    localStorage.setItem(roadmapStorageKey(statusKey), JSON.stringify([...completed]));
+  } catch (e) {
+    /* ignore */
+  }
+}
+
+function roadmapStepsHTML(items, statusKey) {
+  const completed = completedRoadmapIndexes(statusKey);
+  const completedCount = items.filter((_, idx) => completed.has(String(idx))).length;
+  const currentIndex = items.findIndex((_, idx) => !completed.has(String(idx)));
+  const progress = Math.round((completedCount / items.length) * 100);
+
+  const progressHTML = `
+    <div class="roadmap-progress" aria-label="로드맵 진행률">
+      <div>
+        <strong>${completedCount}/${items.length}</strong>
+        <span>${currentIndex === -1 ? "모든 단계를 체크했어요" : `지금은 ${currentIndex + 1}단계 근처예요`}</span>
+      </div>
+      <div class="roadmap-meter" aria-hidden="true">
+        <span style="width: ${progress}%"></span>
+      </div>
+    </div>
+  `;
+
+  const stepsHTML = items.map((it, idx) => {
+    const isComplete = completed.has(String(idx));
+    const isCurrent = idx === currentIndex;
+    const linkHtml = it.link
+      ? `<a class="roadmap__link" href="${esc(EXAM_LINKS[it.link].url)}" target="_blank" rel="noopener noreferrer">${esc(EXAM_LINKS[it.link].title)} 바로가기 →</a>`
+      : "";
+    return `
+      <li class="roadmap-node${isComplete ? " is-complete" : ""}${isCurrent ? " is-current" : ""}">
+        <label class="roadmap-item">
+          <input type="checkbox" data-roadmap-index="${idx}" ${isComplete ? "checked" : ""} />
+          <span class="roadmap-item__marker">${isComplete ? "✓" : idx + 1}</span>
+          <span class="roadmap-item__body">
+            <small>${isComplete ? "완료" : isCurrent ? "지금 할 차례" : "다음 단계"}</small>
+            ${it.when ? `<em>${esc(it.when)}</em>` : ""}
+            <strong>${esc(it.title)}</strong>
+            ${it.desc ? `<span>${esc(it.desc)}</span>` : ""}
+          </span>
+        </label>
+        <div class="roadmap-node__link">
+          ${linkHtml}
+        </div>
+      </li>
+    `;
+  }).join("");
+
+  return `${progressHTML}<ol class="visual-roadmap">${stepsHTML}</ol>`;
+}
+
+function roadmapForStatus(statusKey) {
+  if (statusKey === "elemGed" || statusKey === "midGed") {
+    const items = [
+      { title: "최종학력증명서 준비하기", desc: "이전 학교나 교육지원청에서 발급받아요" },
+      { title: "증명사진 촬영하기", desc: "3.5cm × 4.5cm, 최근 3개월 이내 촬영한 사진 2매" },
+      { title: "신분증 준비하기", desc: "신분증이 없다면 거주지 행정복지센터에서 청소년증을 만들 수 있어요", link: "youthCard" }
+    ];
+
+    const upcomingRound = EXAM_SCHEDULE.find((rnd) => rnd.status !== "past");
+    if (upcomingRound) {
+      upcomingRound.events.forEach((ev) => {
+        const guess = ev.certainty === "guess";
+        const range = ev.end ? ` ~ ${fmtDate(ev.end)}` : "";
+        const item = {
+          when: `${fmtDate(ev.date)}${range}`,
+          title: `${upcomingRound.round} ${ev.label}`,
+          desc: guess ? "예상 일정이에요" : "확정된 일정이에요"
+        };
+        if (ev.label.includes("원서접수")) item.link = "apply";
+        items.push(item);
+      });
+    }
+
+    items.push({
+      title: "전화 상담이 어려우면 꿈드림에 연락하기",
+      desc: "방문·온라인 게시판 상담도 운영해요",
+      link: "center"
+    });
+    items.push({
+      title: "합격하면 다음 단계로",
+      desc: statusKey === "elemGed"
+        ? "고등학교 진학이나 고졸 검정고시 중 하나를 다시 선택해보세요"
+        : "대학 진학이나 취업 준비 중 하나를 다시 선택해보세요"
+    });
+    return roadmapStepsHTML(items, statusKey);
+  }
+
+  if (statusKey === "highUniv") {
+    const items = [{ title: "목표 대학·전형 정하기", desc: "학생부종합 / 논술 / 정시 중 어디에 해당하는지 확인해요" }]
+      .concat(UNIV_TYPICAL_TIMELINE.map((it) => ({ when: it.timing, title: it.label, desc: "정확한 날짜는 매년 대교협 공고로 확인하세요" })));
+    return roadmapStepsHTML(items, statusKey);
+  }
+
+  return roadmapStepsHTML(statusCopy[statusKey].steps.map((s) => ({ title: s })), statusKey);
 }
 
 function buildICS(events, calName) {
@@ -580,34 +643,34 @@ const statusDetailHTML = {
    ========================================================= */
 
 const form = document.querySelector("#profileForm");
-const finderLayout = document.querySelector(".finder__layout");
-const roadmapPanel = document.querySelector("#roadmapPanel");
-const resultPanel = document.querySelector(".result");
 const summaryTitle = document.querySelector("#summaryTitle");
 const summaryText = document.querySelector("#summaryText");
 const infoList = document.querySelector("#infoList");
 const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
-const remainingSteps = document.querySelector("#remainingSteps");
-const roadmapList = document.querySelector("#roadmapList");
 const universityList = document.querySelector("#universityList");
 const detailSections = document.querySelector("#detailSections");
-const schoolFieldset = document.querySelector("#schoolFieldset");
-const universitiesSection = document.querySelector("#universities");
+const selectedDetails = document.querySelector("#selectedDetails");
+const roadmapSlot = document.querySelector("#roadmapSlot");
+
+document.querySelectorAll(".accordion__trigger").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const panel = document.getElementById(btn.dataset.panel);
+    const willOpen = panel.hidden;
+    panel.hidden = !willOpen;
+    btn.classList.toggle("is-open", willOpen);
+  });
+});
 
 const stepLevel = document.querySelector("#stepLevel");
 const stepGoal = document.querySelector("#stepGoal");
-const stepNotes = document.querySelector("#stepNotes");
 const stepGoalOptions = document.querySelector("#stepGoalOptions");
-const showRoadmapBtn = document.querySelector("#showRoadmapBtn");
 
 const statusState = { level: null, goal: null };
 let activeICSPayload = null;
-let roadmapRequested = false;
 
 const STATUS_STORAGE_KEY = "axton_status_v1";
 const NOTES_STORAGE_KEY = "axton_notes_v1";
-const ROADMAP_STORAGE_KEY = "axton_roadmap_done_v1";
 
 function saveStatusState() {
   try {
@@ -620,15 +683,6 @@ function saveStatusState() {
 function currentStatusKey() {
   if (!statusState.level || !statusState.goal) return null;
   return statusKeyMap[statusState.level][statusState.goal];
-}
-
-function shouldShowUniversityChoices() {
-  return statusState.goal === "univ";
-}
-
-function updateUniversityVisibility() {
-  schoolFieldset.hidden = true;
-  universitiesSection.hidden = false;
 }
 
 function setActiveOption(group, value) {
@@ -655,13 +709,10 @@ stepLevel.addEventListener("click", (event) => {
   if (!btn) return;
   statusState.level = btn.dataset.value;
   statusState.goal = null;
-  roadmapRequested = false;
   setActiveOption("level", statusState.level);
   renderGoalOptions();
   stepGoal.hidden = false;
-  stepNotes.hidden = true;
   updateGoalRecommendations();
-  updateUniversityVisibility();
   saveStatusState();
   updateResult();
 });
@@ -670,11 +721,8 @@ stepGoalOptions.addEventListener("click", (event) => {
   const btn = event.target.closest(".opt-card");
   if (!btn) return;
   statusState.goal = btn.dataset.value;
-  roadmapRequested = false;
   setActiveOption("q2", statusState.goal);
-  stepNotes.hidden = false;
   updateGoalRecommendations();
-  updateUniversityVisibility();
   saveStatusState();
   updateResult();
 });
@@ -697,33 +745,11 @@ function restoreStatusState() {
     statusState.goal = saved.goal;
     setActiveOption("q2", statusState.goal);
   }
-  stepNotes.hidden = !statusState.goal;
   updateGoalRecommendations();
-  updateUniversityVisibility();
 }
 
 function checkedValues(name) {
   return [...form.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
-}
-
-function roadmapKey(statusKey) {
-  return `${ROADMAP_STORAGE_KEY}:${statusKey}`;
-}
-
-function getCompletedRoadmap(statusKey) {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(roadmapKey(statusKey)) || "[]"));
-  } catch (e) {
-    return new Set();
-  }
-}
-
-function saveCompletedRoadmap(statusKey, completed) {
-  try {
-    localStorage.setItem(roadmapKey(statusKey), JSON.stringify([...completed]));
-  } catch (e) {
-    /* ignore */
-  }
 }
 
 function renderList(target, items, limit = 5) {
@@ -750,70 +776,6 @@ function renderPrioritySteps(target, items, limit = 3) {
   });
 }
 
-function renderRemainingSteps(target, items) {
-  target.innerHTML = "";
-  if (!items.length) {
-    const li = document.createElement("li");
-    li.textContent = "지금 로드맵에서 남은 일이 없어요.";
-    target.appendChild(li);
-    return;
-  }
-
-  items.slice(0, 5).forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    target.appendChild(li);
-  });
-}
-
-function renderRoadmap(statusKey, items) {
-  roadmapList.innerHTML = "";
-  if (!statusKey || !items.length) {
-    roadmapList.innerHTML = '<p class="empty-roadmap">상황을 고르면 로드맵이 나와요.</p>';
-    return;
-  }
-
-  const completed = getCompletedRoadmap(statusKey);
-  const completedCount = items.filter((_, index) => completed.has(String(index))).length;
-  const currentIndex = items.findIndex((_, index) => !completed.has(String(index)));
-  const progress = Math.round((completedCount / items.length) * 100);
-  roadmapList.innerHTML = `
-    <div class="roadmap-progress" aria-label="로드맵 진행률">
-      <div>
-        <strong>${completedCount}/${items.length}</strong>
-        <span>${currentIndex === -1 ? "모든 단계를 체크했어요" : `지금은 ${currentIndex + 1}단계 근처예요`}</span>
-      </div>
-      <div class="roadmap-meter" aria-hidden="true">
-        <span style="width: ${progress}%"></span>
-      </div>
-    </div>
-  `;
-  const list = document.createElement("ol");
-  list.className = "visual-roadmap";
-
-  items.forEach((item, index) => {
-    const id = `roadmap-${statusKey}-${index}`;
-    const isComplete = completed.has(String(index));
-    const isCurrent = index === currentIndex;
-    const li = document.createElement("li");
-    li.className = `roadmap-node${isComplete ? " is-complete" : ""}${isCurrent ? " is-current" : ""}`;
-    const label = document.createElement("label");
-    label.className = `roadmap-item${isComplete ? " is-complete" : ""}`;
-    label.htmlFor = id;
-    label.innerHTML = `
-      <input id="${id}" type="checkbox" data-roadmap-index="${index}" ${isComplete ? "checked" : ""} />
-      <span class="roadmap-item__marker">${isComplete ? "✓" : index + 1}</span>
-      <span class="roadmap-item__body">
-        <small>${isComplete ? "완료" : isCurrent ? "지금 할 차례" : "다음 단계"}</small>
-        <strong>${esc(item)}</strong>
-      </span>
-    `;
-    li.appendChild(label);
-    list.appendChild(li);
-  });
-  roadmapList.appendChild(list);
-}
-
 function renderUniversities(selectedSchools) {
   universityList.innerHTML = "";
 
@@ -833,23 +795,17 @@ function renderUniversities(selectedSchools) {
 
 function updateResult() {
   const statusKey = currentStatusKey();
-  const canShowResult = Boolean(statusKey && roadmapRequested);
   const goals = checkedValues("goal");
-  const selectedSchools = [];
-  updateUniversityVisibility();
-  stepNotes.hidden = !statusState.goal;
-  roadmapPanel.hidden = !canShowResult;
-  resultPanel.hidden = !canShowResult;
-  finderLayout.classList.toggle("is-selecting", !canShowResult);
+  const selectedSchools = checkedValues("school");
 
-  if (!canShowResult) {
+  if (!statusKey) {
     summaryTitle.textContent = "위 단계를 순서대로 선택해 주세요.";
-    summaryText.textContent = "3번까지 확인한 뒤 내 로드맵 보기 버튼을 누르면 맞춤 안내가 나와요.";
+    summaryText.textContent = "최종 학력과 앞으로의 목표를 고르면 맞춤 안내가 나와요.";
     detailSections.innerHTML = "";
+    selectedDetails.innerHTML = "";
+    roadmapSlot.innerHTML = "";
     activeICSPayload = null;
     renderList(topSteps, [], 3);
-    renderRemainingSteps(remainingSteps, []);
-    renderRoadmap(null, []);
     renderList(infoList, [], 5);
     renderList(actionList, [], 5);
     renderUniversities(selectedSchools);
@@ -857,58 +813,44 @@ function updateResult() {
   }
 
   const statusData = statusCopy[statusKey];
+  const schoolNames = selectedSchools.map((key) => universities[key].name);
 
   const infoItems = [...statusData.baseInfo, ...goals.map((goal) => goalCopy[goal].info)];
   const actionItems = [...statusData.baseActions, ...goals.map((goal) => goalCopy[goal].action)];
   const stepItems = [...statusData.steps, ...goals.map((goal) => goalCopy[goal].step)];
-  const roadmapItems = ROADMAPS[statusKey] || stepItems;
-  const completedRoadmap = getCompletedRoadmap(statusKey);
-  const remainingRoadmapItems = roadmapItems.filter((_, index) => !completedRoadmap.has(String(index)));
 
   summaryTitle.textContent = statusData.title;
-  summaryText.textContent = statusData.summary;
+  summaryText.textContent = `${statusData.summary} ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`;
 
   activeICSPayload = (statusKey === "elemGed" || statusKey === "midGed")
     ? { events: flattenExamEvents(), filename: "검정고시_일정.ics", calName: "검정고시 일정" }
     : null;
 
   const detailRenderer = statusDetailHTML[statusKey];
-  detailSections.innerHTML = (detailRenderer ? detailRenderer() : "")
-    + searchLinksHTML(statusData.keywords)
-    + compiledGoalsHTML(goals);
+  detailSections.innerHTML = detailRenderer ? detailRenderer() : "";
+  selectedDetails.innerHTML = searchLinksHTML(statusData.keywords)
+    + compiledGoalsHTML(goals)
+    + compiledUniversitiesHTML(selectedSchools);
+  roadmapSlot.innerHTML = roadmapForStatus(statusKey);
 
-  renderPrioritySteps(
-    topSteps,
-    remainingRoadmapItems.length
-      ? remainingRoadmapItems
-      : ["로드맵을 모두 체크했어요. 필요하면 공식 링크를 다시 확인해요."],
-    3
-  );
-  renderRemainingSteps(remainingSteps, remainingRoadmapItems);
-  renderRoadmap(statusKey, roadmapItems);
+  renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
   renderList(actionList, actionItems, 5);
   renderUniversities(selectedSchools);
 }
 
-showRoadmapBtn.addEventListener("click", () => {
-  roadmapRequested = true;
-  updateResult();
-  roadmapPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-});
-
-roadmapList.addEventListener("change", (event) => {
+roadmapSlot.addEventListener("change", (event) => {
   const input = event.target.closest("input[data-roadmap-index]");
   const statusKey = currentStatusKey();
   if (!input || !statusKey) return;
 
-  const completed = getCompletedRoadmap(statusKey);
+  const completed = completedRoadmapIndexes(statusKey);
   if (input.checked) {
     completed.add(input.dataset.roadmapIndex);
   } else {
     completed.delete(input.dataset.roadmapIndex);
   }
-  saveCompletedRoadmap(statusKey, completed);
+  saveCompletedRoadmapIndexes(statusKey, completed);
   updateResult();
 });
 
@@ -934,5 +876,57 @@ if (extraNotes) {
   });
 }
 
+const situationView = document.querySelector("#situationView");
+const detailsView = document.querySelector("#detailsView");
+const inputError = document.querySelector("#inputError");
+
+document.querySelector("#btnShowDetails").addEventListener("click", () => {
+  if (!currentStatusKey()) {
+    inputError.classList.add("show");
+    return;
+  }
+  inputError.classList.remove("show");
+  updateResult();
+  situationView.hidden = true;
+  detailsView.hidden = false;
+  detailsView.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+document.querySelector("#btnBackToSituation").addEventListener("click", () => {
+  detailsView.hidden = true;
+  situationView.hidden = false;
+  situationView.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+const heroView = document.querySelector("#heroView");
+const finderPage = document.querySelector("#finder");
+
+function goToFinderPage() {
+  heroView.hidden = true;
+  finderPage.hidden = false;
+  window.scrollTo(0, 0);
+}
+
+function goToHeroPage() {
+  finderPage.hidden = true;
+  heroView.hidden = false;
+  window.scrollTo(0, 0);
+}
+
+document.querySelector("#btnStartFinder").addEventListener("click", goToFinderPage);
+document.querySelector("#navBrand").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToHeroPage();
+});
+document.querySelector("#navToFinder").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+});
+document.querySelector("#navToRoadmap").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+});
+
 form.addEventListener("change", updateResult);
+restoreStatusState();
 updateResult();
