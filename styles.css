@@ -166,9 +166,27 @@ section {
 
 .details-layout {
   display: grid;
-  grid-template-columns: minmax(220px, 2fr) minmax(0, 5fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 24px;
   align-items: start;
+}
+
+/* 로드맵은 화면에 붙여두고, 안내 카드만 안에서 스크롤되게 한다.
+   로드맵을 보면서 자세한 설명을 읽는 게 목적. */
+.roadmap-panel {
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.result {
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.details-inputs {
+  margin-top: 24px;
 }
 
 .panel,
@@ -206,42 +224,342 @@ legend {
   font-weight: 800;
 }
 
-/* ---------- step picker (progressive question flow) ---------- */
+/* ---------- 질문 위저드: 한 화면에 질문 하나 ---------- */
 
-.step-picker__step + .step-picker__step {
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px dashed var(--line);
-}
-
-.step-picker__q {
+.wiz__top {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0 0 10px;
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--ink);
+  gap: 14px;
+  margin-bottom: 22px;
 }
 
-.step-picker__hint {
-  margin: -4px 0 12px;
-  font-size: 12.5px;
+.wiz__count {
+  margin: 0;
+  flex: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.wiz__count strong {
+  color: var(--teal);
+  font-size: 14px;
+}
+
+.wiz__bar {
+  flex: 1;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.wiz__bar i {
+  display: block;
+  height: 100%;
+  width: 20%;
+  border-radius: 999px;
+  background: var(--teal);
+  transition: width 0.25s ease;
+}
+
+.wiz__topiccount {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--teal);
+  font-variant-numeric: tabular-nums;
+}
+
+.wiz__q {
+  margin: 0 0 8px;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.wiz__hint {
+  margin: 0 0 18px;
+  font-size: 13px;
+  line-height: 1.6;
   color: var(--muted);
 }
 
-.step-picker__num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--teal);
-  color: #fff;
-  font-size: 11px;
+.wiz__nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.wiz__nav button {
+  font: inherit;
+  font-size: 14px;
   font-weight: 800;
+  border-radius: 10px;
+  padding: 12px 20px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+
+.wiz__nav .btn-prev {
+  flex: none;
+}
+
+.wiz__nav .btn-next {
+  flex: 1;
+}
+
+.wiz__nav button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.wiz__nav .btn-prev:disabled:hover {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+/* ---------- 거주 지역 지도 ---------- */
+
+/* 왼쪽 안내·드롭다운 / 오른쪽 지도 — kged.go.kr 교육청 선택 화면 구성 */
+.kmap-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 28px;
+  align-items: start;
+  margin-top: 6px;
+}
+
+.kmap-side {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  padding-top: 18px;
+}
+
+.kmap-side__lead {
+  margin: 0;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.kmap-select {
+  display: grid;
+  gap: 6px;
+}
+
+.kmap-select__label {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.kmap-select select {
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  width: 100%;
+  padding: 12px 38px 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--white);
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%235c6b45' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+  background-size: 15px;
+  color: var(--ink);
+  cursor: pointer;
+  appearance: none;
+  box-shadow: var(--shadow-soft);
+  transition: border-color 0.15s ease;
+}
+
+.kmap-select select:hover,
+.kmap-select select:focus {
+  border-color: var(--teal);
+  outline: none;
+}
+
+.kmap-select select option:disabled {
+  color: #b6ac9a;
+}
+
+.kmap {
+  display: block;
+}
+
+.kmap__svg {
+  width: 100%;
+  max-width: 330px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .kmap-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .kmap-side__lead {
+    font-size: 18px;
+  }
+
+  .kmap-side__lead br {
+    display: none;
+  }
+}
+
+/* 잠긴 지역: 눌러도 선택되지 않는다는 걸 색과 커서로 먼저 알린다 */
+/* 잠긴 지역 — 누를 수 없다는 걸 색과 커서로 먼저 알린다 */
+.kmap__area,
+.kmap__isle,
+.kmap__city {
+  stroke: var(--white);
+  stroke-linejoin: round;
+  transition: fill 0.18s ease;
+}
+
+.kmap__area,
+.kmap__isle {
+  fill: #e5dece;
+  stroke-width: 1.8;
+  cursor: not-allowed;
+}
+
+.kmap__isle {
+  stroke-width: 1.4;
+}
+
+/* 광역시는 도보다 한 톤 진하게 — 박스가 아니라 지도의 일부로 읽히게 */
+.kmap__city {
+  fill: #d5cab2;
+  stroke-width: 1.5;
+  cursor: not-allowed;
+}
+
+.kmap__area--on {
+  fill: #b9cb92;
+  stroke: #ffffff;
+  cursor: pointer;
+}
+
+.kmap__area--on:hover {
+  fill: #a9be7c;
+}
+
+.kmap__area--on.is-active {
+  fill: #93ad61;
+}
+
+.kmap__svg [data-enabled]:focus-visible {
+  outline: none;
+  stroke: var(--coral);
+  stroke-width: 2.6;
+}
+
+/* 라벨에 배경색 후광을 둘러 어느 지역 위에서도 읽히게 한다 */
+.kmap__t {
+  fill: #4c4437;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-anchor: middle;
+  pointer-events: none;
+  paint-order: stroke fill;
+  stroke: #f6f1e7;
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+}
+
+.kmap__t--city {
+  font-size: 9.5px;
+  font-weight: 700;
+  fill: #6b6152;
+}
+
+.kmap__t--xs { font-size: 8px; }
+
+.kmap__t--on {
+  fill: #2f3d1c;
+  font-size: 12px;
+}
+
+.kmap__pin { cursor: pointer; }
+
+.kmap__pin-pulse {
+  fill: none;
+  stroke: var(--coral);
+  stroke-width: 1.6;
+  opacity: 0;
+  transform-origin: center;
+}
+
+.kmap__pin.is-active .kmap__pin-pulse {
+  animation: kmapPulse 2.2s ease-out infinite;
+}
+
+@keyframes kmapPulse {
+  0%   { opacity: 0.55; transform: scale(0.55); }
+  70%  { opacity: 0;    transform: scale(1.5); }
+  100% { opacity: 0;    transform: scale(1.5); }
+}
+
+.kmap__pin-ring {
+  fill: #ffffff;
+  stroke: var(--coral);
+  stroke-width: 2;
+}
+
+.kmap__pin-dot {
+  fill: var(--coral);
+  stroke: none;
+  transition: r 0.15s ease;
+}
+
+.kmap__pin.is-active .kmap__pin-dot { r: 4.4; }
+
+.kmap__pin-txt {
+  fill: var(--coral);
+  font-size: 10.5px;
+  font-weight: 800;
+  text-anchor: middle;
+  pointer-events: none;
+  paint-order: stroke fill;
+  stroke: #f6f1e7;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.kmap__hint {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.kmap__hint strong {
+  color: var(--teal);
+}
+
+.kmap__hint.is-warn {
+  color: var(--coral);
+  font-weight: 700;
+}
+
+.kmap__hint.is-warn strong {
+  color: var(--coral);
 }
 
 /* ---------- option cards: glance-first, detail-on-select ---------- */
@@ -327,6 +645,11 @@ legend {
 }
 
 .result__label {
+  position: sticky;
+  top: -28px;
+  z-index: 2;
+  padding: 4px 0 8px;
+  background: var(--white);
   margin: 0 0 10px;
   color: var(--coral);
   font-size: 14px;
@@ -354,18 +677,371 @@ legend {
 }
 
 .roadmap-panel {
-  margin-bottom: 24px;
+  margin-bottom: 0;
 }
 
 .roadmap-panel .section-heading {
   margin-bottom: 16px;
 }
 
+/* 알약 폭을 패널 폭으로 판단해야 해서 컨테이너 쿼리 기준점을 여기 둔다
+   (뷰포트 기준으로 하면 반칸 레이아웃에서 잘못 넓어진다) */
 .roadmap-slot {
-  min-height: 160px;
+  container-type: inline-size;
+}
+
+.roadmap-empty {
+  margin: 0;
+  padding: 30px 18px;
   border: 1.5px dashed var(--line);
   border-radius: var(--card-radius);
   background: #fbf8f2;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ---------- 로드맵: S커브 스텝 알약 ---------- */
+
+.scv__step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 18px;
+  border-radius: 20px;
+  color: #fff;
+  box-shadow: var(--shadow-soft);
+}
+
+.scv__ico {
+  flex: 0 0 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.scv__open {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.scv__step--r .scv__open {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.scv__open:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+  border-radius: 14px;
+}
+
+.scv__step--goal .scv__open:focus-visible {
+  outline-color: #40300a;
+}
+
+.scv__txt {
+  flex: 1;
+  min-width: 0;
+  display: block;
+}
+
+.scv__n,
+.scv__ttl,
+.scv__meta {
+  display: block;
+}
+
+/* '자세히' 힌트 — 누를 수 있다는 걸 알린다 */
+.scv__more {
+  flex: none;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.scv__open:hover .scv__more {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.scv__step--goal .scv__more {
+  background: rgba(0, 0, 0, 0.14);
+  color: #40300a;
+}
+
+.scv__step--goal .scv__open:hover .scv__more {
+  background: rgba(0, 0, 0, 0.24);
+}
+
+/* 열린 단계 — 안내 카드에 펼쳐진 내용과 짝이라는 걸 보이게 */
+.scv__step.is-open {
+  box-shadow: 0 0 0 3px var(--gold), var(--shadow-soft);
+}
+
+.scv__n {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+
+.scv__ttl {
+  text-wrap: balance;
+  margin: 2px 0 0;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.scv__meta {
+  margin: 4px 0 0;
+  font-size: 11.5px;
+  line-height: 1.55;
+  opacity: 0.9;
+}
+
+/* ---------- 로드맵 진행률 ---------- */
+
+.scv-prog {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fbf8f2;
+}
+
+.scv-prog__count {
+  flex: none;
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.scv-prog__count strong {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--teal);
+  font-variant-numeric: tabular-nums;
+}
+
+.scv-prog__bar {
+  flex: 1;
+  min-width: 80px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.scv-prog__bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--teal);
+  transition: width 0.25s ease;
+}
+
+.scv-prog--done {
+  border-color: var(--gold);
+  background: rgba(217, 169, 74, 0.16);
+}
+
+.scv-prog--done .scv-prog__count,
+.scv-prog--done .scv-prog__count strong {
+  color: #7a5a12;
+}
+
+.scv-prog--done .scv-prog__bar i {
+  background: var(--gold);
+}
+
+.scv-prog__reset {
+  flex: none;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 4px 9px;
+  cursor: pointer;
+}
+
+.scv-prog__reset:hover {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+/* ---------- 단계 완료 체크 ---------- */
+
+.scv__check {
+  flex: 0 0 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.scv__check:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.scv__check:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.scv__check[aria-pressed="true"] {
+  background: #fff;
+  border-color: #fff;
+  color: var(--ink);
+}
+
+.scv__step--goal .scv__check {
+  border-color: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.scv__step--goal .scv__check:hover {
+  background: rgba(0, 0, 0, 0.16);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.scv__step--goal .scv__check:focus-visible {
+  outline-color: #40300a;
+}
+
+.scv__step--goal .scv__check[aria-pressed="true"] {
+  background: #40300a;
+  border-color: #40300a;
+  color: var(--gold);
+}
+
+.scv__step.is-done {
+  opacity: 0.6;
+}
+
+.scv__step.is-done .scv__ttl {
+  text-decoration: line-through;
+}
+
+.scv__step--c1 { background: var(--coral); }
+.scv__step--c2 { background: #4a5636; }
+.scv__step--c3 { background: var(--teal); }
+.scv__step--c4 { background: var(--leaf); }
+
+.scv__step--goal {
+  background: var(--gold);
+  color: #40300a;
+}
+
+.scv__step--goal .scv__ico {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* 좁을 때(기본): 세로 점선으로 잇는다 */
+.scv__conn {
+  height: 20px;
+  margin-left: 39px;
+  border-left: 3px dashed var(--line);
+}
+
+/* 패널이 넓어지면 좌우 번갈아 놓고 S커브로 잇는다 */
+@container (min-width: 560px) {
+  .scv__step {
+    width: 66%;
+  }
+
+  .scv__step--r {
+    margin-left: auto;
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+
+  .scv__conn {
+    position: relative;
+    height: 54px;
+    margin-left: 0;
+    border-left: 0;
+  }
+
+  .scv__conn::before,
+  .scv__conn::after {
+    content: "";
+    position: absolute;
+    height: 27px;
+    width: 20%;
+    border: 3px dashed var(--line);
+  }
+
+  .scv__conn--lr::before {
+    left: 30%;
+    top: 0;
+    border-top: 0;
+    border-right: 0;
+    border-bottom-left-radius: 30px;
+  }
+
+  .scv__conn--lr::after {
+    left: 50%;
+    top: 27px;
+    border-bottom: 0;
+    border-left: 0;
+    border-top-right-radius: 30px;
+  }
+
+  .scv__conn--rl::before {
+    left: 50%;
+    top: 0;
+    border-top: 0;
+    border-left: 0;
+    border-bottom-right-radius: 30px;
+  }
+
+  .scv__conn--rl::after {
+    left: 30%;
+    top: 27px;
+    border-bottom: 0;
+    border-right: 0;
+    border-top-left-radius: 30px;
+  }
 }
 
 .next-steps {
@@ -553,6 +1229,150 @@ textarea#extraNotes {
 .btn-prev:hover {
   border-color: var(--teal);
   color: var(--teal);
+}
+
+/* ---------- 자퇴 날짜 입력 · 응시 제한 안내 ---------- */
+
+.wiz__date {
+  display: grid;
+  gap: 6px;
+  max-width: 260px;
+}
+
+.wiz__date__label {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.wiz__date input {
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
+}
+
+.wiz__date input:focus {
+  border-color: var(--teal);
+  outline: none;
+}
+
+.quit-note {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border-left: 3px solid var(--teal);
+  background: var(--teal-soft);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+.quit-note--wait {
+  border-left-color: var(--coral);
+  background: rgba(181, 87, 60, 0.1);
+}
+
+.quit-note__law {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- 로드맵 단계 상세 (알약을 누르면 펼쳐짐) ---------- */
+
+.step-detail {
+  margin: 0 0 20px;
+  border: 1.5px solid var(--gold);
+  border-radius: var(--card-radius);
+  background: #fdfaf3;
+  overflow: hidden;
+  animation: stepDetailIn 0.22s ease-out;
+}
+
+@keyframes stepDetailIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.step-detail__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(217, 169, 74, 0.16);
+  border-bottom: 1px solid var(--line);
+}
+
+.step-detail__head > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.step-detail__eyebrow {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #7a5a12;
+}
+
+.step-detail__title {
+  text-wrap: balance;
+  margin: 3px 0 0;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.step-detail__close {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.step-detail__close:hover {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+.step-detail__body {
+  padding: 16px 16px 18px;
+}
+
+/* 표 칸은 폭이 좁아 keep-all 이면 글자가 넘친다 — 여기만 예외 */
+.info-mini td,
+.info-mini th {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+.step-detail__body > :first-child {
+  margin-top: 0;
+}
+
+.step-detail__body h4 {
+  margin: 16px 0 7px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.step-detail__body h4:first-child {
+  margin-top: 0;
 }
 
 /* ---------- expanded detail sections (shown once a status is picked) ---------- */
@@ -853,8 +1673,29 @@ footer {
     grid-template-columns: 1fr;
   }
 
+  /* 세로로 쌓이면 칸별 스크롤이 오히려 불편해서 해제한다 */
+  .roadmap-panel,
+  .result {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+
   section {
     padding-top: 56px;
     padding-bottom: 56px;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .kmap__pin.is-active .kmap__pin-pulse {
+    animation: none;
+    opacity: 0.4;
+  }
+
+  .wiz__bar i,
+  .scv-prog__bar i {
+    transition: none;
   }
 }
