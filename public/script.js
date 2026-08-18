@@ -580,6 +580,8 @@ const statusDetailHTML = {
    ========================================================= */
 
 const form = document.querySelector("#profileForm");
+const finderLayout = document.querySelector(".finder__layout");
+const resultPanel = document.querySelector(".result");
 const summaryTitle = document.querySelector("#summaryTitle");
 const summaryText = document.querySelector("#summaryText");
 const infoList = document.querySelector("#infoList");
@@ -800,6 +802,8 @@ function updateResult() {
   const goals = checkedValues("goal");
   const selectedSchools = shouldShowUniversityChoices() ? checkedValues("school") : [];
   updateUniversityVisibility();
+  resultPanel.hidden = !statusKey;
+  finderLayout.classList.toggle("is-selecting", !statusKey);
 
   if (!statusKey) {
     summaryTitle.textContent = "위 단계를 순서대로 선택해 주세요.";

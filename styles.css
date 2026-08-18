@@ -162,6 +162,14 @@ section {
   align-items: start;
 }
 
+.finder__layout.is-selecting {
+  grid-template-columns: minmax(300px, 720px);
+}
+
+.finder__layout.is-selecting .panel {
+  max-width: 720px;
+}
+
 .panel,
 .result,
 .info-columns article,
