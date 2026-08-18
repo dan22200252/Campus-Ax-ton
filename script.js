@@ -241,12 +241,14 @@ const EXAM_DOCS_BY_LEVEL = {
 const EXAM_LINKS = {
   apply: { url: "https://kged.go.kr", title: "검정고시 온라인 원서접수 (나이스)", desc: "공동인증서 로그인 → 시·도교육청 선택 → 원서 작성" },
   notice: { url: "https://www.sen.go.kr/user/bbs/BD_selectBbsList.do?q_bbsSn=1097", title: "서울시교육청 검정고시 공고", desc: "확정 일정·시험장 확인 (타 지역은 해당 교육청 누리집)" },
-  center: { url: "https://www.kdream.or.kr", title: "청소년지원센터 꿈드림", desc: "만 9~24세 학교 밖 청소년 · 검정고시 준비, 교재비·상담 지원" },
+  center: { url: "https://www.1388.go.kr", title: "청소년상담 1388", desc: "전화 1388 · 24시간 채팅 상담 · 지역 꿈드림 센터를 안내받을 수 있어요" },
+  mogef: { url: "https://www.mogef.go.kr", title: "여성가족부 — 학교 밖 청소년 지원", desc: "꿈드림 사업 안내 · 만 9~24세 검정고시 준비, 교재비·상담 지원" },
   hischool: { url: "https://www.hischool.go.kr", title: "고입정보포털 하이스쿨", desc: "고등학교 종류·전형·모집 일정 확인" },
   work: { url: "https://www.work24.go.kr", title: "고용24 (구 워크넷)", desc: "청소년 취업 지원, 직업훈련(내일배움카드) 신청" },
   adiga: { url: "https://www.adiga.kr", title: "어디가 (대입정보포털)", desc: "대학별 전형·모집요강·입시 일정 확인" },
   kosaf: { url: "https://www.kosaf.go.kr", title: "한국장학재단", desc: "국가장학금·학자금 대출 신청" },
-  qnet: { url: "https://www.q-net.or.kr", title: "큐넷 (Q-Net)", desc: "기능사 등 국가기술자격 시험 접수·일정" }
+  qnet: { url: "https://www.q-net.or.kr", title: "큐넷 (Q-Net)", desc: "기능사 등 국가기술자격 시험 접수·일정" },
+  youth: { url: "https://www.gov.kr", title: "정부24 — 청소년증 발급", desc: "온라인 신청 또는 가까운 읍·면·동 주민센터 방문 신청" }
 };
 
 const goalOptionsByLevel = {
@@ -440,8 +442,8 @@ function examDetailHTML(examKey) {
     <p class="note-mini">정확한 최신 일정은 거주지 시·도교육청 홈페이지에서 "검정고시 공고"를 검색해 다시 확인하세요.</p>
     <div class="consult-callout">
       <h4>전화 상담이 어려우면</h4>
-      <p>일하느라 유선 상담 시간을 맞추기 어렵다면, 청소년지원센터 꿈드림을 이용해보세요. 센터에 따라 방문·온라인 게시판 상담도 운영해요.</p>
-      ${linksHTML(["center"])}
+      <p>일하느라 전화 상담 시간을 맞추기 어렵다면, 청소년지원센터 꿈드림을 이용해보세요. 센터에 따라 방문·온라인 게시판 상담도 운영해요.</p>
+      ${linksHTML(["center", "mogef"])}
     </div>
   `;
 }
@@ -517,7 +519,7 @@ const statusDetailHTML = {
       <li>목표가 생기면 위에서 다시 선택해서 맞춤 안내를 받아보세요</li>
     </ul>
     <p class="note-mini">지금 당장 정하지 않아도 괜찮아요. 준비가 됐을 때 다시 돌아와도 늦지 않아요.</p>
-    ${linksHTML(["center"])}
+    ${linksHTML(["center", "mogef"])}
   `
 };
 
