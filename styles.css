@@ -722,6 +722,18 @@ legend {
   margin-bottom: 16px;
 }
 
+.roadmap-heading__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.roadmap-heading__reset {
+  flex: none;
+  white-space: nowrap;
+}
+
 /* 알약 폭을 패널 폭으로 판단해야 해서 컨테이너 쿼리 기준점을 여기 둔다
    (뷰포트 기준으로 하면 반칸 레이아웃에서 잘못 넓어진다) */
 .roadmap-slot {
