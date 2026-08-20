@@ -633,6 +633,7 @@ const ROADMAP_STORAGE_KEY = "axton_roadmap_v1";
 
 const situationView = document.querySelector("#situationView");
 const detailsView = document.querySelector("#detailsView");
+const heroSituationCta = document.querySelector("#heroSituationCta");
 
 const stepGoalOptions = document.querySelector("#stepGoalOptions");
 const stepTopicNode = document.querySelector("#stepTopic");
@@ -671,6 +672,10 @@ const ALL_STEP_NODES = [...BASE_STEPS.map((step) => step.node), stepTopicNode];
 if (quitDateInput) quitDateInput.max = new Date().toISOString().slice(0, 10);
 
 let wizIndex = 0;
+
+function setHeroSituationCtaVisible(visible) {
+  if (heroSituationCta) heroSituationCta.hidden = !visible;
+}
 
 function relevantTopics() {
   if (!statusState.level || !statusState.goal) return [];
@@ -773,6 +778,7 @@ function goNext() {
     updateResult();
     situationView.hidden = true;
     detailsView.hidden = false;
+    setHeroSituationCtaVisible(false);
     detailsView.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
@@ -1864,6 +1870,7 @@ if (extraNotes) {
 document.querySelector("#btnBackToSituation").addEventListener("click", () => {
   detailsView.hidden = true;
   situationView.hidden = false;
+  setHeroSituationCtaVisible(true);
   wizIndex = wizSteps().length - 1;
   renderWizard();
   situationView.scrollIntoView({ behavior: "smooth", block: "start" });
