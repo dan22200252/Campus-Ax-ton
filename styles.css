@@ -836,6 +836,14 @@ textarea#extraNotes {
   resize: vertical;
 }
 
+.step-picker__notes label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
 .field-hint {
   margin: 8px 0 0;
   font-size: 12px;

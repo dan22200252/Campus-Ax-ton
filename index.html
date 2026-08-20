@@ -91,6 +91,13 @@
                 <p class="step-picker__q"><span class="step-picker__num">2</span>앞으로 무엇을 하고 싶으세요?</p>
                 <div class="opt-grid" id="stepGoalOptions"></div>
               </div>
+
+              <div class="step-picker__step step-picker__notes" id="stepNotes" hidden>
+                <p class="step-picker__q"><span class="step-picker__num">3</span>추가로 알려주고 싶은 내용이 있나요?</p>
+                <label for="extraNotes">내 상황을 조금 더 적어주세요</label>
+                <textarea id="extraNotes" rows="3" placeholder="예: 이번 겨울에 이사할 수도 있어요, 아르바이트 경험이 있어요 등 자유롭게 적어주세요"></textarea>
+                <p class="field-hint">이 내용은 이 브라우저에만 저장돼요. AI가 읽고 안내를 맞춰주는 기능은 아직 준비 중이에요.</p>
+              </div>
             </fieldset>
 
             <p class="wizard__error" id="inputError">위에서 최종 학력과 목표를 먼저 골라주세요.</p>
@@ -169,12 +176,6 @@
                       <span class="opt-card__txt"><strong>한국폴리텍대학 포항캠퍼스</strong><span>국비 직업훈련(비학위) · 학위과정 아님</span></span>
                     </label>
                   </div>
-                </fieldset>
-
-                <fieldset>
-                  <legend>추가로 알려주고 싶은 내용</legend>
-                  <textarea id="extraNotes" rows="3" placeholder="예: 이번 겨울에 이사할 수도 있어요, 아르바이트 경험이 있어요 등 자유롭게 적어주세요"></textarea>
-                  <p class="field-hint">이 내용은 이 브라우저에만 저장돼요. AI가 읽고 안내를 맞춰주는 기능은 아직 준비 중이에요.</p>
                 </fieldset>
 
                 <div class="wizard__nav">
