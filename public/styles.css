@@ -155,6 +155,23 @@ main[hidden] {
   box-shadow: var(--shadow);
 }
 
+.hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.hero__badge {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
 main {
   display: grid;
   gap: 0;
