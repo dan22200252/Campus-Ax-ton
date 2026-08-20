@@ -726,12 +726,30 @@ legend {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 10px;
+}
+
+.roadmap-heading__row h2 {
+  min-width: 0;
 }
 
 .roadmap-heading__reset {
   flex: none;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(92, 107, 69, 0.82);
+  color: #fff;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 800;
   white-space: nowrap;
+}
+
+.roadmap-heading__reset:hover {
+  background: var(--teal);
+  color: #fff;
 }
 
 /* 알약 폭을 패널 폭으로 판단해야 해서 컨테이너 쿼리 기준점을 여기 둔다
