@@ -598,9 +598,10 @@ const infoList = document.querySelector("#infoList");
 const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
-const universitiesSection = document.querySelector("#universities");
+const universitiesSection = document.querySelector("#universitySection");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
+const universityPicks = document.querySelector("#universityPicks");
 const roadmapSlot = document.querySelector("#roadmapSlot");
 const stepDetail = document.querySelector("#stepDetail");
 const stepDetailTag = document.querySelector("#stepDetailTag");
@@ -656,6 +657,7 @@ const qTopic = document.querySelector("#qTopic");
 const qTopicHint = document.querySelector("#qTopicHint");
 const qTopicCount = document.querySelector("#qTopicCount");
 const stepNotesNode = document.querySelector("#stepNotes");
+const stepSchoolsNode = document.querySelector("#stepSchools");
 const kmapSvg = document.querySelector(".kmap__svg");
 const regionHint = document.querySelector("#regionHint");
 const regionSelect = document.querySelector("#regionSelect");
@@ -668,6 +670,7 @@ const wizTotal = document.querySelector("#wizTotal");
 const wizBar = document.querySelector("#wizBar");
 const btnWizBack = document.querySelector("#btnWizBack");
 const btnWizNext = document.querySelector("#btnWizNext");
+const wizError = document.querySelector("#wizError");
 
 /* youthInfo는 '청소년증 없어요'일 때만, 항목 질문은 학력x목표가 정해진 뒤에만
    나온다. 그래서 전체 질문 수가 답에 따라 달라진다(현재 4~10개). */
@@ -678,6 +681,8 @@ const BASE_STEPS = [
   { id: "quit", node: document.querySelector("#stepQuit"), when: () => statusState.level === "elem" || statusState.level === "mid" },
   { id: "quitDate", node: document.querySelector("#stepQuitDate"), when: () => statusState.quit === "yes" && (statusState.level === "elem" || statusState.level === "mid") },
   { id: "goal", node: document.querySelector("#stepGoal") },
+  /* 대학교 진학을 목표로 골랐을 때만 궁금한 대학을 물어본다 */
+  { id: "schools", node: stepSchoolsNode, when: () => statusState.goal === "univ" },
   { id: "youth", node: document.querySelector("#stepYouth") },
   { id: "youthInfo", node: document.querySelector("#stepYouthInfo"), when: () => statusState.youth === "no" }
 ];
@@ -712,7 +717,7 @@ function wizSteps() {
 }
 
 function isAnswered(step) {
-  if (step.id === "notes") return true;
+  if (step.id === "notes" || step.id === "schools") return true;
   return step.topic ? Boolean(statusState.topics[step.topic]) : Boolean(statusState[step.id]);
 }
 
@@ -787,10 +792,18 @@ function renderWizard() {
   btnWizBack.disabled = wizIndex === 0;
   /* 이미 답한 질문이면 다시 고르지 않고도 앞으로 갈 수 있게 */
   btnWizNext.hidden = !isAnswered(current);
+  wizError.classList.remove("show");
 }
 
 function goNext() {
-  if (wizIndex >= wizSteps().length - 1) {
+  const steps = wizSteps();
+  const current = steps[wizIndex];
+  /* 버튼이 안 보여도 우회해서 넘어가지 못하게 한 번 더 막는다 */
+  if (!isAnswered(current)) {
+    wizError.classList.add("show");
+    return;
+  }
+  if (wizIndex >= steps.length - 1) {
     updateResult();
     situationView.hidden = true;
     detailsView.hidden = false;
@@ -1155,7 +1168,7 @@ function renderPrioritySteps(target, items, limit = 3) {
 }
 
 function renderUniversities(selectedSchools) {
-  universitiesSection.hidden = statusState.goal !== "univ";
+  /* 보이고 안 보이고는 상단 "포항 대학" 메뉴 클릭으로만 정한다 */
   universityList.innerHTML = "";
 
   Object.entries(universities).forEach(([key, school]) => {
@@ -1350,7 +1363,7 @@ function roadmapSteps() {
         id: "ged:univ",
         icon: "🎓",
         tag: "그 다음",
-        title: schoolNames.length ? `${schoolNames.join(" · ")} 지원` : "대학 지원",
+        title: "대학 지원",
         meta: `수시 원서접수 9월 초 · 수능 ${suneung ? `${fmtDate(suneung)} (${ddayLabel(suneung)})` : "11월 셋째 주 목요일"} · 정시 12월 말~1월 초`,
         detail: `
           <p class="detail-lead">고졸 학력이 생기면 대학에 지원할 수 있어요. 수시와 정시 중 어디로 갈지 먼저 정해요.</p>
@@ -1360,7 +1373,7 @@ function roadmapSteps() {
             <li><strong>수시</strong> — 9월 초에 신청해요. 학교 성적과 학교생활기록부를 봐요. 검정고시 출신은 지원할 수 있는 전형이 적어요.</li>
             <li><strong>정시</strong> — 수능 성적 중심${suneung ? `, 수능은 ${fmtDate(suneung)}` : ""}. 검정고시 출신에게 가장 많이 가는 길이에요.</li>
           </ul>
-          ${schoolNames.length ? compiledUniversitiesHTML(checkedValues("school")) : '<p class="note-mini">아래 "궁금한 대학"에서 학교를 고르면 학교별 확인 사항이 여기 나와요.</p>'}
+          <p class="note-mini">맨 처음 "앞으로 무엇을 하고 싶으세요?"에서 대학교 진학을 고르면, 학교별로 확인할 내용을 자세히 안내해드려요.</p>
           ${linksHTML(["adiga", "kosaf"])}
         `
       });
@@ -1480,7 +1493,7 @@ function roadmapSteps() {
           <li>학생부종합전형은 학교생활기록부 대신 다른 서류와 증명 자료를 달라고 할 수 있어요.</li>
           <li>농어촌 전형처럼 조건이 붙은 전형은 검정고시 출신이 지원 못 할 수 있어요.</li>
         </ul>
-        ${schoolNames.length ? compiledUniversitiesHTML(checkedValues("school")) : '<p class="note-mini">아래 "궁금한 대학"에서 학교를 고르면 학교별 확인 사항이 여기 나와요.</p>'}
+        ${schoolNames.length ? compiledUniversitiesHTML(checkedValues("school")) : '<p class="note-mini">위에서 궁금한 대학을 고르면 학교별 확인 사항이 여기 나와요.</p>'}
         ${linksHTML(["adiga"])}`
     });
     steps.push({
@@ -1799,6 +1812,8 @@ function updateResult() {
     summaryText.textContent = "사는 지역과 최종 학력, 앞으로의 목표를 고르면 맞춤 안내가 나와요.";
     detailSections.innerHTML = "";
     selectedDetails.innerHTML = "";
+    universityPicks.hidden = true;
+    universityPicks.innerHTML = "";
     activeICSPayload = null;
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
@@ -1842,8 +1857,11 @@ function updateResult() {
     actionItems.unshift("중학교를 그만둔 경우는 기다리는 기간이 없어요. 정원외관리증명서를 챙기세요.");
   }
 
+  const schoolNote = statusState.goal === "univ"
+    ? ` ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`
+    : "";
   summaryTitle.textContent = statusData.title;
-  summaryText.textContent = `${region ? `${region.name} 기준으로 안내해요. ` : ""}${statusData.summary} ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`;
+  summaryText.textContent = `${region ? `${region.name} 기준으로 안내해요. ` : ""}${statusData.summary}${schoolNote}`;
 
   activeICSPayload = (statusKey === "elemGed" || statusKey === "midGed")
     ? { events: flattenExamEvents(), filename: "검정고시_일정.ics", calName: "검정고시 일정" }
@@ -1854,8 +1872,11 @@ function updateResult() {
   selectedDetails.innerHTML = quitRuleHTML()
     + youthCardDetailHTML()
     + searchLinksHTML(statusData.keywords)
-    + compiledGoalsHTML(goals)
-    + compiledUniversitiesHTML(selectedSchools);
+    + compiledGoalsHTML(goals);
+
+  /* 내 상황 찾기에서 고른 궁금한 대학은 안내 카드에 바로 보이게 둔다(접었다 펴지 않음) */
+  universityPicks.hidden = statusState.goal !== "univ" || !selectedSchools.length;
+  universityPicks.innerHTML = universityPicks.hidden ? "" : compiledUniversitiesHTML(selectedSchools);
 
   renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
@@ -1889,11 +1910,14 @@ if (extraNotes) {
 const heroView = document.querySelector("#heroView");
 const mainView = document.querySelector("main");
 const footerView = document.querySelector("footer");
+const finderSection = document.querySelector("#finder");
 
 function goToFinderPage() {
   heroView.hidden = true;
   mainView.hidden = false;
   footerView.hidden = false;
+  finderSection.hidden = false;
+  universitiesSection.hidden = true;
   window.scrollTo(0, 0);
 }
 
@@ -1923,10 +1947,13 @@ document.querySelector("#navToRoadmap").addEventListener("click", (event) => {
 
 document.querySelector("#navToUniversities").addEventListener("click", (event) => {
   event.preventDefault();
-  goToFinderPage();
-  if (!universitiesSection.hidden) {
-    requestAnimationFrame(() => universitiesSection.scrollIntoView({ behavior: "smooth", block: "start" }));
-  }
+  heroView.hidden = true;
+  mainView.hidden = false;
+  footerView.hidden = false;
+  finderSection.hidden = true;
+  universitiesSection.hidden = false;
+  renderUniversities(checkedValues("school"));
+  window.scrollTo(0, 0);
 });
 
 document.querySelector("#btnBackToSituation").addEventListener("click", () => {

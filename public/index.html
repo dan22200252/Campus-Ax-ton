@@ -202,6 +202,34 @@
                 <div class="opt-grid" id="stepGoalOptions"></div>
               </div>
 
+              <!-- Q. 궁금한 대학 (목표가 대학교 진학일 때만) -->
+              <div class="wiz__step" id="stepSchools" data-step="schools" role="group" aria-labelledby="qSchools" hidden>
+                <p class="wiz__q" id="qSchools">🎓 궁금한 대학이 있나요?</p>
+                <p class="wiz__hint">관심 있는 학교를 골라주세요. 나중에 바꿀 수 있어요.</p>
+                <div class="opt-grid opt-grid--check">
+                  <label class="opt-card opt-card--check">
+                    <input type="checkbox" name="school" value="postech" checked />
+                    <span class="opt-card__txt"><strong>포항공과대학교</strong><span>4년제 · 수시만 있어요, 검정고시도 지원 가능</span></span>
+                  </label>
+                  <label class="opt-card opt-card--check">
+                    <input type="checkbox" name="school" value="handong" />
+                    <span class="opt-card__txt"><strong>한동대학교</strong><span>4년제 · 수시와 정시 모두, 합격증명서 내야 해요</span></span>
+                  </label>
+                  <label class="opt-card opt-card--check">
+                    <input type="checkbox" name="school" value="sunlin" />
+                    <span class="opt-card__txt"><strong>선린대학교</strong><span>전문대 · 검정고시 합격자도 지원 가능</span></span>
+                  </label>
+                  <label class="opt-card opt-card--check">
+                    <input type="checkbox" name="school" value="pohang" />
+                    <span class="opt-card__txt"><strong>포항대학교</strong><span>전문대 · 검정고시 합격자도 지원 가능</span></span>
+                  </label>
+                  <label class="opt-card opt-card--check">
+                    <input type="checkbox" name="school" value="polytech" />
+                    <span class="opt-card__txt"><strong>한국폴리텍대학 포항캠퍼스</strong><span>나라에서 돈을 내주는 직업훈련 · 졸업장은 안 나와요</span></span>
+                  </label>
+                </div>
+              </div>
+
               <!-- Q4. 청소년증 -->
               <div class="wiz__step" id="stepYouth" data-step="youth" role="group" aria-labelledby="qYouth" hidden>
                 <p class="wiz__q" id="qYouth">청소년증이 있나요?</p>
@@ -251,6 +279,8 @@
                 <p class="field-hint">적은 내용은 이 브라우저에만 저장돼요. 아직은 이 내용에 맞춰 안내가 바뀌지는 않아요.</p>
               </div>
 
+              <p class="wizard__error" id="wizError">먼저 위에서 골라주세요.</p>
+
               <div class="wiz__nav">
                 <button type="button" class="btn-prev" id="btnWizBack">← 뒤로</button>
                 <button type="button" class="btn-next" id="btnWizNext" hidden>다음 →</button>
@@ -261,12 +291,9 @@
           <div id="detailsView" hidden>
             <div class="details-layout">
               <div class="panel roadmap-panel">
-                <div class="section-heading roadmap-heading">
+                <div class="section-heading">
                   <p class="eyebrow">답변으로 만든</p>
-                  <div class="roadmap-heading__row">
-                    <h2>🗺️ 내 로드맵</h2>
-                    <button type="button" class="btn-prev roadmap-heading__reset" id="btnBackToSituation">다시 고르기</button>
-                  </div>
+                  <h2>🗺️ 내 로드맵</h2>
                 </div>
                 <div class="roadmap-slot" id="roadmapSlot"></div>
               </div>
@@ -295,6 +322,9 @@
                   <h4>✅ 먼저 할 일 3가지</h4>
                   <ol id="topSteps"></ol>
                 </div>
+
+                <!-- 내 상황 찾기에서 고른 "궁금한 대학"이 있을 때만 나온다 -->
+                <div class="detail-sections university-picks" id="universityPicks" hidden></div>
 
                 <div class="accordion">
                   <div class="accordion__item">
@@ -331,37 +361,16 @@
             </div>
 
             <div class="panel details-inputs">
-                <fieldset>
-                  <legend>🎓 궁금한 대학</legend>
-                  <div class="opt-grid opt-grid--check">
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="postech" checked />
-                      <span class="opt-card__txt"><strong>포항공과대학교</strong><span>4년제 · 수시만 있어요, 검정고시도 지원 가능</span></span>
-                    </label>
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="handong" />
-                      <span class="opt-card__txt"><strong>한동대학교</strong><span>4년제 · 수시와 정시 모두, 합격증명서 내야 해요</span></span>
-                    </label>
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="sunlin" />
-                      <span class="opt-card__txt"><strong>선린대학교</strong><span>전문대 · 검정고시 합격자도 지원 가능</span></span>
-                    </label>
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="pohang" />
-                      <span class="opt-card__txt"><strong>포항대학교</strong><span>전문대 · 검정고시 합격자도 지원 가능</span></span>
-                    </label>
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="polytech" />
-                      <span class="opt-card__txt"><strong>한국폴리텍대학 포항캠퍼스</strong><span>나라에서 돈을 내주는 직업훈련 · 졸업장은 안 나와요</span></span>
-                    </label>
-                  </div>
-                </fieldset>
+                <div class="wizard__nav">
+                  <button type="button" class="btn-prev" id="btnBackToSituation">다시 상황 고르기</button>
+                </div>
             </div>
           </div>
         </form>
       </section>
 
-      <section class="universities" id="universities" aria-labelledby="universities-title" hidden>
+      <!-- 상단 "포항 대학" 메뉴를 눌렀을 때만 나온다 -->
+      <section class="universities" id="universitySection" aria-labelledby="universities-title" hidden>
         <div class="section-heading">
           <p class="eyebrow">포항 소재 대학 우선</p>
           <h2 id="universities-title">🎓 대학마다 이것만 먼저 확인해요</h2>
