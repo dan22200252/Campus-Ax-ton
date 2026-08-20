@@ -243,6 +243,14 @@
                 <div class="opt-grid" id="stepTopicOptions"></div>
               </div>
 
+              <!-- Q. 자유 메모 — 위 질문에서 다루지 못한 개인 사정을 마지막에 받는다 -->
+              <div class="wiz__step" id="stepNotes" data-step="notes" role="group" aria-labelledby="qNotes" hidden>
+                <p class="wiz__q" id="qNotes">더 궁금한 게 있으면 말해주세요</p>
+                <p class="wiz__hint">예: 이번 겨울에 이사할 수도 있어요, 아르바이트를 해봤어요 등 자유롭게 적어주세요.</p>
+                <textarea id="extraNotes" rows="4" placeholder="궁금한 점이나 내 상황을 자유롭게 적어주세요"></textarea>
+                <p class="field-hint">적은 내용은 이 브라우저에만 저장돼요. 아직은 이 내용에 맞춰 안내가 바뀌지는 않아요.</p>
+              </div>
+
               <div class="wiz__nav">
                 <button type="button" class="btn-prev" id="btnWizBack">← 뒤로</button>
                 <button type="button" class="btn-next" id="btnWizNext" hidden>다음 →</button>
@@ -344,12 +352,6 @@
                       <span class="opt-card__txt"><strong>한국폴리텍대학 포항캠퍼스</strong><span>나라에서 돈을 내주는 직업훈련 · 졸업장은 안 나와요</span></span>
                     </label>
                   </div>
-                </fieldset>
-
-                <fieldset>
-                  <legend>더 알려주고 싶은 게 있으면 적어주세요</legend>
-                  <textarea id="extraNotes" rows="3" placeholder="예: 이번 겨울에 이사할 수도 있어요, 아르바이트를 해봤어요"></textarea>
-                  <p class="field-hint">적은 내용은 이 브라우저에만 저장돼요. 아직은 이 내용에 맞춰 안내가 바뀌지는 않아요.</p>
                 </fieldset>
 
                 <div class="wizard__nav">
