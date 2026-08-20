@@ -773,6 +773,13 @@ function goNext() {
     updateResult();
     situationView.hidden = true;
     detailsView.hidden = false;
+    /* 대학 정보 섹션은 첫 화면·질문 중에는 숨기고, 대학 진학을 원한다고
+       답했을 때만 마지막(결과) 화면에서 보여준다. */
+    const universitiesSection = document.querySelector("#universities");
+    if (universitiesSection) {
+      const wantsCollege = statusState.goal === "univ" || selectedTopics().includes("college");
+      universitiesSection.hidden = !(currentStatusKey() && wantsCollege);
+    }
     detailsView.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
@@ -1864,6 +1871,8 @@ if (extraNotes) {
 document.querySelector("#btnBackToSituation").addEventListener("click", () => {
   detailsView.hidden = true;
   situationView.hidden = false;
+  const universitiesSection = document.querySelector("#universities");
+  if (universitiesSection) universitiesSection.hidden = true;
   wizIndex = wizSteps().length - 1;
   renderWizard();
   situationView.scrollIntoView({ behavior: "smooth", block: "start" });
