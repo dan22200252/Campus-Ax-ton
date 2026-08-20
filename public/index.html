@@ -7,15 +7,18 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="hero">
+    <header class="site-header">
       <nav class="topbar" aria-label="주요 메뉴">
-        <a class="brand" href="#top">포항 길잡이</a>
+        <a class="brand" href="#" id="navBrand">포항 길잡이</a>
         <div class="topbar__links">
-          <a href="#finder">상황 선택</a>
-          <a href="#finder">로드맵</a>
-          <a href="#universities">포항 대학</a>
+          <a href="#" id="navToFinder">상황 선택</a>
+          <a href="#" id="navToRoadmap">로드맵</a>
+          <a href="#" id="navToUniversities">포항 대학</a>
         </div>
       </nav>
+    </header>
+
+    <section class="hero" id="heroView">
       <section class="hero__content" id="top">
         <p class="eyebrow">학교 밖 청소년을 위한 검정고시·진로 안내</p>
         <h1>혼자 찾아도 막막하지 않게.</h1>
@@ -23,11 +26,11 @@
           검정고시를 본 다음에 갈 수 있는 길을 알려줘요.<br />
           고등학교, 대학, 일할 준비로 나눠서 보여줘요.
         </p>
-        <a class="hero__button" href="#finder">내 상황 고르기</a>
+        <button type="button" class="hero__button" id="btnStartFinder">내 상황 고르기</button>
       </section>
-    </header>
+    </section>
 
-    <main>
+    <main hidden>
       <section class="finder" id="finder" aria-labelledby="finder-title">
         <form id="profileForm">
           <div id="situationView" class="panel situation-panel">
@@ -352,7 +355,7 @@
         </form>
       </section>
 
-      <section class="universities" id="universities" aria-labelledby="universities-title">
+      <section class="universities" id="universities" aria-labelledby="universities-title" hidden>
         <div class="section-heading">
           <p class="eyebrow">포항 소재 대학 우선</p>
           <h2 id="universities-title">대학마다 이것만 먼저 확인해요</h2>
@@ -361,7 +364,7 @@
       </section>
     </main>
 
-    <footer>
+    <footer hidden>
       <p>연습용으로 만든 사이트예요. 실제로 신청하기 전에는 교육청 공고와 각 기관의 공식 안내를 꼭 확인하세요.</p>
     </footer>
 

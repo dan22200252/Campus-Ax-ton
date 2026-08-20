@@ -595,6 +595,7 @@ const infoList = document.querySelector("#infoList");
 const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
+const universitiesSection = document.querySelector("#universities");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
 const roadmapSlot = document.querySelector("#roadmapSlot");
@@ -1134,6 +1135,7 @@ function renderPrioritySteps(target, items, limit = 3) {
 }
 
 function renderUniversities(selectedSchools) {
+  universitiesSection.hidden = statusState.goal !== "univ";
   universityList.innerHTML = "";
 
   Object.entries(universities).forEach(([key, school]) => {
@@ -1860,6 +1862,49 @@ if (extraNotes) {
     }
   });
 }
+
+const heroView = document.querySelector("#heroView");
+const mainView = document.querySelector("main");
+const footerView = document.querySelector("footer");
+
+function goToFinderPage() {
+  heroView.hidden = true;
+  mainView.hidden = false;
+  footerView.hidden = false;
+  window.scrollTo(0, 0);
+}
+
+function goToHeroPage() {
+  heroView.hidden = false;
+  mainView.hidden = true;
+  footerView.hidden = true;
+  window.scrollTo(0, 0);
+}
+
+document.querySelector("#btnStartFinder").addEventListener("click", goToFinderPage);
+
+document.querySelector("#navBrand").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToHeroPage();
+});
+
+document.querySelector("#navToFinder").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+});
+
+document.querySelector("#navToRoadmap").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+});
+
+document.querySelector("#navToUniversities").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+  if (!universitiesSection.hidden) {
+    requestAnimationFrame(() => universitiesSection.scrollIntoView({ behavior: "smooth", block: "start" }));
+  }
+});
 
 document.querySelector("#btnBackToSituation").addEventListener("click", () => {
   detailsView.hidden = true;
