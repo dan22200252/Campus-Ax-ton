@@ -1112,21 +1112,6 @@ legend {
   overflow: hidden;
 }
 
-.university-section {
-  margin-top: 24px;
-}
-
-.university-section .section-heading {
-  margin-bottom: 14px;
-}
-
-.university-section__subhead {
-  margin: 24px 0 12px;
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--ink);
-}
-
 .accordion__trigger {
   width: 100%;
   display: flex;

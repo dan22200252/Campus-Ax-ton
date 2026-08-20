@@ -601,6 +601,7 @@ const universityList = document.querySelector("#universityList");
 const universitiesSection = document.querySelector("#universitySection");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
+const universityPicks = document.querySelector("#universityPicks");
 const roadmapSlot = document.querySelector("#roadmapSlot");
 const stepDetail = document.querySelector("#stepDetail");
 const stepDetailTag = document.querySelector("#stepDetailTag");
@@ -656,6 +657,7 @@ const qTopic = document.querySelector("#qTopic");
 const qTopicHint = document.querySelector("#qTopicHint");
 const qTopicCount = document.querySelector("#qTopicCount");
 const stepNotesNode = document.querySelector("#stepNotes");
+const stepSchoolsNode = document.querySelector("#stepSchools");
 const kmapSvg = document.querySelector(".kmap__svg");
 const regionHint = document.querySelector("#regionHint");
 const regionSelect = document.querySelector("#regionSelect");
@@ -679,6 +681,8 @@ const BASE_STEPS = [
   { id: "quit", node: document.querySelector("#stepQuit"), when: () => statusState.level === "elem" || statusState.level === "mid" },
   { id: "quitDate", node: document.querySelector("#stepQuitDate"), when: () => statusState.quit === "yes" && (statusState.level === "elem" || statusState.level === "mid") },
   { id: "goal", node: document.querySelector("#stepGoal") },
+  /* 대학교 진학을 목표로 골랐을 때만 궁금한 대학을 물어본다 */
+  { id: "schools", node: stepSchoolsNode, when: () => statusState.goal === "univ" },
   { id: "youth", node: document.querySelector("#stepYouth") },
   { id: "youthInfo", node: document.querySelector("#stepYouthInfo"), when: () => statusState.youth === "no" }
 ];
@@ -713,7 +717,7 @@ function wizSteps() {
 }
 
 function isAnswered(step) {
-  if (step.id === "notes") return true;
+  if (step.id === "notes" || step.id === "schools") return true;
   return step.topic ? Boolean(statusState.topics[step.topic]) : Boolean(statusState[step.id]);
 }
 
@@ -1164,7 +1168,7 @@ function renderPrioritySteps(target, items, limit = 3) {
 }
 
 function renderUniversities(selectedSchools) {
-  universitiesSection.hidden = statusState.goal !== "univ";
+  /* 보이고 안 보이고는 상단 "포항 대학" 메뉴 클릭으로만 정한다 */
   universityList.innerHTML = "";
 
   Object.entries(universities).forEach(([key, school]) => {
@@ -1489,7 +1493,7 @@ function roadmapSteps() {
           <li>학생부종합전형은 학교생활기록부 대신 다른 서류와 증명 자료를 달라고 할 수 있어요.</li>
           <li>농어촌 전형처럼 조건이 붙은 전형은 검정고시 출신이 지원 못 할 수 있어요.</li>
         </ul>
-        ${schoolNames.length ? compiledUniversitiesHTML(checkedValues("school")) : '<p class="note-mini">아래 "궁금한 대학"에서 학교를 고르면 학교별 확인 사항이 여기 나와요.</p>'}
+        ${schoolNames.length ? compiledUniversitiesHTML(checkedValues("school")) : '<p class="note-mini">위에서 궁금한 대학을 고르면 학교별 확인 사항이 여기 나와요.</p>'}
         ${linksHTML(["adiga"])}`
     });
     steps.push({
@@ -1808,6 +1812,8 @@ function updateResult() {
     summaryText.textContent = "사는 지역과 최종 학력, 앞으로의 목표를 고르면 맞춤 안내가 나와요.";
     detailSections.innerHTML = "";
     selectedDetails.innerHTML = "";
+    universityPicks.hidden = true;
+    universityPicks.innerHTML = "";
     activeICSPayload = null;
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
@@ -1866,8 +1872,11 @@ function updateResult() {
   selectedDetails.innerHTML = quitRuleHTML()
     + youthCardDetailHTML()
     + searchLinksHTML(statusData.keywords)
-    + compiledGoalsHTML(goals)
-    + (statusState.goal === "univ" ? compiledUniversitiesHTML(selectedSchools) : "");
+    + compiledGoalsHTML(goals);
+
+  /* 내 상황 찾기에서 고른 궁금한 대학은 안내 카드에 바로 보이게 둔다(접었다 펴지 않음) */
+  universityPicks.hidden = statusState.goal !== "univ" || !selectedSchools.length;
+  universityPicks.innerHTML = universityPicks.hidden ? "" : compiledUniversitiesHTML(selectedSchools);
 
   renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
@@ -1901,11 +1910,14 @@ if (extraNotes) {
 const heroView = document.querySelector("#heroView");
 const mainView = document.querySelector("main");
 const footerView = document.querySelector("footer");
+const finderSection = document.querySelector("#finder");
 
 function goToFinderPage() {
   heroView.hidden = true;
   mainView.hidden = false;
   footerView.hidden = false;
+  finderSection.hidden = false;
+  universitiesSection.hidden = true;
   window.scrollTo(0, 0);
 }
 
@@ -1935,10 +1947,13 @@ document.querySelector("#navToRoadmap").addEventListener("click", (event) => {
 
 document.querySelector("#navToUniversities").addEventListener("click", (event) => {
   event.preventDefault();
-  goToFinderPage();
-  if (!universitiesSection.hidden) {
-    requestAnimationFrame(() => universitiesSection.scrollIntoView({ behavior: "smooth", block: "start" }));
-  }
+  heroView.hidden = true;
+  mainView.hidden = false;
+  footerView.hidden = false;
+  finderSection.hidden = true;
+  universitiesSection.hidden = false;
+  renderUniversities(checkedValues("school"));
+  window.scrollTo(0, 0);
 });
 
 document.querySelector("#btnBackToSituation").addEventListener("click", () => {
