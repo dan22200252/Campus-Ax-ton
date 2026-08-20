@@ -663,6 +663,7 @@ const qTopic = document.querySelector("#qTopic");
 const qTopicHint = document.querySelector("#qTopicHint");
 const qTopicCount = document.querySelector("#qTopicCount");
 const stepNotesNode = document.querySelector("#stepNotes");
+const extraNotes = document.querySelector("#extraNotes");
 const kmapSvg = document.querySelector(".kmap__svg");
 const regionHint = document.querySelector("#regionHint");
 const regionSelect = document.querySelector("#regionSelect");
@@ -782,18 +783,34 @@ function syncQuitDateNote() {
   quitDateNote.hidden = false;
 }
 
-/* 지나온 질문은 눌러서 되돌아갈 수 있고, 아직 오지 않은 질문은 잠긴다.
-   뒤 질문의 내용 자체가 앞 답변에 따라 만들어지므로 앞으로 점프는 막는다. */
+/* 되돌아가기는 언제나 되고, 앞으로 가는 건 그 사이 질문에 답이 다 있을 때만 된다.
+   뒤 질문의 내용 자체가 앞 답변으로 만들어지므로(학력 -> 목표 -> 항목 질문),
+   중간에 빈 답이 있으면 그 앞으로는 갈 수 없다. */
+function canJumpTo(steps, idx) {
+  if (idx < 0 || idx >= steps.length || idx === wizIndex) return false;
+  if (idx < wizIndex) return true;
+  return steps.slice(0, idx).every(isAnswered);
+}
+
 function renderStepNav(steps) {
   wizStepsNav.innerHTML = steps.map((step, idx) => {
-    const done = idx < wizIndex;
     const current = idx === wizIndex;
-    const state = done ? "done" : current ? "current" : "future";
+    const jump = canJumpTo(steps, idx);
+    /* 메모는 비워도 넘어갈 수 있어서, ✓는 실제로 적은 내용이 있을 때만 붙인다 */
+    const answered = step.id === "notes"
+      ? Boolean(extraNotes && extraNotes.value.trim())
+      : isAnswered(step);
+    /* done = 답이 있어 오갈 수 있는 질문, next = 아직 답이 없지만 지금 갈 수 있는 질문 */
+    const state = current ? "current" : !jump ? "future" : answered ? "done" : "next";
+    const title = current ? "지금 답하는 질문"
+      : !jump ? "앞 질문에 답하면 열려요"
+      : answered ? `${stepLabel(step)} 답 고치기`
+      : `${stepLabel(step)} 질문으로 가기`;
     return `
       <button type="button" class="wiz__chip is-${state}" data-step-id="${esc(step.id)}"
-        ${done ? "" : "disabled"}${current ? ' aria-current="step"' : ""}
-        ${done ? `title="${esc(stepLabel(step))} 질문으로 돌아가서 고치기"` : ""}>
-        <span class="wiz__chip-n" aria-hidden="true">${done ? "✓" : idx + 1}</span>
+        ${jump ? "" : "disabled"}${current ? ' aria-current="step"' : ""}
+        title="${esc(title)}">
+        <span class="wiz__chip-n" aria-hidden="true">${answered && !current ? "✓" : idx + 1}</span>
         <span class="wiz__chip-t">${esc(stepLabel(step))}</span>
       </button>
     `;
@@ -1056,8 +1073,8 @@ wizStepsNav.addEventListener("click", (event) => {
 
   const steps = wizSteps();
   const idx = steps.findIndex((step) => step.id === chip.dataset.stepId);
-  /* -1은 답이 바뀌어 사라진 질문, idx >= wizIndex는 앞으로 점프 — 둘 다 막는다 */
-  if (idx === -1 || idx >= wizIndex) return;
+  /* -1은 답이 바뀌어 사라진 질문 — canJumpTo가 나머지(빈 답 건너뛰기)를 막는다 */
+  if (!canJumpTo(steps, idx)) return;
 
   wizIndex = idx;
   renderWizard();
@@ -1919,7 +1936,6 @@ detailSections.addEventListener("click", (event) => {
   downloadICS(activeICSPayload.events, activeICSPayload.filename, activeICSPayload.calName);
 });
 
-const extraNotes = document.querySelector("#extraNotes");
 if (extraNotes) {
   try {
     extraNotes.value = localStorage.getItem(NOTES_STORAGE_KEY) || "";

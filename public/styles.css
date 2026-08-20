@@ -337,7 +337,7 @@ legend {
   font-variant-numeric: tabular-nums;
 }
 
-/* 지나온 질문 — 눌러서 답을 고칠 수 있다 */
+/* 답이 있는 질문 — 눌러서 오갈 수 있다 */
 .wiz__chip.is-done {
   cursor: pointer;
   border-color: var(--teal);
@@ -360,6 +360,26 @@ legend {
 .wiz__chip.is-done:focus-visible .wiz__chip-n {
   background: var(--white);
   color: var(--teal);
+}
+
+/* 아직 답이 없지만 지금 갈 수 있는 질문 — 사이에 빈 답이 없다는 뜻 */
+.wiz__chip.is-next {
+  cursor: pointer;
+  border-style: dashed;
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--white);
+}
+
+.wiz__chip.is-next .wiz__chip-n {
+  background: var(--teal-soft);
+  color: var(--teal);
+}
+
+.wiz__chip.is-next:hover,
+.wiz__chip.is-next:focus-visible {
+  border-style: solid;
+  background: var(--teal-soft);
 }
 
 /* 지금 답하고 있는 질문 */
