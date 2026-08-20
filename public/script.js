@@ -598,7 +598,7 @@ const infoList = document.querySelector("#infoList");
 const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
-const universitiesSection = document.querySelector("#universities");
+const universitiesSection = document.querySelector("#universitySection");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
 const roadmapSlot = document.querySelector("#roadmapSlot");
@@ -668,6 +668,7 @@ const wizTotal = document.querySelector("#wizTotal");
 const wizBar = document.querySelector("#wizBar");
 const btnWizBack = document.querySelector("#btnWizBack");
 const btnWizNext = document.querySelector("#btnWizNext");
+const wizError = document.querySelector("#wizError");
 
 /* youthInfo는 '청소년증 없어요'일 때만, 항목 질문은 학력x목표가 정해진 뒤에만
    나온다. 그래서 전체 질문 수가 답에 따라 달라진다(현재 4~10개). */
@@ -787,10 +788,18 @@ function renderWizard() {
   btnWizBack.disabled = wizIndex === 0;
   /* 이미 답한 질문이면 다시 고르지 않고도 앞으로 갈 수 있게 */
   btnWizNext.hidden = !isAnswered(current);
+  wizError.classList.remove("show");
 }
 
 function goNext() {
-  if (wizIndex >= wizSteps().length - 1) {
+  const steps = wizSteps();
+  const current = steps[wizIndex];
+  /* 버튼이 안 보여도 우회해서 넘어가지 못하게 한 번 더 막는다 */
+  if (!isAnswered(current)) {
+    wizError.classList.add("show");
+    return;
+  }
+  if (wizIndex >= steps.length - 1) {
     updateResult();
     situationView.hidden = true;
     detailsView.hidden = false;
@@ -1350,7 +1359,7 @@ function roadmapSteps() {
         id: "ged:univ",
         icon: "🎓",
         tag: "그 다음",
-        title: schoolNames.length ? `${schoolNames.join(" · ")} 지원` : "대학 지원",
+        title: "대학 지원",
         meta: `수시 원서접수 9월 초 · 수능 ${suneung ? `${fmtDate(suneung)} (${ddayLabel(suneung)})` : "11월 셋째 주 목요일"} · 정시 12월 말~1월 초`,
         detail: `
           <p class="detail-lead">고졸 학력이 생기면 대학에 지원할 수 있어요. 수시와 정시 중 어디로 갈지 먼저 정해요.</p>
@@ -1360,7 +1369,7 @@ function roadmapSteps() {
             <li><strong>수시</strong> — 9월 초에 신청해요. 학교 성적과 학교생활기록부를 봐요. 검정고시 출신은 지원할 수 있는 전형이 적어요.</li>
             <li><strong>정시</strong> — 수능 성적 중심${suneung ? `, 수능은 ${fmtDate(suneung)}` : ""}. 검정고시 출신에게 가장 많이 가는 길이에요.</li>
           </ul>
-          ${schoolNames.length ? compiledUniversitiesHTML(checkedValues("school")) : '<p class="note-mini">아래 "궁금한 대학"에서 학교를 고르면 학교별 확인 사항이 여기 나와요.</p>'}
+          <p class="note-mini">맨 처음 "앞으로 무엇을 하고 싶으세요?"에서 대학교 진학을 고르면, 학교별로 확인할 내용을 자세히 안내해드려요.</p>
           ${linksHTML(["adiga", "kosaf"])}
         `
       });
@@ -1842,8 +1851,11 @@ function updateResult() {
     actionItems.unshift("중학교를 그만둔 경우는 기다리는 기간이 없어요. 정원외관리증명서를 챙기세요.");
   }
 
+  const schoolNote = statusState.goal === "univ"
+    ? ` ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`
+    : "";
   summaryTitle.textContent = statusData.title;
-  summaryText.textContent = `${region ? `${region.name} 기준으로 안내해요. ` : ""}${statusData.summary} ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`;
+  summaryText.textContent = `${region ? `${region.name} 기준으로 안내해요. ` : ""}${statusData.summary}${schoolNote}`;
 
   activeICSPayload = (statusKey === "elemGed" || statusKey === "midGed")
     ? { events: flattenExamEvents(), filename: "검정고시_일정.ics", calName: "검정고시 일정" }
@@ -1855,7 +1867,7 @@ function updateResult() {
     + youthCardDetailHTML()
     + searchLinksHTML(statusData.keywords)
     + compiledGoalsHTML(goals)
-    + compiledUniversitiesHTML(selectedSchools);
+    + (statusState.goal === "univ" ? compiledUniversitiesHTML(selectedSchools) : "");
 
   renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);

@@ -251,6 +251,8 @@
                 <p class="field-hint">적은 내용은 이 브라우저에만 저장돼요. 아직은 이 내용에 맞춰 안내가 바뀌지는 않아요.</p>
               </div>
 
+              <p class="wizard__error" id="wizError">먼저 위에서 골라주세요.</p>
+
               <div class="wiz__nav">
                 <button type="button" class="btn-prev" id="btnWizBack">← 뒤로</button>
                 <button type="button" class="btn-next" id="btnWizNext" hidden>다음 →</button>
@@ -327,47 +329,45 @@
               </aside>
             </div>
 
-            <div class="panel details-inputs">
-                <fieldset>
-                  <legend>🎓 궁금한 대학</legend>
-                  <div class="opt-grid opt-grid--check">
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="postech" checked />
-                      <span class="opt-card__txt"><strong>포항공과대학교</strong><span>4년제 · 수시만 있어요, 검정고시도 지원 가능</span></span>
-                    </label>
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="handong" />
-                      <span class="opt-card__txt"><strong>한동대학교</strong><span>4년제 · 수시와 정시 모두, 합격증명서 내야 해요</span></span>
-                    </label>
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="sunlin" />
-                      <span class="opt-card__txt"><strong>선린대학교</strong><span>전문대 · 검정고시 합격자도 지원 가능</span></span>
-                    </label>
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="pohang" />
-                      <span class="opt-card__txt"><strong>포항대학교</strong><span>전문대 · 검정고시 합격자도 지원 가능</span></span>
-                    </label>
-                    <label class="opt-card opt-card--check">
-                      <input type="checkbox" name="school" value="polytech" />
-                      <span class="opt-card__txt"><strong>한국폴리텍대학 포항캠퍼스</strong><span>나라에서 돈을 내주는 직업훈련 · 졸업장은 안 나와요</span></span>
-                    </label>
-                  </div>
-                </fieldset>
+            <!-- 대학 진학을 목표로 골랐을 때만 나온다 -->
+            <div class="panel university-section" id="universitySection" hidden>
+              <div class="section-heading">
+                <p class="eyebrow">포항 소재 대학 우선</p>
+                <h2>🎓 궁금한 대학</h2>
+              </div>
+              <div class="opt-grid opt-grid--check">
+                <label class="opt-card opt-card--check">
+                  <input type="checkbox" name="school" value="postech" checked />
+                  <span class="opt-card__txt"><strong>포항공과대학교</strong><span>4년제 · 수시만 있어요, 검정고시도 지원 가능</span></span>
+                </label>
+                <label class="opt-card opt-card--check">
+                  <input type="checkbox" name="school" value="handong" />
+                  <span class="opt-card__txt"><strong>한동대학교</strong><span>4년제 · 수시와 정시 모두, 합격증명서 내야 해요</span></span>
+                </label>
+                <label class="opt-card opt-card--check">
+                  <input type="checkbox" name="school" value="sunlin" />
+                  <span class="opt-card__txt"><strong>선린대학교</strong><span>전문대 · 검정고시 합격자도 지원 가능</span></span>
+                </label>
+                <label class="opt-card opt-card--check">
+                  <input type="checkbox" name="school" value="pohang" />
+                  <span class="opt-card__txt"><strong>포항대학교</strong><span>전문대 · 검정고시 합격자도 지원 가능</span></span>
+                </label>
+                <label class="opt-card opt-card--check">
+                  <input type="checkbox" name="school" value="polytech" />
+                  <span class="opt-card__txt"><strong>한국폴리텍대학 포항캠퍼스</strong><span>나라에서 돈을 내주는 직업훈련 · 졸업장은 안 나와요</span></span>
+                </label>
+              </div>
+              <h3 class="university-section__subhead">대학마다 이것만 먼저 확인해요</h3>
+              <div class="university-list" id="universityList"></div>
+            </div>
 
+            <div class="panel details-inputs">
                 <div class="wizard__nav">
                   <button type="button" class="btn-prev" id="btnBackToSituation">다시 상황 고르기</button>
                 </div>
             </div>
           </div>
         </form>
-      </section>
-
-      <section class="universities" id="universities" aria-labelledby="universities-title" hidden>
-        <div class="section-heading">
-          <p class="eyebrow">포항 소재 대학 우선</p>
-          <h2 id="universities-title">🎓 대학마다 이것만 먼저 확인해요</h2>
-        </div>
-        <div class="university-list" id="universityList"></div>
       </section>
     </main>
 
