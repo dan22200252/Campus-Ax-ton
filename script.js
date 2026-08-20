@@ -616,6 +616,17 @@ document.querySelectorAll(".accordion__trigger").forEach((btn) => {
   });
 });
 
+/* 대학 카드의 "주의할 점"은 기본으로 접어 두고 눌렀을 때만 펼친다 */
+universityList.addEventListener("click", (event) => {
+  const btn = event.target.closest(".university-card__more");
+  if (!btn) return;
+  const note = btn.nextElementSibling;
+  const willOpen = note.hidden;
+  note.hidden = !willOpen;
+  btn.setAttribute("aria-expanded", String(willOpen));
+  btn.textContent = willOpen ? "📌 주의할 점 접기" : "📌 주의할 점 보기";
+});
+
 /* =========================================================
    질문 위저드 — 한 화면에 질문 하나, 답하면 다음으로
    ========================================================= */
@@ -783,13 +794,6 @@ function goNext() {
     updateResult();
     situationView.hidden = true;
     detailsView.hidden = false;
-    /* 대학 정보 섹션은 첫 화면·질문 중에는 숨기고, 대학 진학을 원한다고
-       답했을 때만 마지막(결과) 화면에서 보여준다. */
-    const universitiesSection = document.querySelector("#universities");
-    if (universitiesSection) {
-      const wantsCollege = statusState.goal === "univ" || selectedTopics().includes("college");
-      universitiesSection.hidden = !(currentStatusKey() && wantsCollege);
-    }
     detailsView.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
@@ -1161,8 +1165,11 @@ function renderUniversities(selectedSchools) {
       <small>${esc(school.type)}</small>
       <h3>${esc(school.name)}</h3>
       <p>${esc(school.focus)}</p>
-      ${school.note ? `<p class="university-card__note">${esc(school.note)}</p>` : ""}
-      <a class="university-card__link" href="${esc(school.url)}" target="_blank" rel="noopener noreferrer">공식 입학처 바로가기 →</a>
+      ${school.note ? `
+        <button type="button" class="university-card__more" aria-expanded="false">📌 주의할 점 보기</button>
+        <p class="university-card__note" hidden>${esc(school.note)}</p>
+      ` : ""}
+      <a class="university-card__link" href="${esc(school.url)}" target="_blank" rel="noopener noreferrer">🔗 공식 입학처 바로가기</a>
     `;
     universityList.appendChild(card);
   });
@@ -1925,9 +1932,7 @@ document.querySelector("#navToUniversities").addEventListener("click", (event) =
 document.querySelector("#btnBackToSituation").addEventListener("click", () => {
   detailsView.hidden = true;
   situationView.hidden = false;
-  const universitiesSection = document.querySelector("#universities");
-  if (universitiesSection) universitiesSection.hidden = true;
-  wizIndex = wizSteps().length - 1;
+  wizIndex = 0;
   renderWizard();
   situationView.scrollIntoView({ behavior: "smooth", block: "start" });
 });

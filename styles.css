@@ -104,7 +104,7 @@ main[hidden] {
 .topbar__links {
   display: flex;
   gap: 20px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -119,7 +119,7 @@ main[hidden] {
 .eyebrow {
   margin: 0 0 10px;
   color: var(--gold);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
 }
 
@@ -163,7 +163,7 @@ main[hidden] {
 }
 
 .hero__badge {
-  font-size: 12.5px;
+  font-size: 14.5px;
   font-weight: 700;
   color: var(--ink);
   background: transparent;
@@ -274,7 +274,7 @@ legend {
 .wiz__count {
   margin: 0;
   flex: none;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
@@ -282,7 +282,7 @@ legend {
 
 .wiz__count strong {
   color: var(--teal);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .wiz__bar {
@@ -304,7 +304,7 @@ legend {
 
 .wiz__topiccount {
   margin: 0 0 8px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--teal);
@@ -323,7 +323,7 @@ legend {
 
 .wiz__hint {
   margin: 0 0 18px;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.6;
   color: var(--muted);
 }
@@ -336,7 +336,7 @@ legend {
 
 .wiz__nav button {
   font: inherit;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   border-radius: 10px;
   padding: 12px 20px;
@@ -395,7 +395,7 @@ legend {
 }
 
 .kmap-select__label {
-  font-size: 11.5px;
+  font-size: 13.5px;
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--muted);
@@ -403,7 +403,7 @@ legend {
 
 .kmap-select select {
   font: inherit;
-  font-size: 13.5px;
+  font-size: 15.5px;
   font-weight: 600;
   width: 100%;
   padding: 12px 38px 12px 14px;
@@ -509,7 +509,7 @@ legend {
 /* 라벨에 배경색 후광을 둘러 어느 지역 위에서도 읽히게 한다 */
 .kmap__t {
   fill: #4c4437;
-  font-size: 11.5px;
+  font-size: 13.5px;
   font-weight: 800;
   letter-spacing: -0.02em;
   text-anchor: middle;
@@ -521,16 +521,16 @@ legend {
 }
 
 .kmap__t--city {
-  font-size: 9.5px;
+  font-size: 11.5px;
   font-weight: 700;
   fill: #6b6152;
 }
 
-.kmap__t--xs { font-size: 8px; }
+.kmap__t--xs { font-size: 10px; }
 
 .kmap__t--on {
   fill: #2f3d1c;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .kmap__pin { cursor: pointer; }
@@ -569,7 +569,7 @@ legend {
 
 .kmap__pin-txt {
   fill: var(--coral);
-  font-size: 10.5px;
+  font-size: 12.5px;
   font-weight: 800;
   text-anchor: middle;
   pointer-events: none;
@@ -581,7 +581,7 @@ legend {
 
 .kmap__hint {
   margin: 0;
-  font-size: 12.5px;
+  font-size: 14.5px;
   color: var(--muted);
   text-align: center;
   transition: color 0.2s ease;
@@ -657,13 +657,13 @@ legend {
 
 .opt-card__txt strong {
   display: block;
-  font-size: 14.5px;
+  font-size: 16.5px;
   letter-spacing: -0.01em;
 }
 
 .opt-card__txt span {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
   margin-top: 2px;
 }
@@ -690,7 +690,7 @@ legend {
   background: var(--white);
   margin: 0 0 10px;
   color: var(--coral);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
 }
 
@@ -711,7 +711,7 @@ legend {
 .verdict p {
   margin: 0;
   color: #4a3f35;
-  font-size: 13.5px;
+  font-size: 15.5px;
 }
 
 .roadmap-panel {
@@ -735,7 +735,7 @@ legend {
   border-radius: var(--card-radius);
   background: #fbf8f2;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   text-align: center;
 }
 
@@ -807,7 +807,7 @@ legend {
 /* '자세히' 힌트 — 누를 수 있다는 걸 알린다 */
 .scv__more {
   flex: none;
-  font-size: 10.5px;
+  font-size: 12.5px;
   font-weight: 800;
   letter-spacing: 0.02em;
   padding: 4px 9px;
@@ -838,7 +838,7 @@ legend {
 
 .scv__n {
   margin: 0;
-  font-size: 10.5px;
+  font-size: 12.5px;
   font-weight: 800;
   letter-spacing: 0.08em;
   opacity: 0.85;
@@ -847,7 +847,7 @@ legend {
 .scv__ttl {
   text-wrap: balance;
   margin: 2px 0 0;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 800;
   line-height: 1.35;
   letter-spacing: -0.01em;
@@ -855,7 +855,7 @@ legend {
 
 .scv__meta {
   margin: 4px 0 0;
-  font-size: 11.5px;
+  font-size: 13.5px;
   line-height: 1.55;
   opacity: 0.9;
 }
@@ -877,12 +877,12 @@ legend {
 .scv-prog__count {
   flex: none;
   margin: 0;
-  font-size: 12.5px;
+  font-size: 14.5px;
   color: var(--muted);
 }
 
 .scv-prog__count strong {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   color: var(--teal);
   font-variant-numeric: tabular-nums;
@@ -922,7 +922,7 @@ legend {
 .scv-prog__reset {
   flex: none;
   font: inherit;
-  font-size: 11.5px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--muted);
   background: none;
@@ -946,7 +946,7 @@ legend {
   border: 2px solid rgba(255, 255, 255, 0.55);
   background: rgba(255, 255, 255, 0.14);
   color: rgba(255, 255, 255, 0.75);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   line-height: 1;
   cursor: pointer;
@@ -1122,7 +1122,7 @@ legend {
   background: #fbf8f2;
   border: none;
   font: inherit;
-  font-size: 14.5px;
+  font-size: 16.5px;
   font-weight: 700;
   color: var(--ink);
   cursor: pointer;
@@ -1156,7 +1156,7 @@ legend {
 
 .priority-tag {
   display: inline-block;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 800;
   color: #7a4a08;
   background: rgba(242, 181, 68, 0.4);
@@ -1173,7 +1173,7 @@ legend {
 
 .search-chips a {
   display: inline-block;
-  font-size: 12.5px;
+  font-size: 14.5px;
   font-weight: 700;
   color: var(--teal);
   background: var(--teal-soft);
@@ -1197,7 +1197,7 @@ legend {
   color: var(--teal);
   font: inherit;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 15px;
   cursor: pointer;
 }
 
@@ -1212,13 +1212,13 @@ textarea#extraNotes {
   border: 1.5px solid var(--line);
   border-radius: 10px;
   font: inherit;
-  font-size: 13.5px;
+  font-size: 15.5px;
   resize: vertical;
 }
 
 .field-hint {
   margin: 8px 0 0;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
 }
 
@@ -1226,7 +1226,7 @@ textarea#extraNotes {
   display: none;
   margin: 14px 0 0;
   color: var(--coral);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -1241,7 +1241,7 @@ textarea#extraNotes {
 .wizard__nav button {
   width: 100%;
   font: inherit;
-  font-size: 14.5px;
+  font-size: 16.5px;
   font-weight: 800;
   border-radius: 10px;
   padding: 13px 20px;
@@ -1278,7 +1278,7 @@ textarea#extraNotes {
 }
 
 .wiz__date__label {
-  font-size: 11.5px;
+  font-size: 13.5px;
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--muted);
@@ -1286,7 +1286,7 @@ textarea#extraNotes {
 
 .wiz__date input {
   font: inherit;
-  font-size: 14.5px;
+  font-size: 16.5px;
   font-weight: 600;
   padding: 12px 14px;
   border: 1.5px solid var(--line);
@@ -1307,7 +1307,7 @@ textarea#extraNotes {
   border-radius: 12px;
   border-left: 3px solid var(--teal);
   background: var(--teal-soft);
-  font-size: 13.5px;
+  font-size: 15.5px;
   line-height: 1.65;
 }
 
@@ -1319,7 +1319,7 @@ textarea#extraNotes {
 .quit-note__law {
   display: block;
   margin-top: 5px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
 }
 
@@ -1355,7 +1355,7 @@ textarea#extraNotes {
 
 .step-detail__eyebrow {
   margin: 0;
-  font-size: 10.5px;
+  font-size: 12.5px;
   font-weight: 800;
   letter-spacing: 0.08em;
   color: #7a5a12;
@@ -1378,7 +1378,7 @@ textarea#extraNotes {
   border: 1px solid var(--line);
   background: var(--white);
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1;
   cursor: pointer;
 }
@@ -1405,7 +1405,7 @@ textarea#extraNotes {
 
 .step-detail__body h4 {
   margin: 16px 0 7px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
 }
 
@@ -1431,13 +1431,13 @@ textarea#extraNotes {
 .detail-lead {
   margin: 0 0 10px;
   color: var(--muted);
-  font-size: 13.5px;
+  font-size: 15.5px;
 }
 
 table.info-mini {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 15px;
   margin-bottom: 10px;
 }
 
@@ -1456,7 +1456,7 @@ table.info-mini th {
 }
 
 .note-mini {
-  font-size: 12.5px;
+  font-size: 14.5px;
   color: var(--muted);
   background: #f3eee3;
   border-left: 3px solid var(--teal);
@@ -1467,7 +1467,7 @@ table.info-mini th {
 
 .schedule-round {
   margin-bottom: 10px;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .schedule-round ul {
@@ -1476,7 +1476,7 @@ table.info-mini th {
 
 .tag-mini {
   display: inline-block;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   padding: 1px 8px;
   border-radius: 999px;
@@ -1523,18 +1523,18 @@ table.info-mini th {
 
 .consult-callout p {
   margin: 0 0 10px;
-  font-size: 13px;
+  font-size: 15px;
   color: #7a4a08;
 }
 
 .links-mini strong {
   display: block;
-  font-size: 13.5px;
+  font-size: 15.5px;
 }
 
 .links-mini span {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
   margin-top: 2px;
 }
@@ -1567,7 +1567,7 @@ h4 {
 
 .compiled-block h5 {
   margin: 0 0 8px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .compiled-block .plain {
@@ -1612,7 +1612,7 @@ ol li + li {
   border-radius: 999px;
   background: var(--teal-soft);
   color: var(--teal);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
 }
 
@@ -1655,9 +1655,26 @@ footer p {
   font-weight: 800;
 }
 
+.university-card__more {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--teal);
+  cursor: pointer;
+}
+
+.university-card__more:hover {
+  text-decoration: underline;
+}
+
 .university-card__note {
   margin-top: 8px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
   background: #f3eee3;
   border-left: 3px solid var(--teal);
@@ -1668,7 +1685,7 @@ footer p {
 .university-card__link {
   display: inline-block;
   margin-top: 12px;
-  font-size: 12.5px;
+  font-size: 14.5px;
   font-weight: 700;
   color: var(--teal);
 }
