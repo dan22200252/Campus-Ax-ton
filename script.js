@@ -665,6 +665,7 @@ document.querySelectorAll(".accordion__trigger").forEach((btn) => {
 
 const stepLevel = document.querySelector("#stepLevel");
 const stepGoal = document.querySelector("#stepGoal");
+const stepNotes = document.querySelector("#stepNotes");
 const stepGoalOptions = document.querySelector("#stepGoalOptions");
 
 const statusState = { level: null, goal: null };
@@ -713,6 +714,7 @@ stepLevel.addEventListener("click", (event) => {
   setActiveOption("level", statusState.level);
   renderGoalOptions();
   stepGoal.hidden = false;
+  stepNotes.hidden = true;
   updateGoalRecommendations();
   saveStatusState();
   updateResult();
@@ -723,6 +725,7 @@ stepGoalOptions.addEventListener("click", (event) => {
   if (!btn) return;
   statusState.goal = btn.dataset.value;
   setActiveOption("q2", statusState.goal);
+  stepNotes.hidden = false;
   updateGoalRecommendations();
   saveStatusState();
   updateResult();
@@ -746,6 +749,7 @@ function restoreStatusState() {
     statusState.goal = saved.goal;
     setActiveOption("q2", statusState.goal);
   }
+  stepNotes.hidden = !statusState.goal;
   updateGoalRecommendations();
 }
 
