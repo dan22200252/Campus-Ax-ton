@@ -279,6 +279,7 @@ const statusKeyMap = {
    키는 goalCopy의 키와 같아야 한다 — 안내 카드가 그 키로 상세를 찾는다. */
 const TOPIC_QUESTIONS = {
   exam: {
+    short: "시험",
     icon: "📝",
     q: "검정고시가 어떤 시험인지 알려드릴까요?",
     hint: "시험 종류와 과목, 합격 기준, 비용을 알려줘요.",
@@ -286,6 +287,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "이미 알아요"
   },
   examDocs: {
+    short: "시험 서류",
     icon: "📄",
     q: "시험 신청할 때 낼 서류를 알려드릴까요?",
     hint: "이 서류는 나중에 대학에 내는 서류와 달라요.",
@@ -293,6 +295,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "이미 알아요"
   },
   highSchool: {
+    short: "고등학교",
     icon: "🏫",
     q: "고등학교 진학 방법을 알려드릴까요?",
     hint: "재입학·편입학, 방송통신고 같은 경로를 안내해요.",
@@ -300,6 +303,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "괜찮아요"
   },
   college: {
+    short: "대학",
     icon: "🎓",
     q: "대학 지원 방법을 알려드릴까요?",
     hint: "수시와 정시가 어떻게 다른지, 검정고시 출신은 어디에 지원할 수 있는지 안내해요.",
@@ -307,6 +311,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "괜찮아요"
   },
   collegeDocs: {
+    short: "대학 서류",
     icon: "🗂️",
     q: "대학에 낼 서류를 알려드릴까요?",
     hint: "합격증명서·성적증명서는 용도가 나뉘어 있어서 잘못 발급받기 쉬워요.",
@@ -314,6 +319,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "괜찮아요"
   },
   work: {
+    short: "일자리",
     icon: "💼",
     q: "일할 준비 방법을 알려드릴까요?",
     hint: "직업훈련, 자격증, 청소년이 일할 때 필요한 서류를 안내해요.",
@@ -321,6 +327,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "괜찮아요"
   },
   support: {
+    short: "도움",
     icon: "🤝",
     q: "도움받을 수 있는 곳을 알려드릴까요?",
     hint: "꿈드림 센터 상담이나 대학 입학처 상담을 안내해요.",
@@ -668,18 +675,19 @@ const wizTotal = document.querySelector("#wizTotal");
 const wizBar = document.querySelector("#wizBar");
 const btnWizBack = document.querySelector("#btnWizBack");
 const btnWizNext = document.querySelector("#btnWizNext");
+const wizStepsNav = document.querySelector("#wizSteps");
 
 /* youthInfo는 '청소년증 없어요'일 때만, 항목 질문은 학력x목표가 정해진 뒤에만
    나온다. 그래서 전체 질문 수가 답에 따라 달라진다(현재 4~10개). */
 const BASE_STEPS = [
-  { id: "region", node: document.querySelector("#stepRegion") },
-  { id: "level", node: document.querySelector("#stepLevel") },
+  { id: "region", label: "지역", node: document.querySelector("#stepRegion") },
+  { id: "level", label: "학력", node: document.querySelector("#stepLevel") },
   /* 고등학교 졸업자는 이미 졸업했으니 자퇴 질문이 필요 없다 */
-  { id: "quit", node: document.querySelector("#stepQuit"), when: () => statusState.level === "elem" || statusState.level === "mid" },
-  { id: "quitDate", node: document.querySelector("#stepQuitDate"), when: () => statusState.quit === "yes" && (statusState.level === "elem" || statusState.level === "mid") },
-  { id: "goal", node: document.querySelector("#stepGoal") },
-  { id: "youth", node: document.querySelector("#stepYouth") },
-  { id: "youthInfo", node: document.querySelector("#stepYouthInfo"), when: () => statusState.youth === "no" }
+  { id: "quit", label: "자퇴", node: document.querySelector("#stepQuit"), when: () => statusState.level === "elem" || statusState.level === "mid" },
+  { id: "quitDate", label: "날짜", node: document.querySelector("#stepQuitDate"), when: () => statusState.quit === "yes" && (statusState.level === "elem" || statusState.level === "mid") },
+  { id: "goal", label: "목표", node: document.querySelector("#stepGoal") },
+  { id: "youth", label: "청소년증", node: document.querySelector("#stepYouth") },
+  { id: "youthInfo", label: "발급", node: document.querySelector("#stepYouthInfo"), when: () => statusState.youth === "no" }
 ];
 
 const ALL_STEP_NODES = [...BASE_STEPS.map((step) => step.node), stepTopicNode, stepNotesNode];
@@ -706,9 +714,15 @@ function wizSteps() {
   });
   /* 자유 메모는 항상 맨 마지막 — 위 질문에서 못 다룬 개인 사정을 받는다 */
   if (statusState.level && statusState.goal) {
-    steps.push({ id: "notes", node: stepNotesNode });
+    steps.push({ id: "notes", label: "메모", node: stepNotesNode });
   }
   return steps;
+}
+
+/* 단계 표시에 쓸 짧은 이름 — 항목 질문은 TOPIC_QUESTIONS에서 가져온다 */
+function stepLabel(step) {
+  if (step.topic) return TOPIC_QUESTIONS[step.topic].short;
+  return step.label || "";
 }
 
 function isAnswered(step) {
@@ -768,6 +782,24 @@ function syncQuitDateNote() {
   quitDateNote.hidden = false;
 }
 
+/* 지나온 질문은 눌러서 되돌아갈 수 있고, 아직 오지 않은 질문은 잠긴다.
+   뒤 질문의 내용 자체가 앞 답변에 따라 만들어지므로 앞으로 점프는 막는다. */
+function renderStepNav(steps) {
+  wizStepsNav.innerHTML = steps.map((step, idx) => {
+    const done = idx < wizIndex;
+    const current = idx === wizIndex;
+    const state = done ? "done" : current ? "current" : "future";
+    return `
+      <button type="button" class="wiz__chip is-${state}" data-step-id="${esc(step.id)}"
+        ${done ? "" : "disabled"}${current ? ' aria-current="step"' : ""}
+        ${done ? `title="${esc(stepLabel(step))} 질문으로 돌아가서 고치기"` : ""}>
+        <span class="wiz__chip-n" aria-hidden="true">${done ? "✓" : idx + 1}</span>
+        <span class="wiz__chip-t">${esc(stepLabel(step))}</span>
+      </button>
+    `;
+  }).join("");
+}
+
 function renderWizard() {
   const steps = wizSteps();
   wizIndex = Math.min(Math.max(wizIndex, 0), steps.length - 1);
@@ -783,6 +815,7 @@ function renderWizard() {
   wizNow.textContent = String(wizIndex + 1);
   wizTotal.textContent = String(steps.length);
   wizBar.style.width = `${((wizIndex + 1) / steps.length) * 100}%`;
+  renderStepNav(steps);
 
   btnWizBack.disabled = wizIndex === 0;
   /* 이미 답한 질문이면 다시 고르지 않고도 앞으로 갈 수 있게 */
@@ -1013,6 +1046,22 @@ document.querySelector(".wiz").addEventListener("click", (event) => {
   const btn = event.target.closest(".opt-card[data-group]");
   if (!btn) return;
   setAnswer(btn.dataset.group, btn.dataset.value, btn.dataset.topic);
+});
+
+/* 순서 번호가 아니라 질문 id로 이동한다 — 답을 바꾸면 질문 목록의 길이가
+   달라지므로, 누른 순간에 그 질문이 지금 몇 번째인지 다시 찾는다. */
+wizStepsNav.addEventListener("click", (event) => {
+  const chip = event.target.closest(".wiz__chip[data-step-id]");
+  if (!chip || chip.disabled) return;
+
+  const steps = wizSteps();
+  const idx = steps.findIndex((step) => step.id === chip.dataset.stepId);
+  /* -1은 답이 바뀌어 사라진 질문, idx >= wizIndex는 앞으로 점프 — 둘 다 막는다 */
+  if (idx === -1 || idx >= wizIndex) return;
+
+  wizIndex = idx;
+  renderWizard();
+  situationView.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 function pickRegionFrom(target) {
