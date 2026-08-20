@@ -330,21 +330,24 @@ const TOPIC_QUESTIONS = {
 };
 
 /* 학력 x 목표 조합에 따라 물어볼 항목이 달라진다.
-   경로에 상관없는 항목까지 다 묻지 않으려고 여기서 걸러낸다. */
+   경로에 상관없는 항목까지 다 묻지 않으려고 여기서 걸러낸다.
+   "자세한 정보 보기"(statusDetailHTML)가 이미 자세히 다루는 주제는
+   여기서 또 묻지 않는다 — 안내 카드에서 같은 내용이 두 번 나오는 걸 막기 위해서다.
+   예: elemGed/midGed는 examDetailHTML이 exam·examDocs를 이미 다룬다. */
 const TOPICS_BY_PATH = {
   elem: {
-    ged: ["exam", "examDocs", "highSchool", "support"],
-    school: ["highSchool", "support"],
+    ged: ["highSchool", "support"],
+    school: ["support"],
     none: ["exam", "support"]
   },
   mid: {
-    ged: ["exam", "examDocs", "college", "collegeDocs", "support"],
-    school: ["highSchool", "support"],
+    ged: ["college", "collegeDocs", "support"],
+    school: ["support"],
     none: ["exam", "support"]
   },
   high: {
-    univ: ["college", "collegeDocs", "support"],
-    job: ["work", "support"],
+    univ: ["collegeDocs", "support"],
+    job: ["support"],
     none: ["exam", "work", "support"]
   }
 };
@@ -595,6 +598,7 @@ const infoList = document.querySelector("#infoList");
 const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
+const universitiesSection = document.querySelector("#universities");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
 const roadmapSlot = document.querySelector("#roadmapSlot");
@@ -633,7 +637,6 @@ const ROADMAP_STORAGE_KEY = "axton_roadmap_v1";
 
 const situationView = document.querySelector("#situationView");
 const detailsView = document.querySelector("#detailsView");
-const heroSituationCta = document.querySelector("#heroSituationCta");
 
 const stepGoalOptions = document.querySelector("#stepGoalOptions");
 const stepTopicNode = document.querySelector("#stepTopic");
@@ -641,6 +644,7 @@ const stepTopicOptions = document.querySelector("#stepTopicOptions");
 const qTopic = document.querySelector("#qTopic");
 const qTopicHint = document.querySelector("#qTopicHint");
 const qTopicCount = document.querySelector("#qTopicCount");
+const stepNotesNode = document.querySelector("#stepNotes");
 const kmapSvg = document.querySelector(".kmap__svg");
 const regionHint = document.querySelector("#regionHint");
 const regionSelect = document.querySelector("#regionSelect");
@@ -667,15 +671,11 @@ const BASE_STEPS = [
   { id: "youthInfo", node: document.querySelector("#stepYouthInfo"), when: () => statusState.youth === "no" }
 ];
 
-const ALL_STEP_NODES = [...BASE_STEPS.map((step) => step.node), stepTopicNode];
+const ALL_STEP_NODES = [...BASE_STEPS.map((step) => step.node), stepTopicNode, stepNotesNode];
 
 if (quitDateInput) quitDateInput.max = new Date().toISOString().slice(0, 10);
 
 let wizIndex = 0;
-
-function setHeroSituationCtaVisible(visible) {
-  if (heroSituationCta) heroSituationCta.hidden = !visible;
-}
 
 function relevantTopics() {
   if (!statusState.level || !statusState.goal) return [];
@@ -693,10 +693,15 @@ function wizSteps() {
   relevantTopics().forEach((key, idx) => {
     steps.push({ id: `topic:${key}`, topic: key, topicIndex: idx, node: stepTopicNode });
   });
+  /* 자유 메모는 항상 맨 마지막 — 위 질문에서 못 다룬 개인 사정을 받는다 */
+  if (statusState.level && statusState.goal) {
+    steps.push({ id: "notes", node: stepNotesNode });
+  }
   return steps;
 }
 
 function isAnswered(step) {
+  if (step.id === "notes") return true;
   return step.topic ? Boolean(statusState.topics[step.topic]) : Boolean(statusState[step.id]);
 }
 
@@ -778,7 +783,6 @@ function goNext() {
     updateResult();
     situationView.hidden = true;
     detailsView.hidden = false;
-    setHeroSituationCtaVisible(false);
     detailsView.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
@@ -1140,6 +1144,7 @@ function renderPrioritySteps(target, items, limit = 3) {
 }
 
 function renderUniversities(selectedSchools) {
+  universitiesSection.hidden = statusState.goal !== "univ";
   universityList.innerHTML = "";
 
   Object.entries(universities).forEach(([key, school]) => {
@@ -1867,10 +1872,52 @@ if (extraNotes) {
   });
 }
 
+const heroView = document.querySelector("#heroView");
+const mainView = document.querySelector("main");
+const footerView = document.querySelector("footer");
+
+function goToFinderPage() {
+  heroView.hidden = true;
+  mainView.hidden = false;
+  footerView.hidden = false;
+  window.scrollTo(0, 0);
+}
+
+function goToHeroPage() {
+  heroView.hidden = false;
+  mainView.hidden = true;
+  footerView.hidden = true;
+  window.scrollTo(0, 0);
+}
+
+document.querySelector("#btnStartFinder").addEventListener("click", goToFinderPage);
+
+document.querySelector("#navBrand").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToHeroPage();
+});
+
+document.querySelector("#navToFinder").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+});
+
+document.querySelector("#navToRoadmap").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+});
+
+document.querySelector("#navToUniversities").addEventListener("click", (event) => {
+  event.preventDefault();
+  goToFinderPage();
+  if (!universitiesSection.hidden) {
+    requestAnimationFrame(() => universitiesSection.scrollIntoView({ behavior: "smooth", block: "start" }));
+  }
+});
+
 document.querySelector("#btnBackToSituation").addEventListener("click", () => {
   detailsView.hidden = true;
   situationView.hidden = false;
-  setHeroSituationCtaVisible(true);
   wizIndex = wizSteps().length - 1;
   renderWizard();
   situationView.scrollIntoView({ behavior: "smooth", block: "start" });
