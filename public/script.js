@@ -640,7 +640,7 @@ const REGIONS = {
 
 const ENABLED_REGION = { gyeongbuk: "pohang" };
 
-const statusState = { region: null, level: null, quit: null, quitDate: null, goal: null, youth: null, youthInfo: null, topics: {} };
+const statusState = { region: null, level: null, quit: null, quitDate: null, goal: null, youth: null, youthInfo: null, topics: {}, schools: [] };
 let activeICSPayload = null;
 
 const STATUS_STORAGE_KEY = "axton_status_v1";
@@ -1130,7 +1130,16 @@ function restoreStatusState() {
         setActiveOption("youthInfo", saved.youthInfo);
       }
     }
+    if (Array.isArray(saved.schools)) {
+      statusState.schools = saved.schools.filter((key) => universities[key]);
+    }
   }
+
+  /* 궁금한 대학 체크박스는 폼 상태라 저장된 값대로 다시 맞춘다.
+     저장된 게 없으면(첫 방문) 마크업의 기본 체크도 여기서 다 해제된다. */
+  document.querySelectorAll('input[name="school"]').forEach((input) => {
+    input.checked = statusState.schools.includes(input.value);
+  });
 
   /* 저장된 답이 있으면 첫 미응답 질문에서 이어서 시작한다 */
   const steps = wizSteps();
@@ -1628,7 +1637,7 @@ function roadmapSteps() {
       detail: `
         <p class="detail-lead">크게 세 갈래예요. 지금 결정이 최종은 아니고, 나중에 바꿀 수 있어요.</p>
         <ul class="plain">
-          <li><strong>검정고시</strong> — 시험으로 학력을 인정받아요. 시험 비용 없음예요.</li>
+          <li><strong>검정고시</strong> — 시험으로 학력을 인정받아요. 시험 비용은 없어요.</li>
           <li><strong>학교 복귀</strong> — 재입학·편입학, 방송통신고 등이 있어요.</li>
           <li><strong>일할 준비</strong> — 자격증, 직업훈련부터 시작해요.</li>
         </ul>
@@ -1806,6 +1815,10 @@ function updateResult() {
   const statusKey = currentStatusKey();
   const goals = selectedTopics();
   const selectedSchools = checkedValues("school");
+
+  /* 궁금한 대학 체크는 다른 답변처럼 새로고침해도 이어지도록 상태에 반영해 저장한다 */
+  statusState.schools = selectedSchools;
+  saveStatusState();
 
   if (!statusKey) {
     summaryTitle.textContent = "질문에 순서대로 답해 주세요.";
