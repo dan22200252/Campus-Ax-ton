@@ -254,12 +254,12 @@ const EXAM_LINKS = {
 const goalOptionsByLevel = {
   elem: [
     { value: "school", icon: "🏫", title: "중학교 진학", sub: "학교로 돌아가고 싶어요" },
-    { value: "ged", icon: "📝", title: "검정고시", sub: "시험으로 학력을 인정받고 싶어요" },
+    { value: "ged", icon: "📝", title: "중졸 검정고시", sub: "시험으로 중학교 졸업 학력을 인정받고 싶어요" },
     { value: "none", icon: "🤔", title: "아직 목표 없음", sub: "천천히 정해도 괜찮아요" }
   ],
   mid: [
     { value: "school", icon: "🏫", title: "고등학교 진학", sub: "학교로 돌아가고 싶어요" },
-    { value: "ged", icon: "📝", title: "검정고시", sub: "시험으로 학력을 인정받고 싶어요" },
+    { value: "ged", icon: "📝", title: "고졸 검정고시", sub: "시험으로 고등학교 졸업 학력을 인정받고 싶어요" },
     { value: "none", icon: "🤔", title: "아직 목표 없음", sub: "천천히 정해도 괜찮아요" }
   ],
   high: [
@@ -599,6 +599,7 @@ const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
 const universitiesSection = document.querySelector("#universitySection");
+const comparisonSection = document.querySelector("#comparisonSection");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
 const universityPicks = document.querySelector("#universityPicks");
@@ -627,6 +628,31 @@ universityList.addEventListener("click", (event) => {
   btn.setAttribute("aria-expanded", String(willOpen));
   btn.textContent = willOpen ? "📌 주의할 점 접기" : "📌 주의할 점 보기";
 });
+
+/* 지도 핀을 누르면 아래 목록에서 그 학교 카드로 이동해 잠깐 강조한다 */
+function focusUniversityCard(key) {
+  const card = universityList.querySelector(`[data-school="${key}"]`);
+  if (!card) return;
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+  card.classList.add("university-card--flash");
+  window.setTimeout(() => card.classList.remove("university-card--flash"), 1600);
+}
+
+const umapSvg = document.querySelector(".umap__svg");
+if (umapSvg) {
+  umapSvg.addEventListener("click", (event) => {
+    const pin = event.target.closest(".umap__pin");
+    if (!pin) return;
+    focusUniversityCard(pin.dataset.school);
+  });
+  umapSvg.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const pin = event.target.closest(".umap__pin");
+    if (!pin) return;
+    event.preventDefault();
+    focusUniversityCard(pin.dataset.school);
+  });
+}
 
 /* =========================================================
    질문 위저드 — 한 화면에 질문 하나, 답하면 다음으로
@@ -787,13 +813,35 @@ function renderWizard() {
 
   wizNow.textContent = String(wizIndex + 1);
   wizTotal.textContent = String(steps.length);
-  wizBar.style.width = `${((wizIndex + 1) / steps.length) * 100}%`;
+  renderWizBar(steps);
 
   btnWizBack.disabled = wizIndex === 0;
   /* 이미 답한 질문이면 다시 고르지 않고도 앞으로 갈 수 있게 */
   btnWizNext.hidden = !isAnswered(current);
   wizError.classList.remove("show");
 }
+
+/* 진행 막대를 질문 수만큼 조각내서, 이미 답한 질문은 눌러서 바로 돌아갈 수 있게 한다 */
+function renderWizBar(steps) {
+  wizBar.innerHTML = steps.map((step, idx) => {
+    /* 뒤로 지나온 질문만 눌러서 돌아갈 수 있다 — schools·notes 질문은
+       안 답해도 항상 "답함" 취급이라, isAnswered만으로 판단하면 아직
+       안 답한 질문을 건너뛰고 그 뒤로 먼저 넘어갈 수 있는 구멍이 생긴다.
+       그래서 지나온 위치(idx < wizIndex) 기준으로만 통과·이동을 정한다. */
+    const state = idx === wizIndex ? "is-current" : idx < wizIndex ? "is-done" : "is-locked";
+    const clickable = idx < wizIndex;
+    return `<button type="button" class="wiz__seg ${state}" data-idx="${idx}"`
+      + `${clickable ? "" : " disabled"} aria-label="질문 ${idx + 1}로 이동" aria-current="${idx === wizIndex ? "step" : "false"}"></button>`;
+  }).join("");
+}
+
+wizBar.addEventListener("click", (event) => {
+  const btn = event.target.closest(".wiz__seg");
+  if (!btn || btn.disabled) return;
+  wizIndex = Number(btn.dataset.idx);
+  renderWizard();
+  situationView.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 
 function goNext() {
   const steps = wizSteps();
@@ -1174,6 +1222,7 @@ function renderUniversities(selectedSchools) {
   Object.entries(universities).forEach(([key, school]) => {
     const card = document.createElement("article");
     card.className = `university-card${selectedSchools.includes(key) ? " is-active" : ""}`;
+    card.dataset.school = key;
     card.innerHTML = `
       <small>${esc(school.type)}</small>
       <h3>${esc(school.name)}</h3>
@@ -1203,6 +1252,20 @@ function ddayLabel(iso) {
   if (left < 0) return "지났어요";
   if (left === 0) return "오늘";
   return `D-${left}`;
+}
+
+/* 홈 화면은 아직 상황을 모르니 quitRule 같은 개인 조건은 안 보고,
+   아직 안 끝난 원서접수 기간 중 가장 가까운 것만 하나 찾는다. */
+function nextApplicationWindow() {
+  for (const rnd of EXAM_SCHEDULE) {
+    const apply = rnd.events.find((ev) => ev.label.includes("원서접수"));
+    if (!apply) continue;
+    const endDate = apply.end || apply.date;
+    if (daysUntil(endDate) >= 0) {
+      return { round: rnd.round, apply, endDate, started: daysUntil(apply.date) <= 0 };
+    }
+  }
+  return null;
 }
 
 /* EXAM_SCHEDULE의 status 값은 하드코딩이라 쓰지 않고 날짜로 직접 판정한다.
@@ -1258,7 +1321,8 @@ function roadmapSteps() {
       tag: "먼저",
       title: "청소년증 발급 신청",
       meta: "가까운 주민센터 · 사진 1매 · 수수료 없음 · 약 2주 걸려요",
-      detail: youthCardDetailHTML(true)
+      detail: youthCardDetailHTML(true),
+      quickLink: { url: EXAM_LINKS.youth.url, label: "신청 바로가기" }
     });
   }
 
@@ -1725,6 +1789,9 @@ function renderRoadmap() {
       + `</span>`
       + `<span class="scv__more" aria-hidden="true">${open ? "닫기" : "자세히"}</span>`
       + `</button>`
+      + (step.quickLink
+        ? `<a class="scv__link" href="${esc(step.quickLink.url)}" target="_blank" rel="noopener noreferrer">${esc(step.quickLink.label)} ↗</a>`
+        : "")
       + `<button type="button" class="scv__check" data-step-id="${esc(step.id)}" aria-pressed="${done}"`
       + ` aria-label="${esc(step.title)} ${done ? "완료 취소" : "완료로 표시"}"><span aria-hidden="true">✓</span></button>`
       + `</div>`;
@@ -1741,9 +1808,12 @@ function showStepDetail(step, idx, total) {
   stepDetailTitle.textContent = step.title;
   stepDetailBody.innerHTML = step.detail || `<p class="detail-lead">${esc(step.meta)}</p>`;
   stepDetail.hidden = false;
-  /* 안내 카드가 자체 스크롤이라, 펼친 내용이 보이도록 위로 올린다 */
+  /* 데스크톱은 안내 카드 자체 스크롤을 올리고, 모바일처럼 한 줄로 쌓이는
+     화면은 페이지를 펼친 내용까지 직접 내려준다 — 안 그러면 "자세히"를
+     눌러도 화면 아래 안내 카드가 바뀐 걸 못 보고 아무 반응이 없다고 느낀다. */
   const box = stepDetail.closest(".result");
   if (box) box.scrollTop = 0;
+  stepDetail.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function closeStepDetail() {
@@ -1918,6 +1988,7 @@ function goToFinderPage() {
   footerView.hidden = false;
   finderSection.hidden = false;
   universitiesSection.hidden = true;
+  comparisonSection.hidden = true;
   window.scrollTo(0, 0);
 }
 
@@ -1940,11 +2011,6 @@ document.querySelector("#navToFinder").addEventListener("click", (event) => {
   goToFinderPage();
 });
 
-document.querySelector("#navToRoadmap").addEventListener("click", (event) => {
-  event.preventDefault();
-  goToFinderPage();
-});
-
 document.querySelector("#navToUniversities").addEventListener("click", (event) => {
   event.preventDefault();
   heroView.hidden = true;
@@ -1952,6 +2018,7 @@ document.querySelector("#navToUniversities").addEventListener("click", (event) =
   footerView.hidden = false;
   finderSection.hidden = true;
   universitiesSection.hidden = false;
+  comparisonSection.hidden = true;
   renderUniversities(checkedValues("school"));
   window.scrollTo(0, 0);
 });
@@ -1971,3 +2038,188 @@ form.addEventListener("change", updateResult);
 loadRoadmapDone();
 restoreStatusState();
 updateResult();
+
+/* 홈 화면 마감 임박 배지 — 아직 상황을 안 골라도 다음 원서접수가
+   얼마 안 남았으면 보여준다. 한 번 닫으면 그 회차·단계는 다시 안 띄운다. */
+const DEADLINE_DISMISS_KEY = "axton_deadline_dismissed_v1";
+const DEADLINE_THRESHOLD_DAYS = 30;
+const deadlineBadge = document.querySelector("#deadlineBadge");
+const deadlineBadgeText = document.querySelector("#deadlineBadgeText");
+
+function renderDeadlineBadge() {
+  const win = nextApplicationWindow();
+  if (!win) {
+    deadlineBadge.hidden = true;
+    return;
+  }
+
+  const targetDate = win.started ? win.endDate : win.apply.date;
+  if (daysUntil(targetDate) > DEADLINE_THRESHOLD_DAYS) {
+    deadlineBadge.hidden = true;
+    return;
+  }
+
+  const dismissKey = `${win.round}:${targetDate}`;
+  let dismissed = null;
+  try {
+    dismissed = localStorage.getItem(DEADLINE_DISMISS_KEY);
+  } catch (e) {
+    /* ignore */
+  }
+  if (dismissed === dismissKey) {
+    deadlineBadge.hidden = true;
+    return;
+  }
+
+  const label = win.started ? "원서접수 마감" : "원서접수 시작";
+  deadlineBadgeText.textContent = `📅 ${win.round} 검정고시 ${label} ${ddayLabel(targetDate)}`;
+  deadlineBadge.hidden = false;
+  deadlineBadge.dataset.dismissKey = dismissKey;
+}
+
+document.querySelector("#deadlineBadgeClose").addEventListener("click", () => {
+  deadlineBadge.hidden = true;
+  try {
+    localStorage.setItem(DEADLINE_DISMISS_KEY, deadlineBadge.dataset.dismissKey || "");
+  } catch (e) {
+    /* ignore */
+  }
+});
+
+renderDeadlineBadge();
+
+/* ==========================================================
+   경로 비교 — 상황을 저장해서 나란히 비교해본다 (최대 3개, localStorage)
+   ========================================================== */
+const SCENARIOS_STORAGE_KEY = "axton_scenarios_v1";
+const MAX_SCENARIOS = 3;
+
+const comparisonEmpty = document.querySelector("#comparisonEmpty");
+const comparisonList = document.querySelector("#comparisonList");
+const btnOpenComparison = document.querySelector("#btnOpenComparison");
+const scenarioCountEl = document.querySelector("#scenarioCount");
+const scenarioSavedMsg = document.querySelector("#scenarioSavedMsg");
+
+function loadScenarios() {
+  try {
+    const list = JSON.parse(localStorage.getItem(SCENARIOS_STORAGE_KEY) || "[]");
+    return Array.isArray(list) ? list : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveScenarios(list) {
+  try {
+    localStorage.setItem(SCENARIOS_STORAGE_KEY, JSON.stringify(list));
+  } catch (e) {
+    /* ignore */
+  }
+}
+
+/* statusState(+궁금한 대학 체크박스)를 스냅샷 값으로 잠깐 바꿔서
+   제목·요약·먼저 할 일을 뽑아내고, 보고 있던 화면은 그대로 되돌린다. */
+function snapshotSummary(snapshot) {
+  const backup = JSON.parse(JSON.stringify(statusState));
+  const schoolInputs = [...form.querySelectorAll('input[name="school"]')];
+  const checkedBackup = schoolInputs.map((el) => el.checked);
+
+  Object.keys(statusState).forEach((key) => { delete statusState[key]; });
+  Object.assign(statusState, snapshot);
+  schoolInputs.forEach((el) => {
+    el.checked = (snapshot.schools || []).includes(el.value);
+  });
+
+  const key = currentStatusKey();
+  const data = key ? statusCopy[key] : null;
+  const steps = key ? roadmapSteps().slice(0, 3).map((s) => s.title) : [];
+
+  Object.keys(statusState).forEach((k) => { delete statusState[k]; });
+  Object.assign(statusState, backup);
+  schoolInputs.forEach((el, i) => { el.checked = checkedBackup[i]; });
+
+  return {
+    title: data ? data.title : "아직 완성되지 않은 상황이에요.",
+    summary: data ? data.summary : "",
+    steps
+  };
+}
+
+function scenarioLabel(snapshot) {
+  const levelNames = { elem: "초졸", mid: "중졸", high: "고졸" };
+  const goalNames = { school: "진학", ged: "검정고시", univ: "대학 진학", job: "취업", none: "목표 미정" };
+  const l = levelNames[snapshot.level] || "?";
+  const g = goalNames[snapshot.goal] || "?";
+  return `${l} · ${g}`;
+}
+
+function renderComparisonList() {
+  const list = loadScenarios();
+  comparisonEmpty.hidden = list.length > 0;
+  comparisonList.innerHTML = list.map((item) => {
+    const summary = snapshotSummary(item.state);
+    const stepsHTML = summary.steps.length
+      ? `<ol>${summary.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol>`
+      : `<p class="note-mini">아직 답이 부족해서 로드맵을 만들 수 없어요.</p>`;
+    return `
+      <article class="comparison-card">
+        <div class="comparison-card__head">
+          <p class="comparison-card__label">${esc(item.label)}</p>
+          <button type="button" class="comparison-card__remove" data-remove-id="${esc(item.id)}" aria-label="${esc(item.label)} 삭제">삭제</button>
+        </div>
+        <h3>${esc(summary.title)}</h3>
+        <p>${esc(summary.summary)}</p>
+        ${stepsHTML}
+      </article>
+    `;
+  }).join("");
+}
+
+function updateCompareButtonVisibility() {
+  const count = loadScenarios().length;
+  btnOpenComparison.hidden = count === 0;
+  scenarioCountEl.textContent = String(count);
+}
+
+document.querySelector("#btnSaveScenario").addEventListener("click", () => {
+  const list = loadScenarios();
+  if (list.length >= MAX_SCENARIOS) {
+    scenarioSavedMsg.textContent = `최대 ${MAX_SCENARIOS}개까지 저장할 수 있어요. "저장한 상황 비교"에서 하나를 지우고 다시 저장해주세요.`;
+    scenarioSavedMsg.hidden = false;
+    return;
+  }
+  const snapshot = JSON.parse(JSON.stringify(statusState));
+  snapshot.schools = checkedValues("school");
+  const id = `s${Date.now()}${Math.floor(Math.random() * 1000)}`;
+  const item = { id, label: scenarioLabel(snapshot), state: snapshot };
+  list.push(item);
+  saveScenarios(list);
+  updateCompareButtonVisibility();
+  scenarioSavedMsg.textContent = "저장했어요! 다른 상황도 골라서 비교해보세요.";
+  scenarioSavedMsg.hidden = false;
+});
+
+btnOpenComparison.addEventListener("click", () => {
+  finderSection.hidden = true;
+  universitiesSection.hidden = true;
+  comparisonSection.hidden = false;
+  renderComparisonList();
+  window.scrollTo(0, 0);
+});
+
+document.querySelector("#btnCloseComparison").addEventListener("click", () => {
+  comparisonSection.hidden = true;
+  finderSection.hidden = false;
+  window.scrollTo(0, 0);
+});
+
+comparisonList.addEventListener("click", (event) => {
+  const btn = event.target.closest("[data-remove-id]");
+  if (!btn) return;
+  const list = loadScenarios().filter((item) => item.id !== btn.dataset.removeId);
+  saveScenarios(list);
+  renderComparisonList();
+  updateCompareButtonVisibility();
+});
+
+updateCompareButtonVisibility();

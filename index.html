@@ -12,7 +12,6 @@
         <a class="brand" href="#" id="navBrand">포항 길잡이</a>
         <div class="topbar__links">
           <a href="#" id="navToFinder">상황 선택</a>
-          <a href="#" id="navToRoadmap">로드맵</a>
           <a href="#" id="navToUniversities">포항 대학</a>
         </div>
       </nav>
@@ -26,6 +25,10 @@
           검정고시를 본 다음에 갈 수 있는 길을 알려줘요.<br />
           고등학교, 대학, 일할 준비로 나눠서 보여줘요.
         </p>
+        <div class="deadline-badge" id="deadlineBadge" hidden>
+          <span class="deadline-badge__text" id="deadlineBadgeText"></span>
+          <button type="button" class="deadline-badge__close" id="deadlineBadgeClose" aria-label="알림 닫기">✕</button>
+        </div>
         <button type="button" class="hero__button" id="btnStartFinder">내 상황 고르기</button>
         <div class="hero__badges">
           <span class="hero__badge">#로그인 없이 바로 시작</span>
@@ -47,7 +50,7 @@
             <div class="wiz">
               <div class="wiz__top">
                 <p class="wiz__count">질문 <strong id="wizNow">1</strong> / <span id="wizTotal">4</span></p>
-                <div class="wiz__bar"><i id="wizBar"></i></div>
+                <div class="wiz__bar" id="wizBar" role="tablist" aria-label="답한 질문으로 이동"></div>
               </div>
 
               <!-- Q1. 거주 지역 -->
@@ -363,7 +366,10 @@
             <div class="panel details-inputs">
                 <div class="wizard__nav">
                   <button type="button" class="btn-prev" id="btnBackToSituation">다시 상황 고르기</button>
+                  <button type="button" class="btn-save" id="btnSaveScenario">💾 이 상황 저장해서 비교하기</button>
+                  <button type="button" class="btn-compare" id="btnOpenComparison" hidden>📊 저장한 상황 비교 (<span id="scenarioCount">0</span>)</button>
                 </div>
+                <p class="scenario-saved-msg" id="scenarioSavedMsg" hidden>저장했어요! 다른 상황도 골라서 비교해보세요.</p>
             </div>
           </div>
         </form>
@@ -375,7 +381,59 @@
           <p class="eyebrow">포항 소재 대학 우선</p>
           <h2 id="universities-title">🎓 대학마다 이것만 먼저 확인해요</h2>
         </div>
+
+        <div class="umap-wrap">
+          <svg class="umap__svg" viewBox="0 0 340 340" role="img" aria-label="포항시 안 대학 위치 지도">
+            <rect class="umap__land" x="2" y="2" width="336" height="336" rx="28" />
+            <path class="umap__sea" d="M340,0 L340,340 L320,340 C313,220 313,120 320,0 Z" />
+
+            <g class="umap__pin" data-school="postech" role="button" tabindex="0" aria-label="포항공과대학교 위치 — 카드 보기">
+              <circle class="umap__pin-ring" cx="40" cy="230" r="9" />
+              <circle class="umap__pin-dot" cx="40" cy="230" r="4" />
+              <text class="umap__pin-txt" x="40" y="216">포스텍</text>
+            </g>
+
+            <g class="umap__pin" data-school="handong" role="button" tabindex="0" aria-label="한동대학교 위치 — 카드 보기">
+              <circle class="umap__pin-ring" cx="237" cy="30" r="9" />
+              <circle class="umap__pin-dot" cx="237" cy="30" r="4" />
+              <text class="umap__pin-txt" x="237" y="52">한동대</text>
+            </g>
+
+            <g class="umap__pin" data-school="sunlin" role="button" tabindex="0" aria-label="선린대학교 위치 — 카드 보기">
+              <circle class="umap__pin-ring" cx="75" cy="59" r="9" />
+              <circle class="umap__pin-dot" cx="75" cy="59" r="4" />
+              <text class="umap__pin-txt" x="75" y="81">선린대</text>
+            </g>
+
+            <g class="umap__pin" data-school="pohang" role="button" tabindex="0" aria-label="포항대학교 위치 — 카드 보기">
+              <circle class="umap__pin-ring" cx="296" cy="71" r="9" />
+              <circle class="umap__pin-dot" cx="296" cy="71" r="4" />
+              <text class="umap__pin-txt" x="288" y="93">포항대</text>
+            </g>
+
+            <g class="umap__pin" data-school="polytech" role="button" tabindex="0" aria-label="한국폴리텍대학 포항캠퍼스 위치 — 카드 보기">
+              <circle class="umap__pin-ring" cx="222" cy="300" r="9" />
+              <circle class="umap__pin-dot" cx="222" cy="300" r="4" />
+              <text class="umap__pin-txt" x="222" y="286">폴리텍</text>
+            </g>
+          </svg>
+          <p class="umap__caption">대략적인 위치예요 · 동쪽은 바다예요 · 정확한 위치는 학교 홈페이지에서 확인하세요.</p>
+        </div>
+
         <div class="university-list" id="universityList"></div>
+      </section>
+
+      <!-- 저장한 상황 비교 — "이 상황 저장해서 비교하기"를 눌렀을 때만 나온다 -->
+      <section class="comparison" id="comparisonSection" aria-labelledby="comparison-title" hidden>
+        <div class="section-heading">
+          <p class="eyebrow">저장한 상황</p>
+          <h2 id="comparison-title">📊 상황별로 나란히 비교해요</h2>
+        </div>
+        <p class="comparison__empty" id="comparisonEmpty" hidden>아직 저장한 상황이 없어요. 상황을 고른 뒤 "이 상황 저장해서 비교하기"를 눌러보세요.</p>
+        <div class="comparison-list" id="comparisonList"></div>
+        <div class="wizard__nav">
+          <button type="button" class="btn-prev" id="btnCloseComparison">← 상황 선택으로</button>
+        </div>
       </section>
     </main>
 

@@ -27,6 +27,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* 폰트가 늦게 로드되면서 레이아웃이 바뀔 때 브라우저가 스크롤을 임의로
+     보정하는 것을 막는다 — 안 그러면 첫 화면에서 상단 메뉴가 화면 밖으로
+     밀려나 버튼이 안 눌리는 것처럼 보인다. */
+  overflow-anchor: none;
 }
 
 body {
@@ -63,6 +67,9 @@ a {
 }
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   background: var(--white);
   border-bottom: 1px solid var(--line);
 }
@@ -170,6 +177,34 @@ main[hidden] {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 6px 14px;
+}
+
+.deadline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #fff6e1;
+  border: 1.5px solid rgba(242, 181, 68, 0.55);
+  color: var(--ink);
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+.deadline-badge[hidden] {
+  display: none;
+}
+
+.deadline-badge__close {
+  flex: none;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
 }
 
 main {
@@ -287,19 +322,40 @@ legend {
 
 .wiz__bar {
   flex: 1;
-  height: 5px;
-  border-radius: 999px;
-  background: var(--line);
-  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
-.wiz__bar i {
-  display: block;
-  height: 100%;
-  width: 20%;
+/* 답할수록 질문 수(전체 조각 개수)가 늘어난다. flex:1로 나눠 가지면
+   조각이 늘 때마다 이미 있던 조각들 너비까지 다시 계산돼서 막대가
+   출렁여 보인다 — 고정 너비로 둬서 새 조각만 뒤에 붙게 한다. */
+.wiz__seg {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 6px;
+  padding: 0;
+  border: none;
   border-radius: 999px;
+  background: var(--line);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.wiz__seg.is-done {
   background: var(--teal);
-  transition: width 0.25s ease;
+  cursor: pointer;
+}
+
+.wiz__seg.is-done:hover {
+  transform: scaleY(1.6);
+}
+
+.wiz__seg.is-current {
+  background: var(--coral);
+}
+
+.wiz__seg.is-locked {
+  cursor: default;
 }
 
 .wiz__topiccount {
@@ -939,6 +995,37 @@ legend {
 
 /* ---------- 단계 완료 체크 ---------- */
 
+.scv__link {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 800;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.scv__link:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.scv__step--goal .scv__link {
+  border-color: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--ink);
+}
+
+.scv__step--goal .scv__link:hover {
+  background: rgba(0, 0, 0, 0.16);
+}
+
 .scv__check {
   flex: 0 0 30px;
   height: 30px;
@@ -1235,18 +1322,22 @@ textarea#extraNotes {
 }
 
 .wizard__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 20px;
 }
 
 .wizard__nav button {
-  width: 100%;
+  flex: 1 1 auto;
   font: inherit;
-  font-size: 16.5px;
+  font-size: 15.5px;
   font-weight: 800;
   border-radius: 10px;
-  padding: 13px 20px;
+  padding: 13px 18px;
   cursor: pointer;
   border: 1.5px solid transparent;
+  white-space: nowrap;
 }
 
 .btn-next {
@@ -1267,6 +1358,32 @@ textarea#extraNotes {
 .btn-prev:hover {
   border-color: var(--teal);
   color: var(--teal);
+}
+
+.btn-save {
+  background: #fff;
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.btn-save:hover {
+  background: rgba(217, 169, 74, 0.12);
+}
+
+.btn-compare {
+  background: var(--coral);
+  color: #fff;
+}
+
+.btn-compare:hover {
+  background: #9c4830;
+}
+
+.scenario-saved-msg {
+  margin: 10px 0 0;
+  color: var(--teal);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 /* ---------- 자퇴 날짜 입력 · 응시 제한 안내 ---------- */
@@ -1633,6 +1750,135 @@ footer p {
   background: var(--paper);
 }
 
+.comparison {
+  background: var(--white);
+}
+
+.comparison__empty {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.comparison-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.comparison-card {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.comparison-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.comparison-card__label {
+  margin: 0;
+  color: var(--coral);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.comparison-card__remove {
+  flex: none;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.comparison-card__remove:hover {
+  color: var(--coral);
+}
+
+.comparison-card h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+}
+
+.comparison-card p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.comparison-card ol {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.umap-wrap {
+  max-width: 360px;
+  margin: 0 auto 28px;
+}
+
+.umap__svg {
+  width: 100%;
+  height: auto;
+}
+
+.umap__land {
+  fill: #f0e6d2;
+  stroke: var(--line);
+  stroke-width: 2;
+}
+
+.umap__sea {
+  fill: #cfe3e6;
+}
+
+.umap__pin {
+  cursor: pointer;
+}
+
+.umap__pin-ring {
+  fill: #ffffff;
+  stroke: var(--coral);
+  stroke-width: 2;
+  transition: r 0.15s ease;
+}
+
+.umap__pin-dot {
+  fill: var(--coral);
+}
+
+.umap__pin-txt {
+  fill: var(--ink);
+  font-size: 14px;
+  font-weight: 800;
+  text-anchor: middle;
+  pointer-events: none;
+  paint-order: stroke fill;
+  stroke: #f0e6d2;
+  stroke-width: 3px;
+}
+
+.umap__pin:hover .umap__pin-ring,
+.umap__pin:focus-visible .umap__pin-ring {
+  r: 11;
+}
+
+.umap__caption {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  text-align: center;
+}
+
 .university-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -1648,6 +1894,15 @@ footer p {
 .university-card.is-active {
   border-top-color: var(--coral);
   box-shadow: var(--shadow);
+}
+
+.university-card--flash {
+  animation: universityCardFlash 1.6s ease;
+}
+
+@keyframes universityCardFlash {
+  0%, 100% { box-shadow: var(--shadow-soft); }
+  20%, 60% { box-shadow: 0 0 0 3px var(--coral); }
 }
 
 .university-card small {
@@ -1745,7 +2000,7 @@ footer {
     opacity: 0.4;
   }
 
-  .wiz__bar i,
+  .wiz__seg,
   .scv-prog__bar i {
     transition: none;
   }
