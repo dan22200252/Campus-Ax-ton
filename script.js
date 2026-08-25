@@ -279,6 +279,7 @@ const statusKeyMap = {
    키는 goalCopy의 키와 같아야 한다 — 안내 카드가 그 키로 상세를 찾는다. */
 const TOPIC_QUESTIONS = {
   exam: {
+    short: "시험",
     icon: "📝",
     q: "검정고시가 어떤 시험인지 알려드릴까요?",
     hint: "시험 종류와 과목, 합격 기준, 비용을 알려줘요.",
@@ -286,6 +287,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "이미 알아요"
   },
   examDocs: {
+    short: "시험 서류",
     icon: "📄",
     q: "시험 신청할 때 낼 서류를 알려드릴까요?",
     hint: "이 서류는 나중에 대학에 내는 서류와 달라요.",
@@ -293,6 +295,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "이미 알아요"
   },
   highSchool: {
+    short: "고등학교",
     icon: "🏫",
     q: "고등학교 진학 방법을 알려드릴까요?",
     hint: "재입학·편입학, 방송통신고 같은 경로를 안내해요.",
@@ -300,6 +303,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "괜찮아요"
   },
   college: {
+    short: "대학",
     icon: "🎓",
     q: "대학 지원 방법을 알려드릴까요?",
     hint: "수시와 정시가 어떻게 다른지, 검정고시 출신은 어디에 지원할 수 있는지 안내해요.",
@@ -307,6 +311,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "괜찮아요"
   },
   collegeDocs: {
+    short: "대학 서류",
     icon: "🗂️",
     q: "대학에 낼 서류를 알려드릴까요?",
     hint: "합격증명서·성적증명서는 용도가 나뉘어 있어서 잘못 발급받기 쉬워요.",
@@ -314,6 +319,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "괜찮아요"
   },
   work: {
+    short: "일자리",
     icon: "💼",
     q: "일할 준비 방법을 알려드릴까요?",
     hint: "직업훈련, 자격증, 청소년이 일할 때 필요한 서류를 안내해요.",
@@ -321,6 +327,7 @@ const TOPIC_QUESTIONS = {
     noLabel: "괜찮아요"
   },
   support: {
+    short: "도움",
     icon: "🤝",
     q: "도움받을 수 있는 곳을 알려드릴까요?",
     hint: "꿈드림 센터 상담이나 대학 입학처 상담을 안내해요.",
@@ -598,10 +605,9 @@ const infoList = document.querySelector("#infoList");
 const actionList = document.querySelector("#actionList");
 const topSteps = document.querySelector("#topSteps");
 const universityList = document.querySelector("#universityList");
-const universitiesSection = document.querySelector("#universitySection");
+const universitiesSection = document.querySelector("#universities");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
-const universityPicks = document.querySelector("#universityPicks");
 const roadmapSlot = document.querySelector("#roadmapSlot");
 const stepDetail = document.querySelector("#stepDetail");
 const stepDetailTag = document.querySelector("#stepDetailTag");
@@ -657,7 +663,7 @@ const qTopic = document.querySelector("#qTopic");
 const qTopicHint = document.querySelector("#qTopicHint");
 const qTopicCount = document.querySelector("#qTopicCount");
 const stepNotesNode = document.querySelector("#stepNotes");
-const stepSchoolsNode = document.querySelector("#stepSchools");
+const extraNotes = document.querySelector("#extraNotes");
 const kmapSvg = document.querySelector(".kmap__svg");
 const regionHint = document.querySelector("#regionHint");
 const regionSelect = document.querySelector("#regionSelect");
@@ -670,21 +676,19 @@ const wizTotal = document.querySelector("#wizTotal");
 const wizBar = document.querySelector("#wizBar");
 const btnWizBack = document.querySelector("#btnWizBack");
 const btnWizNext = document.querySelector("#btnWizNext");
-const wizError = document.querySelector("#wizError");
+const wizStepsNav = document.querySelector("#wizSteps");
 
 /* youthInfo는 '청소년증 없어요'일 때만, 항목 질문은 학력x목표가 정해진 뒤에만
    나온다. 그래서 전체 질문 수가 답에 따라 달라진다(현재 4~10개). */
 const BASE_STEPS = [
-  { id: "region", node: document.querySelector("#stepRegion") },
-  { id: "level", node: document.querySelector("#stepLevel") },
+  { id: "region", label: "지역", node: document.querySelector("#stepRegion") },
+  { id: "level", label: "학력", node: document.querySelector("#stepLevel") },
   /* 고등학교 졸업자는 이미 졸업했으니 자퇴 질문이 필요 없다 */
-  { id: "quit", node: document.querySelector("#stepQuit"), when: () => statusState.level === "elem" || statusState.level === "mid" },
-  { id: "quitDate", node: document.querySelector("#stepQuitDate"), when: () => statusState.quit === "yes" && (statusState.level === "elem" || statusState.level === "mid") },
-  { id: "goal", node: document.querySelector("#stepGoal") },
-  /* 대학교 진학을 목표로 골랐을 때만 궁금한 대학을 물어본다 */
-  { id: "schools", node: stepSchoolsNode, when: () => statusState.goal === "univ" },
-  { id: "youth", node: document.querySelector("#stepYouth") },
-  { id: "youthInfo", node: document.querySelector("#stepYouthInfo"), when: () => statusState.youth === "no" }
+  { id: "quit", label: "자퇴", node: document.querySelector("#stepQuit"), when: () => statusState.level === "elem" || statusState.level === "mid" },
+  { id: "quitDate", label: "날짜", node: document.querySelector("#stepQuitDate"), when: () => statusState.quit === "yes" && (statusState.level === "elem" || statusState.level === "mid") },
+  { id: "goal", label: "목표", node: document.querySelector("#stepGoal") },
+  { id: "youth", label: "청소년증", node: document.querySelector("#stepYouth") },
+  { id: "youthInfo", label: "발급", node: document.querySelector("#stepYouthInfo"), when: () => statusState.youth === "no" }
 ];
 
 const ALL_STEP_NODES = [...BASE_STEPS.map((step) => step.node), stepTopicNode, stepNotesNode];
@@ -711,13 +715,19 @@ function wizSteps() {
   });
   /* 자유 메모는 항상 맨 마지막 — 위 질문에서 못 다룬 개인 사정을 받는다 */
   if (statusState.level && statusState.goal) {
-    steps.push({ id: "notes", node: stepNotesNode });
+    steps.push({ id: "notes", label: "메모", node: stepNotesNode });
   }
   return steps;
 }
 
+/* 단계 표시에 쓸 짧은 이름 — 항목 질문은 TOPIC_QUESTIONS에서 가져온다 */
+function stepLabel(step) {
+  if (step.topic) return TOPIC_QUESTIONS[step.topic].short;
+  return step.label || "";
+}
+
 function isAnswered(step) {
-  if (step.id === "notes" || step.id === "schools") return true;
+  if (step.id === "notes") return true;
   return step.topic ? Boolean(statusState.topics[step.topic]) : Boolean(statusState[step.id]);
 }
 
@@ -773,6 +783,40 @@ function syncQuitDateNote() {
   quitDateNote.hidden = false;
 }
 
+/* 되돌아가기는 언제나 되고, 앞으로 가는 건 그 사이 질문에 답이 다 있을 때만 된다.
+   뒤 질문의 내용 자체가 앞 답변으로 만들어지므로(학력 -> 목표 -> 항목 질문),
+   중간에 빈 답이 있으면 그 앞으로는 갈 수 없다. */
+function canJumpTo(steps, idx) {
+  if (idx < 0 || idx >= steps.length || idx === wizIndex) return false;
+  if (idx < wizIndex) return true;
+  return steps.slice(0, idx).every(isAnswered);
+}
+
+function renderStepNav(steps) {
+  wizStepsNav.innerHTML = steps.map((step, idx) => {
+    const current = idx === wizIndex;
+    const jump = canJumpTo(steps, idx);
+    /* 메모는 비워도 넘어갈 수 있어서, ✓는 실제로 적은 내용이 있을 때만 붙인다 */
+    const answered = step.id === "notes"
+      ? Boolean(extraNotes && extraNotes.value.trim())
+      : isAnswered(step);
+    /* done = 답이 있어 오갈 수 있는 질문, next = 아직 답이 없지만 지금 갈 수 있는 질문 */
+    const state = current ? "current" : !jump ? "future" : answered ? "done" : "next";
+    const title = current ? "지금 답하는 질문"
+      : !jump ? "앞 질문에 답하면 열려요"
+      : answered ? `${stepLabel(step)} 답 고치기`
+      : `${stepLabel(step)} 질문으로 가기`;
+    return `
+      <button type="button" class="wiz__chip is-${state}" data-step-id="${esc(step.id)}"
+        ${jump ? "" : "disabled"}${current ? ' aria-current="step"' : ""}
+        title="${esc(title)}">
+        <span class="wiz__chip-n" aria-hidden="true">${answered && !current ? "✓" : idx + 1}</span>
+        <span class="wiz__chip-t">${esc(stepLabel(step))}</span>
+      </button>
+    `;
+  }).join("");
+}
+
 function renderWizard() {
   const steps = wizSteps();
   wizIndex = Math.min(Math.max(wizIndex, 0), steps.length - 1);
@@ -788,22 +832,15 @@ function renderWizard() {
   wizNow.textContent = String(wizIndex + 1);
   wizTotal.textContent = String(steps.length);
   wizBar.style.width = `${((wizIndex + 1) / steps.length) * 100}%`;
+  renderStepNav(steps);
 
   btnWizBack.disabled = wizIndex === 0;
   /* 이미 답한 질문이면 다시 고르지 않고도 앞으로 갈 수 있게 */
   btnWizNext.hidden = !isAnswered(current);
-  wizError.classList.remove("show");
 }
 
 function goNext() {
-  const steps = wizSteps();
-  const current = steps[wizIndex];
-  /* 버튼이 안 보여도 우회해서 넘어가지 못하게 한 번 더 막는다 */
-  if (!isAnswered(current)) {
-    wizError.classList.add("show");
-    return;
-  }
-  if (wizIndex >= steps.length - 1) {
+  if (wizIndex >= wizSteps().length - 1) {
     updateResult();
     situationView.hidden = true;
     detailsView.hidden = false;
@@ -1028,6 +1065,22 @@ document.querySelector(".wiz").addEventListener("click", (event) => {
   setAnswer(btn.dataset.group, btn.dataset.value, btn.dataset.topic);
 });
 
+/* 순서 번호가 아니라 질문 id로 이동한다 — 답을 바꾸면 질문 목록의 길이가
+   달라지므로, 누른 순간에 그 질문이 지금 몇 번째인지 다시 찾는다. */
+wizStepsNav.addEventListener("click", (event) => {
+  const chip = event.target.closest(".wiz__chip[data-step-id]");
+  if (!chip || chip.disabled) return;
+
+  const steps = wizSteps();
+  const idx = steps.findIndex((step) => step.id === chip.dataset.stepId);
+  /* -1은 답이 바뀌어 사라진 질문 — canJumpTo가 나머지(빈 답 건너뛰기)를 막는다 */
+  if (!canJumpTo(steps, idx)) return;
+
+  wizIndex = idx;
+  renderWizard();
+  situationView.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
 function pickRegionFrom(target) {
   const hit = target.closest("[data-region]");
   if (!hit) return;
@@ -1168,7 +1221,7 @@ function renderPrioritySteps(target, items, limit = 3) {
 }
 
 function renderUniversities(selectedSchools) {
-  /* 보이고 안 보이고는 상단 "포항 대학" 메뉴 클릭으로만 정한다 */
+  universitiesSection.hidden = statusState.goal !== "univ";
   universityList.innerHTML = "";
 
   Object.entries(universities).forEach(([key, school]) => {
@@ -1363,7 +1416,7 @@ function roadmapSteps() {
         id: "ged:univ",
         icon: "🎓",
         tag: "그 다음",
-        title: "대학 지원",
+        title: schoolNames.length ? `${schoolNames.join(" · ")} 지원` : "대학 지원",
         meta: `수시 원서접수 9월 초 · 수능 ${suneung ? `${fmtDate(suneung)} (${ddayLabel(suneung)})` : "11월 셋째 주 목요일"} · 정시 12월 말~1월 초`,
         detail: `
           <p class="detail-lead">고졸 학력이 생기면 대학에 지원할 수 있어요. 수시와 정시 중 어디로 갈지 먼저 정해요.</p>
@@ -1373,7 +1426,7 @@ function roadmapSteps() {
             <li><strong>수시</strong> — 9월 초에 신청해요. 학교 성적과 학교생활기록부를 봐요. 검정고시 출신은 지원할 수 있는 전형이 적어요.</li>
             <li><strong>정시</strong> — 수능 성적 중심${suneung ? `, 수능은 ${fmtDate(suneung)}` : ""}. 검정고시 출신에게 가장 많이 가는 길이에요.</li>
           </ul>
-          <p class="note-mini">맨 처음 "앞으로 무엇을 하고 싶으세요?"에서 대학교 진학을 고르면, 학교별로 확인할 내용을 자세히 안내해드려요.</p>
+          ${schoolNames.length ? compiledUniversitiesHTML(checkedValues("school")) : '<p class="note-mini">아래 "궁금한 대학"에서 학교를 고르면 학교별 확인 사항이 여기 나와요.</p>'}
           ${linksHTML(["adiga", "kosaf"])}
         `
       });
@@ -1493,7 +1546,7 @@ function roadmapSteps() {
           <li>학생부종합전형은 학교생활기록부 대신 다른 서류와 증명 자료를 달라고 할 수 있어요.</li>
           <li>농어촌 전형처럼 조건이 붙은 전형은 검정고시 출신이 지원 못 할 수 있어요.</li>
         </ul>
-        ${schoolNames.length ? compiledUniversitiesHTML(checkedValues("school")) : '<p class="note-mini">위에서 궁금한 대학을 고르면 학교별 확인 사항이 여기 나와요.</p>'}
+        ${schoolNames.length ? compiledUniversitiesHTML(checkedValues("school")) : '<p class="note-mini">아래 "궁금한 대학"에서 학교를 고르면 학교별 확인 사항이 여기 나와요.</p>'}
         ${linksHTML(["adiga"])}`
     });
     steps.push({
@@ -1812,8 +1865,6 @@ function updateResult() {
     summaryText.textContent = "사는 지역과 최종 학력, 앞으로의 목표를 고르면 맞춤 안내가 나와요.";
     detailSections.innerHTML = "";
     selectedDetails.innerHTML = "";
-    universityPicks.hidden = true;
-    universityPicks.innerHTML = "";
     activeICSPayload = null;
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
@@ -1857,11 +1908,8 @@ function updateResult() {
     actionItems.unshift("중학교를 그만둔 경우는 기다리는 기간이 없어요. 정원외관리증명서를 챙기세요.");
   }
 
-  const schoolNote = statusState.goal === "univ"
-    ? ` ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`
-    : "";
   summaryTitle.textContent = statusData.title;
-  summaryText.textContent = `${region ? `${region.name} 기준으로 안내해요. ` : ""}${statusData.summary}${schoolNote}`;
+  summaryText.textContent = `${region ? `${region.name} 기준으로 안내해요. ` : ""}${statusData.summary} ${schoolNames.length ? `선택한 대학: ${schoolNames.join(", ")}` : "대학은 아직 선택하지 않아도 괜찮아요."}`;
 
   activeICSPayload = (statusKey === "elemGed" || statusKey === "midGed")
     ? { events: flattenExamEvents(), filename: "검정고시_일정.ics", calName: "검정고시 일정" }
@@ -1872,11 +1920,8 @@ function updateResult() {
   selectedDetails.innerHTML = quitRuleHTML()
     + youthCardDetailHTML()
     + searchLinksHTML(statusData.keywords)
-    + compiledGoalsHTML(goals);
-
-  /* 내 상황 찾기에서 고른 궁금한 대학은 안내 카드에 바로 보이게 둔다(접었다 펴지 않음) */
-  universityPicks.hidden = statusState.goal !== "univ" || !selectedSchools.length;
-  universityPicks.innerHTML = universityPicks.hidden ? "" : compiledUniversitiesHTML(selectedSchools);
+    + compiledGoalsHTML(goals)
+    + compiledUniversitiesHTML(selectedSchools);
 
   renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
@@ -1891,7 +1936,6 @@ detailSections.addEventListener("click", (event) => {
   downloadICS(activeICSPayload.events, activeICSPayload.filename, activeICSPayload.calName);
 });
 
-const extraNotes = document.querySelector("#extraNotes");
 if (extraNotes) {
   try {
     extraNotes.value = localStorage.getItem(NOTES_STORAGE_KEY) || "";
@@ -1910,14 +1954,11 @@ if (extraNotes) {
 const heroView = document.querySelector("#heroView");
 const mainView = document.querySelector("main");
 const footerView = document.querySelector("footer");
-const finderSection = document.querySelector("#finder");
 
 function goToFinderPage() {
   heroView.hidden = true;
   mainView.hidden = false;
   footerView.hidden = false;
-  finderSection.hidden = false;
-  universitiesSection.hidden = true;
   window.scrollTo(0, 0);
 }
 
@@ -1947,13 +1988,10 @@ document.querySelector("#navToRoadmap").addEventListener("click", (event) => {
 
 document.querySelector("#navToUniversities").addEventListener("click", (event) => {
   event.preventDefault();
-  heroView.hidden = true;
-  mainView.hidden = false;
-  footerView.hidden = false;
-  finderSection.hidden = true;
-  universitiesSection.hidden = false;
-  renderUniversities(checkedValues("school"));
-  window.scrollTo(0, 0);
+  goToFinderPage();
+  if (!universitiesSection.hidden) {
+    requestAnimationFrame(() => universitiesSection.scrollIntoView({ behavior: "smooth", block: "start" }));
+  }
 });
 
 document.querySelector("#btnBackToSituation").addEventListener("click", () => {

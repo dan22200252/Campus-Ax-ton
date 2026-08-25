@@ -302,6 +302,113 @@ legend {
   transition: width 0.25s ease;
 }
 
+.wiz__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 22px;
+}
+
+.wiz__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px 6px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--muted);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.wiz__chip-n {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--line);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 답이 있는 질문 — 눌러서 오갈 수 있다 */
+.wiz__chip.is-done {
+  cursor: pointer;
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.wiz__chip.is-done .wiz__chip-n {
+  background: var(--teal);
+  color: var(--white);
+}
+
+.wiz__chip.is-done:hover,
+.wiz__chip.is-done:focus-visible {
+  background: var(--teal);
+  color: var(--white);
+}
+
+.wiz__chip.is-done:hover .wiz__chip-n,
+.wiz__chip.is-done:focus-visible .wiz__chip-n {
+  background: var(--white);
+  color: var(--teal);
+}
+
+/* 아직 답이 없지만 지금 갈 수 있는 질문 — 사이에 빈 답이 없다는 뜻 */
+.wiz__chip.is-next {
+  cursor: pointer;
+  border-style: dashed;
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--white);
+}
+
+.wiz__chip.is-next .wiz__chip-n {
+  background: var(--teal-soft);
+  color: var(--teal);
+}
+
+.wiz__chip.is-next:hover,
+.wiz__chip.is-next:focus-visible {
+  border-style: solid;
+  background: var(--teal-soft);
+}
+
+/* 지금 답하고 있는 질문 */
+.wiz__chip.is-current {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: var(--white);
+  cursor: default;
+}
+
+.wiz__chip.is-current .wiz__chip-n {
+  background: rgba(255, 255, 255, 0.24);
+  color: var(--white);
+}
+
+/* 아직 오지 않은 질문 — 앞 답변에 따라 내용이 달라지므로 잠근다 */
+.wiz__chip.is-future {
+  cursor: default;
+  opacity: 0.5;
+  background: var(--paper);
+}
+
+@media (max-width: 640px) {
+  .wiz__chip {
+    font-size: 12.5px;
+    padding: 5px 9px 5px 6px;
+  }
+}
+
 .wiz__topiccount {
   margin: 0 0 8px;
   font-size: 13px;
