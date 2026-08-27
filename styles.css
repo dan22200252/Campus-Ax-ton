@@ -921,11 +921,6 @@ legend {
   cursor: pointer;
 }
 
-.scv__step--r .scv__open {
-  flex-direction: row-reverse;
-  text-align: right;
-}
-
 .scv__open:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 3px;
@@ -1158,72 +1153,10 @@ legend {
   background: rgba(0, 0, 0, 0.12);
 }
 
-/* 좁을 때(기본): 세로 점선으로 잇는다 */
+/* 지그재그 S커브·점선 연결 없이, 아이콘·글자를 항상 왼쪽 정렬로 두고
+   순서대로 나열한다. 칸 사이 여백만 준다. */
 .scv__conn {
-  height: 20px;
-  margin-left: 39px;
-  border-left: 3px dashed var(--line);
-}
-
-/* 패널이 넓어지면 좌우 번갈아 놓고 S커브로 잇는다 */
-@container (min-width: 560px) {
-  .scv__step {
-    width: 66%;
-  }
-
-  .scv__step--r {
-    margin-left: auto;
-    flex-direction: row-reverse;
-    text-align: right;
-  }
-
-  .scv__conn {
-    position: relative;
-    height: 54px;
-    margin-left: 0;
-    border-left: 0;
-  }
-
-  .scv__conn::before,
-  .scv__conn::after {
-    content: "";
-    position: absolute;
-    height: 27px;
-    width: 20%;
-    border: 3px dashed var(--line);
-  }
-
-  .scv__conn--lr::before {
-    left: 30%;
-    top: 0;
-    border-top: 0;
-    border-right: 0;
-    border-bottom-left-radius: 30px;
-  }
-
-  .scv__conn--lr::after {
-    left: 50%;
-    top: 27px;
-    border-bottom: 0;
-    border-left: 0;
-    border-top-right-radius: 30px;
-  }
-
-  .scv__conn--rl::before {
-    left: 50%;
-    top: 0;
-    border-top: 0;
-    border-left: 0;
-    border-bottom-right-radius: 30px;
-  }
-
-  .scv__conn--rl::after {
-    left: 30%;
-    top: 27px;
-    border-bottom: 0;
-    border-right: 0;
-    border-top-left-radius: 30px;
-  }
+  height: 14px;
 }
 
 .next-steps {
