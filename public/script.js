@@ -1823,9 +1823,10 @@ function showStepDetail(step, idx, total) {
   stepDetailTitle.textContent = step.title;
   stepDetailBody.innerHTML = step.detail || `<p class="detail-lead">${esc(step.meta)}</p>`;
   stepDetail.hidden = false;
-  /* 안내 카드가 자체 스크롤이라, 펼친 내용이 보이도록 위로 올린다 */
-  const box = stepDetail.closest(".result");
-  if (box) box.scrollTop = 0;
+  /* 데스크톱은 안내 카드가 자체 스크롤이라 위로 올리는 것만으로 보이지만,
+     모바일처럼 한 칸으로 쌓이는 레이아웃에서는 카드 자체가 화면 밖에 있을 수
+     있다 — scrollIntoView로 펼친 내용이 있는 곳까지 화면을 실제로 옮긴다. */
+  stepDetail.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function closeStepDetail() {
@@ -2012,11 +2013,6 @@ document.querySelector("#navBrand").addEventListener("click", (event) => {
 });
 
 document.querySelector("#navToFinder").addEventListener("click", (event) => {
-  event.preventDefault();
-  goToFinderPage();
-});
-
-document.querySelector("#navToRoadmap").addEventListener("click", (event) => {
   event.preventDefault();
   goToFinderPage();
 });
