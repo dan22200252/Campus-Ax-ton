@@ -608,6 +608,7 @@ const universityList = document.querySelector("#universityList");
 const universitiesSection = document.querySelector("#universitySection");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
+const universityPicks = document.querySelector("#universityPicks");
 const roadmapSlot = document.querySelector("#roadmapSlot");
 const stepDetail = document.querySelector("#stepDetail");
 const stepDetailTag = document.querySelector("#stepDetailTag");
@@ -687,6 +688,7 @@ const BASE_STEPS = [
   { id: "quit", label: "자퇴", node: document.querySelector("#stepQuit"), when: () => statusState.level === "elem" || statusState.level === "mid" },
   { id: "quitDate", label: "날짜", node: document.querySelector("#stepQuitDate"), when: () => statusState.quit === "yes" && (statusState.level === "elem" || statusState.level === "mid") },
   { id: "goal", label: "목표", node: document.querySelector("#stepGoal") },
+  { id: "schools", label: "대학", node: document.querySelector("#stepSchools"), when: () => statusState.goal === "univ" },
   { id: "youth", label: "청소년증", node: document.querySelector("#stepYouth") },
   { id: "youthInfo", label: "발급", node: document.querySelector("#stepYouthInfo"), when: () => statusState.youth === "no" }
 ];
@@ -1030,7 +1032,13 @@ function setAnswer(group, value, topicKey) {
     setActiveOption("level", value);
     renderGoalOptions();
   } else if (group === "goalPick") {
-    if (statusState.goal !== value) statusState.topics = {};
+    if (statusState.goal !== value) {
+      statusState.topics = {};
+      if (value !== "univ") {
+        statusState.schools = [];
+        document.querySelectorAll('input[name="school"]').forEach((input) => { input.checked = false; });
+      }
+    }
     statusState.goal = value;
     setActiveOption("goalPick", value);
   } else if (group === "quit") {
@@ -1248,6 +1256,18 @@ function renderUniversities(selectedSchools) {
     `;
     universityList.appendChild(card);
   });
+}
+
+function renderUniversityPicks(selectedSchools) {
+  if (!universityPicks) return;
+  if (statusState.goal !== "univ" || !selectedSchools.length) {
+    universityPicks.hidden = true;
+    universityPicks.innerHTML = "";
+    return;
+  }
+
+  universityPicks.hidden = false;
+  universityPicks.innerHTML = `<h4>🎓 선택한 포항 대학</h4>${compiledUniversitiesHTML(selectedSchools)}`;
 }
 
 /* =========================================================
@@ -1882,6 +1902,7 @@ function updateResult() {
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
     renderList(actionList, [], 5);
+    renderUniversityPicks(selectedSchools);
     renderUniversities(selectedSchools);
     renderRoadmap();
     return;
@@ -1939,6 +1960,7 @@ function updateResult() {
   renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
   renderList(actionList, actionItems, 5);
+  renderUniversityPicks(selectedSchools);
   renderUniversities(selectedSchools);
   renderRoadmap();
 }
