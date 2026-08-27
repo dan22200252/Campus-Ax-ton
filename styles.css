@@ -40,10 +40,15 @@ body {
      overflow-wrap 으로 예외 처리한다. */
   word-break: keep-all;
   overflow-wrap: break-word;
-  background: var(--paper);
   color: var(--ink);
   font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+  font-weight: 500;
   line-height: 1.6;
+  /* 배경을 단일 색으로 깔지 않고, 아주 옅은 점 격자를 깔아 화면이 밋밋해
+     보이지 않게 한다 — 알파값이 낮아 글자 대비나 가독성에는 영향이 없다. */
+  background:
+    radial-gradient(circle at 1px 1px, rgba(42, 36, 32, 0.11) 1.4px, transparent 0) 0 0 / 24px 24px,
+    var(--paper);
 }
 
 h1,
@@ -81,7 +86,13 @@ a {
   align-items: center;
   overflow: hidden;
   color: var(--ink);
-  background: #f0e6d2;
+  background:
+    url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cpath d='M20 380 C 100 380 60 260 160 260 C 260 260 220 140 320 140 C 380 140 380 60 380 20' fill='none' stroke='%23b5573c' stroke-width='4' stroke-dasharray='2 15' stroke-linecap='round' opacity='0.4'/%3E%3Ccircle cx='20' cy='380' r='8' fill='%23b5573c' opacity='0.55'/%3E%3Ccircle cx='160' cy='260' r='6' fill='%235c6b45' opacity='0.45'/%3E%3Ccircle cx='320' cy='140' r='6' fill='%235c6b45' opacity='0.45'/%3E%3Ccircle cx='380' cy='20' r='8' fill='%23d9a94a' opacity='0.55'/%3E%3C/svg%3E")
+      right -70px bottom -60px / 560px 560px no-repeat,
+    radial-gradient(620px 440px at 88% 8%, rgba(181, 87, 60, 0.22), transparent 62%),
+    radial-gradient(580px 460px at 4% 96%, rgba(92, 107, 69, 0.24), transparent 62%),
+    radial-gradient(circle at 1px 1px, rgba(42, 36, 32, 0.11) 1.4px, transparent 0) 0 0 / 24px 24px,
+    linear-gradient(160deg, #f3ead4, #ecdfc4);
 }
 
 .hero[hidden] {
@@ -156,7 +167,7 @@ main[hidden] {
   min-height: 48px;
   padding: 0 20px;
   border-radius: 8px;
-  background: var(--coral);
+  background: linear-gradient(135deg, #c66b4f, #9c4830);
   color: var(--white);
   font-weight: 800;
   box-shadow: var(--shadow);
@@ -719,7 +730,7 @@ legend {
 
 .opt-card__txt span {
   display: block;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted);
   margin-top: 2px;
 }
@@ -801,20 +812,21 @@ legend {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 15px 18px;
+  padding: 16px 18px;
   border-radius: 20px;
   color: #fff;
   box-shadow: var(--shadow-soft);
 }
 
 .scv__ico {
-  flex: 0 0 42px;
-  height: 42px;
+  flex: 0 0 50px;
+  height: 50px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14);
   display: grid;
   place-items: center;
-  font-size: 19px;
+  font-size: 23px;
   line-height: 1;
 }
 
@@ -831,11 +843,6 @@ legend {
   border: 0;
   padding: 0;
   cursor: pointer;
-}
-
-.scv__step--r .scv__open {
-  flex-direction: row-reverse;
-  text-align: right;
 }
 
 .scv__open:focus-visible {
@@ -903,7 +910,7 @@ legend {
 .scv__ttl {
   text-wrap: balance;
   margin: 2px 0 0;
-  font-size: 16px;
+  font-size: 17.5px;
   font-weight: 800;
   line-height: 1.35;
   letter-spacing: -0.01em;
@@ -911,7 +918,7 @@ legend {
 
 .scv__meta {
   margin: 4px 0 0;
-  font-size: 13.5px;
+  font-size: 14.5px;
   line-height: 1.55;
   opacity: 0.9;
 }
@@ -1087,13 +1094,13 @@ legend {
   text-decoration: line-through;
 }
 
-.scv__step--c1 { background: var(--coral); }
-.scv__step--c2 { background: #4a5636; }
-.scv__step--c3 { background: var(--teal); }
-.scv__step--c4 { background: var(--leaf); }
+.scv__step--c1 { background: linear-gradient(135deg, #c66b4f, #9c4830); }
+.scv__step--c2 { background: linear-gradient(135deg, #5b6a43, #394226); }
+.scv__step--c3 { background: linear-gradient(135deg, #6f8054, #47522f); }
+.scv__step--c4 { background: linear-gradient(135deg, #83916a, #5a6644); }
 
 .scv__step--goal {
-  background: var(--gold);
+  background: linear-gradient(135deg, #e6bc6a, #c99530);
   color: #40300a;
 }
 
@@ -1109,64 +1116,11 @@ legend {
 }
 
 /* 패널이 넓어지면 좌우 번갈아 놓고 S커브로 잇는다 */
-@container (min-width: 560px) {
-  .scv__step {
-    width: 66%;
-  }
-
-  .scv__step--r {
-    margin-left: auto;
-    flex-direction: row-reverse;
-    text-align: right;
-  }
-
-  .scv__conn {
-    position: relative;
-    height: 54px;
-    margin-left: 0;
-    border-left: 0;
-  }
-
-  .scv__conn::before,
-  .scv__conn::after {
-    content: "";
-    position: absolute;
-    height: 27px;
-    width: 20%;
-    border: 3px dashed var(--line);
-  }
-
-  .scv__conn--lr::before {
-    left: 30%;
-    top: 0;
-    border-top: 0;
-    border-right: 0;
-    border-bottom-left-radius: 30px;
-  }
-
-  .scv__conn--lr::after {
-    left: 50%;
-    top: 27px;
-    border-bottom: 0;
-    border-left: 0;
-    border-top-right-radius: 30px;
-  }
-
-  .scv__conn--rl::before {
-    left: 50%;
-    top: 0;
-    border-top: 0;
-    border-left: 0;
-    border-bottom-right-radius: 30px;
-  }
-
-  .scv__conn--rl::after {
-    left: 30%;
-    top: 27px;
-    border-bottom: 0;
-    border-right: 0;
-    border-top-left-radius: 30px;
-  }
+/* 예전에는 넓은 화면에서 알약을 좌우로 번갈아 배치하는 지그재그 레이아웃이었는데,
+   글이 오른쪽 정렬로 뒤집혀서 읽는 방향이 헷갈린다는 피드백을 받았다. 폭에 상관없이
+   아이콘·글자가 항상 왼쪽부터 같은 방향으로 읽히는 단일 세로줄로 통일한다. */
+.scv__step {
+  max-width: 640px;
 }
 
 .next-steps {
@@ -1305,7 +1259,7 @@ textarea#extraNotes {
 
 .field-hint {
   margin: 8px 0 0;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted);
 }
 
@@ -1341,7 +1295,7 @@ textarea#extraNotes {
 }
 
 .btn-next {
-  background: var(--teal);
+  background: linear-gradient(135deg, #6f8054, #47522f);
   color: #fff;
 }
 
@@ -1371,7 +1325,7 @@ textarea#extraNotes {
 }
 
 .btn-compare {
-  background: var(--coral);
+  background: linear-gradient(135deg, #c66b4f, #9c4830);
   color: #fff;
 }
 
@@ -1548,7 +1502,7 @@ textarea#extraNotes {
 .detail-lead {
   margin: 0 0 10px;
   color: var(--muted);
-  font-size: 15.5px;
+  font-size: 16px;
 }
 
 table.info-mini {
@@ -1747,7 +1701,7 @@ footer p {
 }
 
 .universities {
-  background: var(--paper);
+  /* 배경은 지정하지 않는다 — body의 옅은 점 격자가 그대로 비쳐 보이게 한다 */
 }
 
 .comparison {
@@ -1810,7 +1764,7 @@ footer p {
 .comparison-card p {
   margin: 0 0 12px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .comparison-card ol {
@@ -1929,7 +1883,7 @@ footer p {
 
 .university-card__note {
   margin-top: 8px;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted);
   background: #f3eee3;
   border-left: 3px solid var(--teal);
