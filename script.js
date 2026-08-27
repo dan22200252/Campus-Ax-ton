@@ -687,6 +687,8 @@ const BASE_STEPS = [
   { id: "quit", label: "자퇴", node: document.querySelector("#stepQuit"), when: () => statusState.level === "elem" || statusState.level === "mid" },
   { id: "quitDate", label: "날짜", node: document.querySelector("#stepQuitDate"), when: () => statusState.quit === "yes" && (statusState.level === "elem" || statusState.level === "mid") },
   { id: "goal", label: "목표", node: document.querySelector("#stepGoal") },
+  /* 대학 진학이 목표일 때만 궁금한 대학을 고르는 질문을 끼워넣는다 */
+  { id: "schools", label: "관심 대학", node: document.querySelector("#stepSchools"), when: () => statusState.goal === "univ" },
   { id: "youth", label: "청소년증", node: document.querySelector("#stepYouth") },
   { id: "youthInfo", label: "발급", node: document.querySelector("#stepYouthInfo"), when: () => statusState.youth === "no" }
 ];
@@ -727,7 +729,7 @@ function stepLabel(step) {
 }
 
 function isAnswered(step) {
-  if (step.id === "notes") return true;
+  if (step.id === "notes" || step.id === "schools") return true;
   return step.topic ? Boolean(statusState.topics[step.topic]) : Boolean(statusState[step.id]);
 }
 
@@ -1230,7 +1232,8 @@ function renderPrioritySteps(target, items, limit = 3) {
 }
 
 function renderUniversities(selectedSchools) {
-  universitiesSection.hidden = statusState.goal !== "univ";
+  /* 이 섹션의 표시 여부는 위저드 진행 상태가 아니라 상단 "포항 대학" 메뉴
+     클릭 여부로만 정해진다 (아래 #navToUniversities 핸들러 참고) */
   universityList.innerHTML = "";
 
   Object.entries(universities).forEach(([key, school]) => {
@@ -1968,11 +1971,14 @@ if (extraNotes) {
 const heroView = document.querySelector("#heroView");
 const mainView = document.querySelector("main");
 const footerView = document.querySelector("footer");
+const finderSection = document.querySelector("#finder");
 
 function goToFinderPage() {
   heroView.hidden = true;
   mainView.hidden = false;
   footerView.hidden = false;
+  finderSection.hidden = false;
+  universitiesSection.hidden = true;
   window.scrollTo(0, 0);
 }
 
@@ -1980,6 +1986,7 @@ function goToHeroPage() {
   heroView.hidden = false;
   mainView.hidden = true;
   footerView.hidden = true;
+  universitiesSection.hidden = true;
   window.scrollTo(0, 0);
 }
 
@@ -1995,12 +2002,16 @@ document.querySelector("#navToFinder").addEventListener("click", (event) => {
   goToFinderPage();
 });
 
+/* 포항 대학 정보는 상단 메뉴를 눌렀을 때만 나오는 전용 화면이다 —
+   위저드(situationView/detailsView)는 숨기고 이 섹션만 보여준다. */
 document.querySelector("#navToUniversities").addEventListener("click", (event) => {
   event.preventDefault();
-  goToFinderPage();
-  if (!universitiesSection.hidden) {
-    requestAnimationFrame(() => universitiesSection.scrollIntoView({ behavior: "smooth", block: "start" }));
-  }
+  heroView.hidden = true;
+  mainView.hidden = false;
+  footerView.hidden = true;
+  finderSection.hidden = true;
+  universitiesSection.hidden = false;
+  window.scrollTo(0, 0);
 });
 
 document.querySelector("#btnBackToSituation").addEventListener("click", () => {
