@@ -652,6 +652,7 @@ let activeICSPayload = null;
 const STATUS_STORAGE_KEY = "axton_status_v1";
 const NOTES_STORAGE_KEY = "axton_notes_v1";
 const ROADMAP_STORAGE_KEY = "axton_roadmap_v1";
+const AI_NOTES_CACHE_KEY = "axton_ai_notes_v1";
 
 const situationView = document.querySelector("#situationView");
 const detailsView = document.querySelector("#detailsView");
@@ -664,6 +665,10 @@ const qTopicHint = document.querySelector("#qTopicHint");
 const qTopicCount = document.querySelector("#qTopicCount");
 const stepNotesNode = document.querySelector("#stepNotes");
 const extraNotes = document.querySelector("#extraNotes");
+const aiNotesCard = document.querySelector("#aiNotesCard");
+const aiNotesSummary = document.querySelector("#aiNotesSummary");
+const aiInfoList = document.querySelector("#aiInfoList");
+const aiActionList = document.querySelector("#aiActionList");
 const kmapSvg = document.querySelector(".kmap__svg");
 const regionHint = document.querySelector("#regionHint");
 const regionSelect = document.querySelector("#regionSelect");
@@ -841,12 +846,111 @@ function renderWizard() {
   btnWizNext.hidden = !isAnswered(current);
 }
 
-function goNext() {
+function aiContext() {
+  const statusKey = currentStatusKey();
+  const region = statusState.region ? REGIONS[statusState.region] : null;
+  const schools = checkedValues("school").map((key) => universities[key]?.name).filter(Boolean);
+
+  return {
+    region: region ? region.name : null,
+    level: statusState.level,
+    goal: statusState.goal,
+    statusTitle: statusKey && statusCopy[statusKey] ? statusCopy[statusKey].title : null,
+    selectedTopics: selectedTopics().map((key) => goalCopy[key]?.label).filter(Boolean),
+    selectedSchools: schools,
+    quit: statusState.quit,
+    quitDate: statusState.quitDate,
+    youthCard: statusState.youth,
+    wantsYouthCardInfo: statusState.youthInfo
+  };
+}
+
+function aiCacheKey(notes, context) {
+  return JSON.stringify({ notes: notes.trim(), context });
+}
+
+function readAiCache(key) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(AI_NOTES_CACHE_KEY) || "null");
+    return saved && saved.key === key ? saved.result : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function writeAiCache(key, result) {
+  try {
+    localStorage.setItem(AI_NOTES_CACHE_KEY, JSON.stringify({ key, result }));
+  } catch (e) {
+    /* ignore */
+  }
+}
+
+function hideAiNotesCard() {
+  if (!aiNotesCard) return;
+  aiNotesCard.hidden = true;
+  aiNotesCard.classList.remove("is-loading", "is-error");
+  aiNotesSummary.textContent = "";
+  aiInfoList.innerHTML = "";
+  aiActionList.innerHTML = "";
+}
+
+function showAiNotesCard(result, state = "ready") {
+  if (!aiNotesCard) return;
+  aiNotesCard.hidden = false;
+  aiNotesCard.classList.toggle("is-loading", state === "loading");
+  aiNotesCard.classList.toggle("is-error", state === "error");
+  aiNotesSummary.textContent = result.summary || "";
+  renderList(aiInfoList, result.infoItems || [], 3);
+  renderList(aiActionList, result.actionItems || [], 3);
+}
+
+async function runNotesAnalysis() {
+  const notes = extraNotes ? extraNotes.value.trim() : "";
+  if (!notes) {
+    hideAiNotesCard();
+    return;
+  }
+
+  const context = aiContext();
+  const key = aiCacheKey(notes, context);
+  const cached = readAiCache(key);
+  if (cached) {
+    showAiNotesCard(cached);
+    return;
+  }
+
+  showAiNotesCard({
+    summary: "메모를 읽고 추가로 확인할 점을 정리하고 있어요.",
+    infoItems: [],
+    actionItems: []
+  }, "loading");
+
+  try {
+    if (typeof window.axtonAnalyzeNotes !== "function") throw new Error("AI Logic is not ready");
+    const result = await window.axtonAnalyzeNotes(notes, context);
+    if (!result || !result.hasUsefulInfo) {
+      hideAiNotesCard();
+      return;
+    }
+    writeAiCache(key, result);
+    showAiNotesCard(result);
+  } catch (e) {
+    showAiNotesCard({
+      summary: "지금은 메모 분석을 불러오지 못했어요. 아래 기본 로드맵은 그대로 확인할 수 있어요.",
+      infoItems: ["공식 안내가 필요한 내용은 교육청·꿈드림·대학 입학처에서 확인해주세요."],
+      actionItems: ["잠시 후 다시 시도하거나, 메모 없이 로드맵을 먼저 확인해요."]
+    }, "error");
+  }
+}
+
+async function goNext() {
   if (wizIndex >= wizSteps().length - 1) {
     updateResult();
     situationView.hidden = true;
     detailsView.hidden = false;
     detailsView.scrollIntoView({ behavior: "smooth", block: "start" });
+    await runNotesAnalysis();
     return;
   }
   wizIndex += 1;
@@ -1971,6 +2075,7 @@ if (extraNotes) {
     } catch (e) {
       /* ignore */
     }
+    hideAiNotesCard();
   });
 }
 

@@ -828,6 +828,68 @@ legend {
   font-size: 15.5px;
 }
 
+.ai-note-card {
+  margin: 14px 0 18px;
+  padding: 16px;
+  border: 1px solid rgba(92, 107, 69, 0.24);
+  border-radius: var(--card-radius);
+  background: #fbf8f2;
+}
+
+.ai-note-card.is-loading {
+  opacity: 0.78;
+}
+
+.ai-note-card.is-error {
+  border-color: rgba(190, 83, 57, 0.28);
+  background: #fff7f2;
+}
+
+.ai-note-card__label {
+  margin: 0 0 8px;
+  color: var(--coral);
+  font-weight: 900;
+}
+
+.ai-note-card__summary {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.ai-note-card__grid {
+  display: grid;
+  gap: 12px;
+}
+
+.ai-note-card__grid h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.ai-note-card__grid ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.ai-note-card__notice {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(92, 107, 69, 0.16);
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+@media (min-width: 720px) {
+  .ai-note-card__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .roadmap-panel {
   margin-bottom: 0;
 }

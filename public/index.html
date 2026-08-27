@@ -278,7 +278,7 @@
                 <p class="wiz__q" id="qNotes">더 궁금한 게 있으면 말해주세요</p>
                 <p class="wiz__hint">예: 이번 겨울에 이사할 수도 있어요, 아르바이트를 해봤어요 등 자유롭게 적어주세요.</p>
                 <textarea id="extraNotes" rows="4" placeholder="궁금한 점이나 내 상황을 자유롭게 적어주세요"></textarea>
-                <p class="field-hint">적은 내용은 이 브라우저에만 저장돼요. 아직은 이 내용에 맞춰 안내가 바뀌지는 않아요.</p>
+                <p class="field-hint">적은 내용은 이 브라우저에 저장돼요. 메모가 있으면 AI가 추가로 확인할 점을 짚어줘요.</p>
               </div>
 
               <p class="wizard__error" id="wizError">먼저 위에서 골라주세요.</p>
@@ -310,6 +310,22 @@
                   <h3 id="summaryTitle"></h3>
                   <p id="summaryText"></p>
                 </div>
+
+                <section class="ai-note-card" id="aiNotesCard" aria-live="polite" hidden>
+                  <p class="ai-note-card__label">🤖 메모에서 추가로 확인할 점</p>
+                  <p class="ai-note-card__summary" id="aiNotesSummary"></p>
+                  <div class="ai-note-card__grid">
+                    <div>
+                      <h4>확인할 정보</h4>
+                      <ul id="aiInfoList"></ul>
+                    </div>
+                    <div>
+                      <h4>바로 해볼 일</h4>
+                      <ul id="aiActionList"></ul>
+                    </div>
+                  </div>
+                  <p class="ai-note-card__notice">참고용 안내예요. 실제 신청 전에는 교육청·꿈드림·대학 공식 안내를 확인해주세요.</p>
+                </section>
 
                 <!-- 로드맵 단계를 누르면 그 단계의 자세한 내용이 여기 펼쳐진다 -->
                 <section class="step-detail" id="stepDetail" aria-live="polite" hidden>
@@ -382,6 +398,7 @@
       <p>연습용으로 만든 사이트예요. 실제로 신청하기 전에는 교육청 공고와 각 기관의 공식 안내를 꼭 확인하세요.</p>
     </footer>
 
+    <script type="module" src="ai.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
