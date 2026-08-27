@@ -27,6 +27,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* 폰트가 늦게 로드되면서 레이아웃이 바뀔 때 브라우저가 스크롤을 임의로
+     보정하는 것을 막는다 — 안 그러면 첫 화면에서 상단 메뉴가 화면 밖으로
+     밀려나 버튼이 안 눌리는 것처럼 보인다. */
+  overflow-anchor: none;
 }
 
 body {
@@ -63,6 +67,9 @@ a {
 }
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   background: var(--white);
   border-bottom: 1px solid var(--line);
 }
