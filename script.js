@@ -936,8 +936,9 @@ async function runNotesAnalysis() {
     writeAiCache(key, result);
     showAiNotesCard(result);
   } catch (e) {
+    console.error("AI note analysis failed", e);
     showAiNotesCard({
-      summary: "지금은 메모 분석을 불러오지 못했어요. 아래 기본 로드맵은 그대로 확인할 수 있어요.",
+      summary: `지금은 메모 분석을 불러오지 못했어요. 아래 기본 로드맵은 그대로 확인할 수 있어요.${e && e.message ? ` (${e.message})` : ""}`,
       infoItems: ["공식 안내가 필요한 내용은 교육청·꿈드림·대학 입학처에서 확인해주세요."],
       actionItems: ["잠시 후 다시 시도하거나, 메모 없이 로드맵을 먼저 확인해요."]
     }, "error");
