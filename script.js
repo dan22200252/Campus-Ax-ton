@@ -608,7 +608,6 @@ const universityList = document.querySelector("#universityList");
 const universitiesSection = document.querySelector("#universitySection");
 const detailSections = document.querySelector("#detailSections");
 const selectedDetails = document.querySelector("#selectedDetails");
-const universityPicks = document.querySelector("#universityPicks");
 const roadmapSlot = document.querySelector("#roadmapSlot");
 const stepDetail = document.querySelector("#stepDetail");
 const stepDetailTag = document.querySelector("#stepDetailTag");
@@ -1258,18 +1257,6 @@ function renderUniversities(selectedSchools) {
   });
 }
 
-function renderUniversityPicks(selectedSchools) {
-  if (!universityPicks) return;
-  if (statusState.goal !== "univ" || !selectedSchools.length) {
-    universityPicks.hidden = true;
-    universityPicks.innerHTML = "";
-    return;
-  }
-
-  universityPicks.hidden = false;
-  universityPicks.innerHTML = `<h4>🎓 선택한 포항 대학</h4>${compiledUniversitiesHTML(selectedSchools)}`;
-}
-
 /* =========================================================
    로드맵 — 답변으로 단계를 만들고 S커브 알약으로 그린다
    ========================================================= */
@@ -1903,7 +1890,6 @@ function updateResult() {
     renderList(topSteps, [], 3);
     renderList(infoList, [], 5);
     renderList(actionList, [], 5);
-    renderUniversityPicks(selectedSchools);
     renderUniversities(selectedSchools);
     renderRoadmap();
     return;
@@ -1961,7 +1947,6 @@ function updateResult() {
   renderPrioritySteps(topSteps, stepItems, 3);
   renderList(infoList, infoItems, 5);
   renderList(actionList, actionItems, 5);
-  renderUniversityPicks(selectedSchools);
   renderUniversities(selectedSchools);
   renderRoadmap();
 }
