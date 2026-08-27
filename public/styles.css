@@ -914,11 +914,6 @@ legend {
   cursor: pointer;
 }
 
-.scv__step--r .scv__open {
-  flex-direction: row-reverse;
-  text-align: right;
-}
-
 .scv__open:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 3px;
@@ -1166,8 +1161,6 @@ legend {
 
   .scv__step--r {
     margin-left: auto;
-    flex-direction: row-reverse;
-    text-align: right;
   }
 
   .scv__conn {

@@ -211,7 +211,7 @@
                 <p class="wiz__hint">관심 있는 학교를 골라주세요. 나중에 바꿀 수 있어요.</p>
                 <div class="opt-grid opt-grid--check">
                   <label class="opt-card opt-card--check">
-                    <input type="checkbox" name="school" value="postech" />
+                    <input type="checkbox" name="school" value="postech" checked />
                     <span class="opt-card__txt"><strong>포항공과대학교</strong><span>4년제 · 수시만 있어요, 검정고시도 지원 가능</span></span>
                   </label>
                   <label class="opt-card opt-card--check">
@@ -296,7 +296,10 @@
               <div class="panel roadmap-panel">
                 <div class="section-heading">
                   <p class="eyebrow">답변으로 만든</p>
-                  <h2>🗺️ 내 로드맵</h2>
+                  <div class="roadmap-heading__row">
+                    <h2>🗺️ 내 로드맵</h2>
+                    <button type="button" class="roadmap-heading__reset" id="btnBackToSituation">다시 상황 고르기</button>
+                  </div>
                 </div>
                 <div class="roadmap-slot" id="roadmapSlot"></div>
               </div>
@@ -361,12 +364,6 @@
                   </div>
                 </div>
               </aside>
-            </div>
-
-            <div class="panel details-inputs">
-                <div class="wizard__nav">
-                  <button type="button" class="btn-prev" id="btnBackToSituation">다시 상황 고르기</button>
-                </div>
             </div>
           </div>
         </form>
