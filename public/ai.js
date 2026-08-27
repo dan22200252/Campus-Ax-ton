@@ -20,7 +20,7 @@ initializeAppCheck(app, {
 
 const ai = getAI(app, { backend: new GoogleAIBackend() });
 const model = getGenerativeModel(ai, {
-  model: "gemini-2.5-flash-lite",
+  model: "gemini-3.5-flash-lite",
   generationConfig: {
     responseMimeType: "application/json",
     temperature: 0.2,
