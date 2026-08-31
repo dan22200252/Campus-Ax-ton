@@ -652,7 +652,7 @@ let activeICSPayload = null;
 const STATUS_STORAGE_KEY = "axton_status_v1";
 const NOTES_STORAGE_KEY = "axton_notes_v1";
 const ROADMAP_STORAGE_KEY = "axton_roadmap_v1";
-const AI_NOTES_CACHE_KEY = "axton_ai_notes_v1";
+const AI_NOTES_CACHE_KEY = "axton_ai_notes_v2";
 
 const situationView = document.querySelector("#situationView");
 const detailsView = document.querySelector("#detailsView");
