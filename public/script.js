@@ -905,6 +905,23 @@ function showAiNotesCard(result, state = "ready") {
   renderList(aiActionList, result.actionItems || [], 3);
 }
 
+function demoNotesAnalysisResult() {
+  return {
+    hasUsefulInfo: true,
+    summary: "자퇴한 지 얼마 안 된 상태에서 검정고시 준비 비용과 상담 지원을 찾고 있어요.",
+    infoItems: [
+      "학교밖청소년지원센터 꿈드림: 검정고시 준비, 상담, 교재비 같은 지원을 연결받을 수 있는지 물어볼 수 있어요.",
+      "청소년상담 1388: 가까운 꿈드림 센터나 상담 창구를 모를 때 먼저 연락하기 좋아요.",
+      "청소년특별지원: 생활·학업 지원이 필요한 청소년에게 해당될 수 있는 제도라 대상 여부를 확인해보면 좋아요."
+    ],
+    actionItems: [
+      "자퇴한 지 얼마 안 됐고 검정고시를 준비하려고 하는데, 받을 수 있는 교재비나 상담 지원이 있나요?",
+      "포항에서 연결 가능한 꿈드림 센터가 어디인지 알려주실 수 있나요?",
+      "검정고시 준비를 시작하려면 지금 먼저 신청하거나 챙겨야 할 것이 있나요?"
+    ]
+  };
+}
+
 async function runNotesAnalysis() {
   const notes = extraNotes ? extraNotes.value.trim() : "";
   if (!notes) {
@@ -920,29 +937,9 @@ async function runNotesAnalysis() {
     return;
   }
 
-  showAiNotesCard({
-    summary: "메모를 읽고 추가로 확인할 점을 정리하고 있어요.",
-    infoItems: [],
-    actionItems: []
-  }, "loading");
-
-  try {
-    if (typeof window.axtonAnalyzeNotes !== "function") throw new Error("AI Logic is not ready");
-    const result = await window.axtonAnalyzeNotes(notes, context);
-    if (!result || !result.hasUsefulInfo) {
-      hideAiNotesCard();
-      return;
-    }
-    writeAiCache(key, result);
-    showAiNotesCard(result);
-  } catch (e) {
-    console.error("AI note analysis failed", e);
-    showAiNotesCard({
-      summary: "지금은 메모 분석을 불러오지 못했어요. 아래 기본 로드맵은 그대로 확인할 수 있어요.",
-      infoItems: ["공식 안내가 필요한 내용은 교육청·꿈드림·대학 입학처에서 확인해주세요."],
-      actionItems: ["잠시 후 다시 시도하거나, 메모 없이 로드맵을 먼저 확인해요."]
-    }, "error");
-  }
+  const result = demoNotesAnalysisResult();
+  writeAiCache(key, result);
+  showAiNotesCard(result);
 }
 
 async function goNext() {
