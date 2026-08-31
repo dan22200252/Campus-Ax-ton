@@ -652,7 +652,7 @@ let activeICSPayload = null;
 const STATUS_STORAGE_KEY = "axton_status_v1";
 const NOTES_STORAGE_KEY = "axton_notes_v1";
 const ROADMAP_STORAGE_KEY = "axton_roadmap_v1";
-const AI_NOTES_CACHE_KEY = "axton_ai_notes_v2";
+const AI_NOTES_CACHE_KEY = "axton_ai_notes_v1";
 
 const situationView = document.querySelector("#situationView");
 const detailsView = document.querySelector("#detailsView");
@@ -938,9 +938,9 @@ async function runNotesAnalysis() {
   } catch (e) {
     console.error("AI note analysis failed", e);
     showAiNotesCard({
-      summary: "지금은 메모 분석을 불러오지 못했어요. 아래 기본 로드맵은 그대로 확인할 수 있어요.",
-      infoItems: ["학교밖청소년지원센터 꿈드림 — 검정고시 준비, 상담, 지역 지원 연결을 물어볼 수 있어요."],
-      actionItems: ["포항 꿈드림 센터와 연결해주실 수 있나요?"]
+      summary: `지금은 메모 분석을 불러오지 못했어요. 아래 기본 로드맵은 그대로 확인할 수 있어요.${e && e.message ? ` (${e.message})` : ""}`,
+      infoItems: ["공식 안내가 필요한 내용은 교육청·꿈드림·대학 입학처에서 확인해주세요."],
+      actionItems: ["잠시 후 다시 시도하거나, 메모 없이 로드맵을 먼저 확인해요."]
     }, "error");
   }
 }
